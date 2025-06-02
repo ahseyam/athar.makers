@@ -105,20 +105,29 @@ export default function HostingRequestPage() {
     form.reset();
   };
 
+  const pageTitle = "استضافة البرامج داخل المدارس والمراكز التعليمية";
+  const pageSubtitle = "هل ترغب في تقديم برامج منصة صُنّاع الأثَر داخل مؤسستك التعليمية؟ نحن نتيح لكم فرصة استضافة معسكراتنا ودوراتنا بتنفيذ كامل من فريقنا.";
+
+
   return (
     <div className="container mx-auto px-4 py-12">
-      <header className="text-center mb-12">
-        <Image 
-          src={headerImageUrl} 
-          alt={IMAGE_DETAIL.alt} 
-          width={1200} 
-          height={400} 
-          className="w-full h-auto object-cover rounded-lg mb-6"
+      <header className="relative w-full h-64 md:h-80 mb-12 rounded-lg overflow-hidden shadow-lg">
+        <Image
+          src={headerImageUrl}
+          alt={IMAGE_DETAIL.alt}
+          layout="fill"
+          objectFit="cover"
+          className="z-0"
+          priority
         />
-        <h1 className="text-4xl md:text-5xl font-headline font-bold text-primary mb-4">استضافة البرامج داخل المدارس والمراكز التعليمية</h1>
-        <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-          هل ترغب في تقديم برامج منصة صُنّاع الأثَر داخل مؤسستك التعليمية؟ نحن نتيح لكم فرصة استضافة معسكراتنا ودوراتنا بتنفيذ كامل من فريقنا.
-        </p>
+        <div className="absolute inset-0 bg-primary/70 flex flex-col items-center justify-center text-center p-4 z-10">
+          <h1 className="text-3xl md:text-4xl font-headline font-bold text-primary-foreground mb-3">
+            {pageTitle}
+          </h1>
+          <p className="text-lg md:text-xl text-primary-foreground/90 max-w-2xl mx-auto">
+            {pageSubtitle}
+          </p>
+        </div>
       </header>
 
       <div className="grid lg:grid-cols-3 gap-8">
