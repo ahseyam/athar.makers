@@ -12,6 +12,7 @@ import { z } from "zod";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const trainerApplicationSchema = z.object({
   fullName: z.string().min(1, "الاسم الكامل مطلوب"),
