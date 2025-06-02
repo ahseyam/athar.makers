@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Button } from "@/components/ui/button";
@@ -14,9 +13,6 @@ import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
-import { useState, useEffect } from 'react';
-// import { generateImageFromHint } from '@/ai/flows/image-generator-flow'; // Removed
-// import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants'; // Removed
 
 const registrationSchema = z.object({
   fullName: z.string().min(3, "الاسم يجب أن لا يقل عن 3 أحرف"),
@@ -32,9 +28,9 @@ const registrationSchema = z.object({
 type RegistrationFormValues = z.infer<typeof registrationSchema>;
 
 const IMAGE_DETAIL = {
-  id: "register_logo", // Added id for consistency
+  id: "register_logo", 
   originalSrc: "https://placehold.co/150x80.png",
-  hint: "education platform logo", // Max 2 words
+  hint: "education platform logo", 
   alt: "شعار صناع الأثر",
 };
 
@@ -47,15 +43,17 @@ export default function RegisterPage() {
     },
   });
 
-  // Directly use originalSrc, removed dynamic loading for this image
   const logoImageUrl = IMAGE_DETAIL.originalSrc;
 
   const onSubmit: SubmitHandler<RegistrationFormValues> = async (data) => {
+    // TODO: Implement backend API call for user registration and authentication
     console.log(data);
     toast({
       title: "تم التسجيل بنجاح!",
       description: "يمكنك الآن تسجيل الدخول إلى حسابك.",
     });
+    // Potentially redirect to login page or dashboard after successful registration
+    // form.reset(); // Reset form if staying on page, or not needed if redirecting
   };
 
   return (

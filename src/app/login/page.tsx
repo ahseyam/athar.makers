@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Button } from "@/components/ui/button";
@@ -13,9 +12,6 @@ import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
-import { useState, useEffect } from 'react';
-// import { generateImageFromHint } from '@/ai/flows/image-generator-flow'; // Removed
-// import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants'; // Removed
 
 const loginSchema = z.object({
   email: z.string().email("بريد إلكتروني غير صالح"),
@@ -27,7 +23,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 const IMAGE_DETAIL = {
   id: "login_logo",
   originalSrc: "https://placehold.co/150x80.png",
-  hint: "education platform logo", // Max 2 words
+  hint: "education platform logo",
   alt: "شعار صناع الأثر",
 };
 
@@ -37,15 +33,17 @@ export default function LoginPage() {
     resolver: zodResolver(loginSchema),
   });
 
-  // Directly use originalSrc, removed dynamic loading for this image
   const logoImageUrl = IMAGE_DETAIL.originalSrc;
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
+    // TODO: Implement backend API call for user login and authentication
     console.log(data);
     toast({
       title: "تم تسجيل الدخول بنجاح!",
       description: "مرحباً بعودتك.",
     });
+    // Potentially redirect to dashboard after successful login
+    // form.reset(); // Reset form if staying on page, or not needed if redirecting
   };
 
   return (

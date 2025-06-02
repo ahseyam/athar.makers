@@ -35,7 +35,7 @@ export default function ContactPage() {
   });
 
   const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
-    // Simulate form submission
+    // TODO: Implement backend API call and data handling
     console.log(data);
     toast({
       title: "تم إرسال رسالتك بنجاح!",

@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Button } from "@/components/ui/button";
@@ -12,8 +11,6 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
-// import { generateImageFromHint } from '@/ai/flows/image-generator-flow'; // Removed
-// import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants'; // Removed
 
 const mockOrderDetails = {
   studentName: "اسم الطالب الافتراضي",
@@ -38,7 +35,6 @@ export default function CheckoutPage() {
   const [isPaid, setIsPaid] = useState(false);
   const [subscriptionId, setSubscriptionId] = useState<string | null>(null);
 
-  // Directly use originalSrc, removed dynamic loading for these images
   const madaLogoUrl = IMAGE_DETAILS.mada.originalSrc;
   const visaMastercardLogoUrl = IMAGE_DETAILS.visaMastercard.originalSrc;
   const applePayLogoUrl = IMAGE_DETAILS.applePay.originalSrc;
@@ -63,9 +59,13 @@ export default function CheckoutPage() {
       return;
     }
     setIsProcessing(true);
+    // TODO: Implement actual payment processing logic here with a payment gateway API
+    // This setTimeout is a placeholder for the API call.
+    // On successful payment from the gateway, set isPaid to true.
+    // On failure, show an error toast and set isProcessing to false.
     setTimeout(() => {
       setIsProcessing(false);
-      setIsPaid(true);
+      setIsPaid(true); // Assume payment is successful for now
       toast({
         title: "تم الدفع بنجاح!",
         description: "تم تأكيد تسجيلك في البرنامج. ستصلك رسالة تأكيد عبر البريد.",
@@ -204,6 +204,7 @@ export default function CheckoutPage() {
               {selectedPaymentMethod === "visa_mastercard" && (
                 <div className="space-y-4 p-4 border rounded-lg bg-muted/50">
                   <h4 className="font-semibold">تفاصيل البطاقة الائتمانية:</h4>
+                  {/* TODO: Replace with actual PCI-compliant card input fields from payment gateway SDK */}
                   <Input placeholder="رقم البطاقة" />
                   <div className="grid grid-cols-2 gap-4">
                     <Input placeholder="تاريخ الانتهاء (MM/YY)" />
@@ -224,12 +225,14 @@ export default function CheckoutPage() {
                       <p className="text-sm"><strong>رقم الحساب:</strong> SA00 0000 0000 0000 0000 0000</p>
                       <p className="text-sm"><strong>اسم المستفيد:</strong> شركة صناع الأثر للتعليم</p>
                       <p className="text-sm mt-2">بعد التحويل، يرجى إرسال إثبات الدفع إلى <a href="mailto:billing@sonna3.com" className="underline">billing@sonna3.com</a> مع ذكر رقم الطلب.</p>
+                      {/* TODO: Backend will need a way to manually confirm these payments */}
                     </div>
                   </div>
                 </div>
               )}
               
               <div className="mt-2">
+                {/* TODO: Implement discount code logic with backend validation */}
                 <Input placeholder="كود الخصم (إن وجد)" />
               </div>
 

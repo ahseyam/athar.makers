@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Button } from "@/components/ui/button";
@@ -16,10 +15,6 @@ import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
-import { useState, useEffect } from 'react';
-// import { generateImageFromHint } from '@/ai/flows/image-generator-flow'; // Removed
-// import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants'; // Removed
-
 
 const programsList = [
   "معسكر صُنّاع الموهبة – المستكشفين (ابتدائي)",
@@ -52,7 +47,7 @@ type HostingRequestFormValues = z.infer<typeof hostingRequestSchema>;
 const IMAGE_DETAIL = {
   id: "hosting_request_header",
   originalSrc: "https://placehold.co/1200x400.png",
-  hint: "modern school building collaborative meeting space educational institution program hosting partnerships", // Max 2 words
+  hint: "modern school building collaborative meeting space educational institution program hosting partnerships",
   alt: "استضافة برنامج",
 };
 
@@ -66,11 +61,10 @@ export default function HostingRequestPage() {
     },
   });
 
-  // Directly use originalSrc, removed dynamic loading for this image
   const headerImageUrl = IMAGE_DETAIL.originalSrc;
 
-
   const onSubmit: SubmitHandler<HostingRequestFormValues> = async (data) => {
+    // TODO: Implement backend API call to submit hosting request
     console.log(data);
     toast({
       title: "تم إرسال طلب الاستضافة بنجاح!",

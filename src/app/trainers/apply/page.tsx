@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Button } from "@/components/ui/button";
@@ -14,9 +13,6 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useState, useEffect } from 'react';
-// import { generateImageFromHint } from '@/ai/flows/image-generator-flow'; // Removed
-// import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants'; // Removed
 
 const trainerApplicationSchema = z.object({
   fullName: z.string().min(1, "الاسم الكامل مطلوب"),
@@ -47,7 +43,7 @@ const accreditationSteps = [
 const IMAGE_DETAIL = {
   id: "trainer_apply_header",
   originalSrc: "https://placehold.co/1200x400.png",
-  hint: "professional engaging trainer presentation workshop attentive audience modern training room", // Max 2 words
+  hint: "professional engaging trainer presentation workshop attentive audience modern training room",
   alt: "انضم كمدرب",
 };
 
@@ -60,11 +56,15 @@ export default function TrainerApplyPage() {
     },
   });
 
-  // Directly use originalSrc, removed dynamic loading for this image
   const headerImageUrl = IMAGE_DETAIL.originalSrc;
 
   const onSubmit: SubmitHandler<TrainerApplicationFormValues> = async (data) => {
+    // TODO: Implement backend API call to submit trainer application
+    // This will likely involve handling file uploads for CV, certificates, etc.
     console.log(data);
+    // For file inputs like 'cv', 'certificates', 'sampleContent',
+    // data.cv[0], data.certificates[0] etc. will contain the File object if a file was selected.
+    // You'll need to send these files to your backend (e.g., using FormData).
     toast({
       title: "تم إرسال طلبك بنجاح!",
       description: "سيتم مراجعة طلبك والرد عليك خلال 5 أيام عمل.",
