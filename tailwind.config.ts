@@ -10,8 +10,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
+        body: ['Noto Kufi Arabic', 'sans-serif'],
+        headline: ['Cairo', 'Tajawal', 'sans-serif'], // Cairo as primary, Tajawal as fallback
         code: ['monospace'],
       },
       colors: {

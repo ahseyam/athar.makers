@@ -1,3 +1,152 @@
-export default function Home() {
-  return <></>;
+import Link from 'next/link';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { CheckCircle, BookOpen, Users, Target, Lightbulb, BarChart } from 'lucide-react';
+
+const programTracks = [
+  {
+    title: 'المعسكرات الصيفية والمسائية',
+    description: 'برامج مكثفة تجمع بين العلم والمهارة والمرح لصناعة جيل مبدع.',
+    icon: <Users className="w-12 h-12 text-primary mb-4" />,
+    link: '/courses/summer-camps',
+    image: 'https://placehold.co/600x400.png',
+    imageHint: 'children learning summer camp'
+  },
+  {
+    title: 'دورات القدرات (قياس)',
+    description: 'تأهيل شامل لاختبار القدرات العامة، من التأسيس وحتى الاحتراف.',
+    icon: <BarChart className="w-12 h-12 text-primary mb-4" />,
+    link: '/courses/qiyas-gat',
+    image: 'https://placehold.co/600x400.png',
+    imageHint: 'students test preparation'
+  },
+  {
+    title: 'مقياس موهبة',
+    description: 'اكتشف قدراتك العقلية المتعددة واستعد بثقة لاختبار موهبة.',
+    icon: <Lightbulb className="w-12 h-12 text-primary mb-4" />,
+    link: '/courses/mawhiba',
+    image: 'https://placehold.co/600x400.png',
+    imageHint: 'gifted student thinking'
+  },
+  {
+    title: 'دورات التحصيلي',
+    description: 'مراجعة مركزة للمواد العلمية لضمان التفوق في اختبار التحصيلي.',
+    icon: <BookOpen className="w-12 h-12 text-primary mb-4" />,
+    link: '/courses/tahsili',
+    image: 'https://placehold.co/600x400.png',
+    imageHint: 'science textbook exam'
+  },
+];
+
+export default function HomePage() {
+  return (
+    <div className="flex flex-col items-center">
+      {/* Hero Section */}
+      <section className="w-full bg-gradient-to-b from-primary/10 via-background to-background py-20 md:py-32 text-center">
+        <div className="container mx-auto px-4">
+          <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary mb-6">
+            منصة صُنّاع الأثَر
+          </h1>
+          <p className="text-xl md:text-2xl text-foreground font-medium mb-8">
+            التعليم يبدأ من الأثر.. وينتهي إلى التميّز.
+          </p>
+          <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-10">
+            منصة سعودية تعليمية رقمية شاملة، تقدم برامج تدريبية مخصصة ومتكاملة في المهارات العلمية، الشخصية والقيادية، الاختبارات الوطنية، والاعتماد المؤسسي للمدارس.
+          </p>
+          <div className="space-x-4 space-x-reverse">
+            <Link href="/courses/summer-camps">
+              <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                اكتشف برامجنا
+              </Button>
+            </Link>
+            <Link href="/register">
+              <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/10">
+                سجّل الآن
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Program Tracks Section */}
+      <section className="py-16 w-full bg-background">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-headline font-bold text-center text-foreground mb-12">
+            مساراتنا التدريبية
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {programTracks.map((track) => (
+              <Card key={track.title} className="shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                <CardHeader className="items-center text-center">
+                  <div className="relative w-full h-48 mb-4 rounded-t-lg overflow-hidden">
+                    <Image src={track.image} alt={track.title} layout="fill" objectFit="cover" data-ai-hint={track.imageHint} />
+                  </div>
+                  {track.icon}
+                  <CardTitle className="font-headline text-xl">{track.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-grow text-center">
+                  <CardDescription className="text-muted-foreground mb-4">{track.description}</CardDescription>
+                </CardContent>
+                <div className="p-6 pt-0 text-center">
+                  <Link href={track.link}>
+                    <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                      عرض التفاصيل
+                    </Button>
+                  </Link>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Vision and Mission Section */}
+      <section className="py-16 bg-muted w-full">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <Target className="w-16 h-16 text-primary mb-4" />
+              <h3 className="text-3xl font-headline font-bold text-foreground mb-4">رؤيتنا</h3>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                أن تكون منصة "صُنّاع الأثَر" منصة ريادة في الوطن العربي لتدريب الطلاب والمؤسسات نحو التميز والمنافسة محليًا وعالميًا.
+              </p>
+            </div>
+            <div>
+              <Image src="https://placehold.co/600x400.png" alt="رؤيتنا" width={600} height={400} className="rounded-lg shadow-md" data-ai-hint="vision future education" />
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 gap-12 items-center mt-16">
+             <div className="md:order-last">
+              <CheckCircle className="w-16 h-16 text-primary mb-4" />
+              <h3 className="text-3xl font-headline font-bold text-foreground mb-4">رسالتنا</h3>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                تصميم تجارب تعليمية وتدريبية تنطلق من التقييم الذاتي والاحتياج الواقعي، وتُقدَّم بأساليب تفاعلية تحقق الفهم العميق، والتطبيق العملي، والمتابعة المستمرة.
+              </p>
+            </div>
+            <div className="md:order-first">
+              <Image src="https://placehold.co/600x400.png" alt="رسالتنا" width={600} height={400} className="rounded-lg shadow-md" data-ai-hint="mission education goals" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action Section */}
+      <section className="py-20 bg-background w-full text-center">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-headline font-bold text-foreground mb-6">
+            مستعد لتبدأ رحلة الأثر والتميز؟
+          </h2>
+          <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
+            انضم إلى آلاف الطلاب والمؤسسات الذين اختاروا صُنّاع الأثَر لتطوير مهاراتهم وتحقيق طموحاتهم.
+          </p>
+          <Link href="/register">
+            <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
+              ابدأ رحلتك الآن
+            </Button>
+          </Link>
+        </div>
+      </section>
+    </div>
+  );
 }
