@@ -28,8 +28,6 @@ const navLinks = [
   { href: '/store', label: 'المتجر', icon: <ShoppingCart className="me-1 h-4 w-4" /> },
   { href: '/institutions/hosting-request', label: 'استضافة للمؤسسات', icon: <School className="me-1 h-4 w-4" /> },
   { href: '/trainers/apply', label: 'انضم كمدرب', icon: <UserPlus className="me-1 h-4 w-4" /> },
-  // { href: '/about', label: 'من نحن', icon: <Info className="me-1 h-4 w-4" /> },
-  // { href: '/contact', label: 'اتصل بنا', icon: <Phone className="me-1 h-4 w-4" /> },
 ];
 
 export default function Header() {
@@ -73,7 +71,7 @@ export default function Header() {
             <Button variant="secondary" className="bg-accent text-accent-foreground hover:bg-accent/90 mx-2">سجّل الآن</Button>
           </Link>
            <Link href="/login">
-            <Button variant="outline" className="border-primary-foreground/50 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground">دخول</Button>
+            <Button variant="outline" className="border-primary-foreground/50 text-primary-foreground dark:text-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground dark:hover:text-foreground">دخول</Button>
           </Link>
         </nav>
 
@@ -139,7 +137,7 @@ export default function Header() {
                     <Button variant="secondary" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">سجّل الآن</Button>
                     </Link>
                     <Link href="/login">
-                    <Button variant="outline" className="w-full border-primary-foreground/50 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground">دخول</Button>
+                    <Button variant="outline" className="w-full border-primary-foreground/50 text-primary-foreground dark:text-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground dark:hover:text-foreground">دخول</Button>
                     </Link>
                 </div>
               </nav>
