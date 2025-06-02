@@ -14,6 +14,8 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useState, useEffect } from 'react';
+import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
 
 const trainerApplicationSchema = z.object({
   fullName: z.string().min(1, "الاسم الكامل مطلوب"),
@@ -41,6 +43,12 @@ const accreditationSteps = [
     { stage: "الاعتماد النهائي", description: "إصدار شهادة مدرب معتمد بمنصة صُنّاع الأثَر" }
 ];
 
+const IMAGE_DETAIL = {
+  originalSrc: "https://placehold.co/1200x400.png",
+  hint: "teacher presentation classroom",
+  alt: "انضم كمدرب",
+};
+
 export default function TrainerApplyPage() {
   const { toast } = useToast();
   const form = useForm<TrainerApplicationFormValues>({
@@ -50,9 +58,27 @@ export default function TrainerApplyPage() {
     },
   });
 
+  const [headerImageUrl, setHeaderImageUrl] = useState<string>(IMAGE_DETAIL.originalSrc);
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadImage = async () => {
+      try {
+        const result = await generateImageFromHint({ hint: IMAGE_DETAIL.hint });
+        if (isMounted) {
+          setHeaderImageUrl(result.imageDataUri);
+        }
+      } catch (error) {
+        console.error(`Failed to generate image for hint "${IMAGE_DETAIL.hint}":`, error);
+        if (isMounted) setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
+      }
+    };
+    loadImage();
+    return () => { isMounted = false; };
+  }, []);
+
   const onSubmit: SubmitHandler<TrainerApplicationFormValues> = async (data) => {
     console.log(data);
-    // Simulate API call for file uploads if needed
     toast({
       title: "تم إرسال طلبك بنجاح!",
       description: "سيتم مراجعة طلبك والرد عليك خلال 5 أيام عمل.",
@@ -63,7 +89,13 @@ export default function TrainerApplyPage() {
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="text-center mb-12">
-        <Image src="https://placehold.co/1200x400.png" alt="انضم كمدرب" width={1200} height={400} className="w-full h-auto object-cover rounded-lg mb-6" data-ai-hint="teacher presentation classroom"/>
+        <Image 
+          src={headerImageUrl} 
+          alt={IMAGE_DETAIL.alt} 
+          width={1200} 
+          height={400} 
+          className="w-full h-auto object-cover rounded-lg mb-6"
+        />
         <h1 className="text-4xl md:text-5xl font-headline font-bold text-primary mb-4">انضم لفريق مدربي صُنّاع الأثَر</h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           هل تمتلك مهارة في التدريب وشغفًا بالتعليم؟ كن جزءًا من مجتمع تربوي يُصنّع الأثر ويترك بصمة.

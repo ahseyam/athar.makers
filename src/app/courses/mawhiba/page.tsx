@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -5,6 +7,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, Users, Brain, BookOpen, TrendingUp, Star, HelpCircle, ShoppingCart, FileText, Video, Award } from 'lucide-react';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
 
 const targetGroups = [
   { level: 'المستوى الأول', grades: 'الثالث – الرابع – الخامس الابتدائي', age: '8 – 11 سنة' },
@@ -35,11 +39,42 @@ const faqItemsMawhiba = [
   { question: "هل يمكن للمدارس تنفيذ البرنامج داخليًا?", answer: "نعم، عبر طلب استضافة رسمي وتوفير البيئة التدريبية المناسبة." },
 ];
 
+const IMAGE_DETAIL = {
+  originalSrc: "https://placehold.co/1200x400.png",
+  hint: "student creativity thinking",
+  alt: "مقياس موهبة",
+};
+
 export default function MawhibaPage() {
+  const [headerImageUrl, setHeaderImageUrl] = useState<string>(IMAGE_DETAIL.originalSrc);
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadImage = async () => {
+      try {
+        const result = await generateImageFromHint({ hint: IMAGE_DETAIL.hint });
+        if (isMounted) {
+          setHeaderImageUrl(result.imageDataUri);
+        }
+      } catch (error) {
+        console.error(`Failed to generate image for hint "${IMAGE_DETAIL.hint}":`, error);
+        if (isMounted) setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
+      }
+    };
+    loadImage();
+    return () => { isMounted = false; };
+  }, []);
+
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="text-center mb-12">
-         <Image src="https://placehold.co/1200x400.png" alt="مقياس موهبة" width={1200} height={400} className="w-full h-auto object-cover rounded-lg mb-6" data-ai-hint="student creativity thinking"/>
+         <Image 
+            src={headerImageUrl} 
+            alt={IMAGE_DETAIL.alt} 
+            width={1200} 
+            height={400} 
+            className="w-full h-auto object-cover rounded-lg mb-6" 
+          />
         <h1 className="text-4xl md:text-5xl font-headline font-bold text-primary mb-4">مقياس موهبة – رحلتك نحو اكتشاف إمكانياتك الاستثنائية</h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           صُمّمت برامج "صُنّاع الأثَر" التدريبية على مقياس موهبة لتمنح الطالب تجربة تعليمية ثرية، تدمج التدريب النظري مع التفاعل التطبيقي.

@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -5,6 +7,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, BookOpen, Users, MessageSquare, TrendingUp, Star, HelpCircle, ShoppingCart, Percent, Headphones, Edit3, MonitorPlay, FileText } from 'lucide-react';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
 
 const stepComponents = [
   { name: 'الفهم القرائي', percent: '40%', skills: 'قراءة نصوص أكاديمية – تحليل واستنتاج – الإجابة عن الأسئلة', icon: <BookOpen className="w-8 h-8 text-primary"/> },
@@ -26,11 +30,42 @@ const faqItemsStep = [
   { question: "هل الدورة تعتمد اللغة الإنجليزية بالكامل?", answer: "المحتوى الأساسي بالإنجليزية، مع شرح باللغة العربية عند الحاجة." },
 ];
 
+const IMAGE_DETAIL = {
+  originalSrc: "https://placehold.co/1200x400.png",
+  hint: "english language learning test",
+  alt: "STEP Test",
+};
+
 export default function StepTestPage() {
+  const [headerImageUrl, setHeaderImageUrl] = useState<string>(IMAGE_DETAIL.originalSrc);
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadImage = async () => {
+      try {
+        const result = await generateImageFromHint({ hint: IMAGE_DETAIL.hint });
+        if (isMounted) {
+          setHeaderImageUrl(result.imageDataUri);
+        }
+      } catch (error) {
+        console.error(`Failed to generate image for hint "${IMAGE_DETAIL.hint}":`, error);
+        if (isMounted) setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
+      }
+    };
+    loadImage();
+    return () => { isMounted = false; };
+  }, []);
+
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="text-center mb-12">
-        <Image src="https://placehold.co/1200x400.png" alt="STEP Test" width={1200} height={400} className="w-full h-auto object-cover rounded-lg mb-6" data-ai-hint="english language learning test"/>
+        <Image 
+          src={headerImageUrl} 
+          alt={IMAGE_DETAIL.alt} 
+          width={1200} 
+          height={400} 
+          className="w-full h-auto object-cover rounded-lg mb-6"
+        />
         <h1 className="text-4xl md:text-5xl font-headline font-bold text-primary mb-4">دورة STEP – أتقن اللغة، تقدَّم بثقة</h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           استعد لاجتياز اختبار STEP من المركز الوطني للقياس ببرنامج تدريبي مصمّم خصيصًا لمحاور الاختبار الرسمي.

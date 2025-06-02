@@ -1,6 +1,10 @@
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Target, Send, Award, Brain, Users, CheckCircle, Milestone } from "lucide-react";
 import Image from "next/image";
+import { useState, useEffect } from 'react';
+import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
 
 const values = [
   { title: "التأثير المستدام", description: "لا نهدف لنقل المعلومة فقط، بل لصناعة أثر دائم في سلوك المتعلم.", icon: <Target className="w-8 h-8 text-primary" /> },
@@ -18,7 +22,47 @@ const methodologySteps = [
   { title: "التحفيز", description: "شارات، تقييمات، شهادات، إشادات." },
 ];
 
+const IMAGE_DETAILS = {
+  students: {
+    originalSrc: "https://placehold.co/600x450.png",
+    hint: "students collaborating classroom",
+    alt: "طلاب يتعلمون",
+  },
+  team: {
+    originalSrc: "https://placehold.co/600x450.png",
+    hint: "team working office",
+    alt: "فريق العمل",
+  }
+};
+
 export default function AboutPage() {
+  const [studentsImageUrl, setStudentsImageUrl] = useState<string>(IMAGE_DETAILS.students.originalSrc);
+  const [teamImageUrl, setTeamImageUrl] = useState<string>(IMAGE_DETAILS.team.originalSrc);
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadImage = async (hint: string, setter: React.Dispatch<React.SetStateAction<string>>, originalSrc: string) => {
+      try {
+        const result = await generateImageFromHint({ hint });
+        if (isMounted) {
+          setter(result.imageDataUri);
+        }
+      } catch (error) {
+        console.error(`Failed to generate image for hint "${hint}":`, error);
+        if (isMounted) {
+          setter(originalSrc); // Fallback to original placeholder on error
+        }
+      }
+    };
+
+    loadImage(IMAGE_DETAILS.students.hint, setStudentsImageUrl, IMAGE_DETAILS.students.originalSrc);
+    loadImage(IMAGE_DETAILS.team.hint, setTeamImageUrl, IMAGE_DETAILS.team.originalSrc);
+    
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="text-center mb-16">
@@ -31,7 +75,13 @@ export default function AboutPage() {
       <section className="mb-16">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <Image src="https://placehold.co/600x450.png" alt="طلاب يتعلمون" width={600} height={450} className="rounded-lg shadow-xl" data-ai-hint="students collaborating classroom" />
+            <Image 
+              src={studentsImageUrl} 
+              alt={IMAGE_DETAILS.students.alt} 
+              width={600} 
+              height={450} 
+              className="rounded-lg shadow-xl" 
+            />
           </div>
           <div>
             <h2 className="text-3xl font-headline font-semibold text-foreground mb-6">مقدمة رسمية</h2>
@@ -90,7 +140,13 @@ export default function AboutPage() {
       <section className="mb-16">
         <div className="grid md:grid-cols-2 gap-12 items-center">
            <div className="md:order-last">
-            <Image src="https://placehold.co/600x450.png" alt="فريق العمل" width={600} height={450} className="rounded-lg shadow-xl" data-ai-hint="team working office" />
+            <Image 
+              src={teamImageUrl} 
+              alt={IMAGE_DETAILS.team.alt} 
+              width={600} 
+              height={450} 
+              className="rounded-lg shadow-xl" 
+            />
           </div>
           <div className="md:order-first">
             <h2 className="text-3xl font-headline font-semibold text-foreground mb-6">ما الذي يميز صُنّاع الأثَر؟</h2>

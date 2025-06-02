@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
+import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
 
 // Mock data - in a real app, this would come from query params, context, or state management
 const mockOrderDetails = {
@@ -24,6 +25,12 @@ const mockOrderDetails = {
   discountCode: "",
 };
 
+const IMAGE_DETAILS = {
+  mada: { originalSrc: "https://placehold.co/40x25.png", hint: "mada logo", alt: "مدى" },
+  visaMastercard: { originalSrc: "https://placehold.co/80x25.png", hint: "visa mastercard logos", alt: "Visa/Mastercard" },
+  applePay: { originalSrc: "https://placehold.co/50x25.png", hint: "apple pay logo", alt: "Apple Pay" },
+};
+
 export default function CheckoutPage() {
   const { toast } = useToast();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | undefined>(undefined);
@@ -31,14 +38,36 @@ export default function CheckoutPage() {
   const [isPaid, setIsPaid] = useState(false);
   const [subscriptionId, setSubscriptionId] = useState<string | null>(null);
 
+  const [madaLogoUrl, setMadaLogoUrl] = useState<string>(IMAGE_DETAILS.mada.originalSrc);
+  const [visaMastercardLogoUrl, setVisaMastercardLogoUrl] = useState<string>(IMAGE_DETAILS.visaMastercard.originalSrc);
+  const [applePayLogoUrl, setApplePayLogoUrl] = useState<string>(IMAGE_DETAILS.applePay.originalSrc);
+
   const subtotal = mockOrderDetails.scientificPackage.price + (mockOrderDetails.sportsActivity?.price || 0);
-  // Assume 15% VAT for example
   const vat = subtotal * 0.15;
   const total = subtotal + vat;
 
   useEffect(() => {
+    let isMounted = true;
+    const loadImage = async (hint: string, setter: React.Dispatch<React.SetStateAction<string>>, originalSrc: string) => {
+      try {
+        const result = await generateImageFromHint({ hint });
+        if (isMounted) setter(result.imageDataUri);
+      } catch (error) {
+        console.error(`Failed to generate image for hint "${hint}":`, error);
+        if (isMounted) setter(originalSrc);
+      }
+    };
+
+    loadImage(IMAGE_DETAILS.mada.hint, setMadaLogoUrl, IMAGE_DETAILS.mada.originalSrc);
+    loadImage(IMAGE_DETAILS.visaMastercard.hint, setVisaMastercardLogoUrl, IMAGE_DETAILS.visaMastercard.originalSrc);
+    loadImage(IMAGE_DETAILS.applePay.hint, setApplePayLogoUrl, IMAGE_DETAILS.applePay.originalSrc);
+  
+    return () => { isMounted = false; };
+  }, []);
+
+
+  useEffect(() => {
     if (isPaid && !subscriptionId) {
-      // Generate subscription ID only on the client, after payment is confirmed
       setSubscriptionId(`SONNA3-${Math.floor(Math.random() * 100000)}`);
     }
   }, [isPaid, subscriptionId]);
@@ -53,7 +82,6 @@ export default function CheckoutPage() {
       return;
     }
     setIsProcessing(true);
-    // Simulate payment processing
     setTimeout(() => {
       setIsProcessing(false);
       setIsPaid(true);
@@ -110,7 +138,6 @@ export default function CheckoutPage() {
       </header>
 
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Order Summary */}
         <div className="lg:col-span-1 order-last lg:order-first">
           <Card className="shadow-lg sticky top-24">
             <CardHeader>
@@ -160,7 +187,6 @@ export default function CheckoutPage() {
           </Card>
         </div>
 
-        {/* Payment Form and Details */}
         <div className="lg:col-span-2">
           <Card className="shadow-xl">
             <CardHeader>
@@ -173,17 +199,17 @@ export default function CheckoutPage() {
                 <RadioGroup value={selectedPaymentMethod} onValueChange={setSelectedPaymentMethod} className="space-y-2">
                   <Label htmlFor="mada" className="flex items-center p-4 border rounded-lg hover:bg-muted cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
                     <RadioGroupItem value="mada" id="mada" className="me-3" />
-                    <Image src="https://placehold.co/40x25.png" alt="مدى" width={40} height={25} className="me-3" data-ai-hint="mada logo"/>
+                    <Image src={madaLogoUrl} alt={IMAGE_DETAILS.mada.alt} width={40} height={25} className="me-3"/>
                     مدى
                   </Label>
                   <Label htmlFor="visa_mastercard" className="flex items-center p-4 border rounded-lg hover:bg-muted cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
                     <RadioGroupItem value="visa_mastercard" id="visa_mastercard" className="me-3" />
-                    <Image src="https://placehold.co/80x25.png" alt="Visa/Mastercard" width={80} height={25} className="me-3" data-ai-hint="visa mastercard logos"/>
+                    <Image src={visaMastercardLogoUrl} alt={IMAGE_DETAILS.visaMastercard.alt} width={80} height={25} className="me-3"/>
                     Visa / MasterCard
                   </Label>
                    <Label htmlFor="apple_pay" className="flex items-center p-4 border rounded-lg hover:bg-muted cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
                     <RadioGroupItem value="apple_pay" id="apple_pay" className="me-3" />
-                    <Image src="https://placehold.co/50x25.png" alt="Apple Pay" width={50} height={25} className="me-3" data-ai-hint="apple pay logo"/>
+                    <Image src={applePayLogoUrl} alt={IMAGE_DETAILS.applePay.alt} width={50} height={25} className="me-3"/>
                     Apple Pay
                   </Label>
                   <Label htmlFor="bank_transfer" className="flex items-center p-4 border rounded-lg hover:bg-muted cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">

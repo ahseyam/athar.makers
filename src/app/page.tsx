@@ -1,48 +1,114 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, BookOpen, Users, Target, Lightbulb, BarChart } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
 
-const programTracks = [
+const initialProgramTracks = [
   {
+    id: 'summerCamps',
     title: 'المعسكرات الصيفية والمسائية',
     description: 'برامج مكثفة تجمع بين العلم والمهارة والمرح لصناعة جيل مبدع.',
     icon: <Users className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/summer-camps',
-    image: 'https://placehold.co/600x400.png',
+    originalImage: 'https://placehold.co/600x400.png',
     imageHint: 'children learning summer camp'
   },
   {
+    id: 'qiyasGat',
     title: 'دورات القدرات (قياس)',
     description: 'تأهيل شامل لاختبار القدرات العامة، من التأسيس وحتى الاحتراف.',
     icon: <BarChart className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/qiyas-gat',
-    image: 'https://placehold.co/600x400.png',
+    originalImage: 'https://placehold.co/600x400.png',
     imageHint: 'students test preparation'
   },
   {
+    id: 'mawhiba',
     title: 'مقياس موهبة',
     description: 'اكتشف قدراتك العقلية المتعددة واستعد بثقة لاختبار موهبة.',
     icon: <Lightbulb className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/mawhiba',
-    image: 'https://placehold.co/600x400.png',
+    originalImage: 'https://placehold.co/600x400.png',
     imageHint: 'gifted student thinking'
   },
   {
+    id: 'tahsili',
     title: 'دورات التحصيلي',
     description: 'مراجعة مركزة للمواد العلمية لضمان التفوق في اختبار التحصيلي.',
     icon: <BookOpen className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/tahsili',
-    image: 'https://placehold.co/600x400.png',
+    originalImage: 'https://placehold.co/600x400.png',
     imageHint: 'science textbook exam'
   },
 ];
 
+const visionMissionImages = {
+  vision: {
+    id: 'visionImage',
+    originalSrc: "https://placehold.co/600x400.png",
+    alt: "رؤيتنا",
+    hint: "vision future education",
+  },
+  mission: {
+    id: 'missionImage',
+    originalSrc: "https://placehold.co/600x400.png",
+    alt: "رسالتنا",
+    hint: "mission education goals",
+  }
+};
+
+type ProgramTrack = typeof initialProgramTracks[0] & { currentImage: string };
+
 export default function HomePage() {
+  const [programTracks, setProgramTracks] = useState<ProgramTrack[]>(
+    initialProgramTracks.map(track => ({ ...track, currentImage: track.originalImage }))
+  );
+  const [visionImageUrl, setVisionImageUrl] = useState<string>(visionMissionImages.vision.originalSrc);
+  const [missionImageUrl, setMissionImageUrl] = useState<string>(visionMissionImages.mission.originalSrc);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadImage = async (hint: string, originalSrc: string): Promise<string> => {
+      try {
+        const result = await generateImageFromHint({ hint });
+        return result.imageDataUri;
+      } catch (error) {
+        console.error(`Failed to generate image for hint "${hint}":`, error);
+        return originalSrc; // Fallback to original placeholder
+      }
+    };
+
+    initialProgramTracks.forEach(trackInfo => {
+      loadImage(trackInfo.imageHint, trackInfo.originalImage).then(imageDataUri => {
+        if (isMounted) {
+          setProgramTracks(prevTracks =>
+            prevTracks.map(track =>
+              track.id === trackInfo.id ? { ...track, currentImage: imageDataUri } : track
+            )
+          );
+        }
+      });
+    });
+    
+    loadImage(visionMissionImages.vision.hint, visionMissionImages.vision.originalSrc).then(url => {
+      if (isMounted) setVisionImageUrl(url);
+    });
+    loadImage(visionMissionImages.mission.hint, visionMissionImages.mission.originalSrc).then(url => {
+      if (isMounted) setMissionImageUrl(url);
+    });
+
+    return () => { isMounted = false; };
+  }, []);
+
+
   return (
     <div className="flex flex-col items-center">
-      {/* Hero Section */}
       <section className="w-full bg-gradient-to-b from-primary/10 via-background to-background py-20 md:py-32 text-center">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary mb-6">
@@ -69,7 +135,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Program Tracks Section */}
       <section className="py-16 w-full bg-background">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-headline font-bold text-center text-foreground mb-12">
@@ -80,7 +145,7 @@ export default function HomePage() {
               <Card key={track.title} className="shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
                 <CardHeader className="items-center text-center">
                   <div className="relative w-full h-48 mb-4 rounded-t-lg overflow-hidden">
-                    <Image src={track.image} alt={track.title} layout="fill" objectFit="cover" data-ai-hint={track.imageHint} />
+                    <Image src={track.currentImage} alt={track.title} layout="fill" objectFit="cover" />
                   </div>
                   {track.icon}
                   <CardTitle className="font-headline text-xl">{track.title}</CardTitle>
@@ -101,7 +166,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Vision and Mission Section */}
       <section className="py-16 bg-muted w-full">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -113,7 +177,7 @@ export default function HomePage() {
               </p>
             </div>
             <div>
-              <Image src="https://placehold.co/600x400.png" alt="رؤيتنا" width={600} height={400} className="rounded-lg shadow-md" data-ai-hint="vision future education" />
+              <Image src={visionImageUrl} alt={visionMissionImages.vision.alt} width={600} height={400} className="rounded-lg shadow-md" />
             </div>
           </div>
           <div className="grid md:grid-cols-2 gap-12 items-center mt-16">
@@ -125,13 +189,12 @@ export default function HomePage() {
               </p>
             </div>
             <div className="md:order-first">
-              <Image src="https://placehold.co/600x400.png" alt="رسالتنا" width={600} height={400} className="rounded-lg shadow-md" data-ai-hint="mission education goals" />
+              <Image src={missionImageUrl} alt={visionMissionImages.mission.alt} width={600} height={400} className="rounded-lg shadow-md" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Call to Action Section */}
       <section className="py-20 bg-background w-full text-center">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-headline font-bold text-foreground mb-6">

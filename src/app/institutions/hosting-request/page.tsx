@@ -15,6 +15,8 @@ import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
+import { useState, useEffect } from 'react';
+import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
 
 
 const programsList = [
@@ -45,6 +47,12 @@ const hostingRequestSchema = z.object({
 
 type HostingRequestFormValues = z.infer<typeof hostingRequestSchema>;
 
+const IMAGE_DETAIL = {
+  originalSrc: "https://placehold.co/1200x400.png",
+  hint: "school collaboration meeting",
+  alt: "استضافة برنامج",
+};
+
 export default function HostingRequestPage() {
   const { toast } = useToast();
   const form = useForm<HostingRequestFormValues>({
@@ -54,6 +62,26 @@ export default function HostingRequestPage() {
       hasEquipment: false,
     },
   });
+
+  const [headerImageUrl, setHeaderImageUrl] = useState<string>(IMAGE_DETAIL.originalSrc);
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadImage = async () => {
+      try {
+        const result = await generateImageFromHint({ hint: IMAGE_DETAIL.hint });
+        if (isMounted) {
+          setHeaderImageUrl(result.imageDataUri);
+        }
+      } catch (error) {
+        console.error(`Failed to generate image for hint "${IMAGE_DETAIL.hint}":`, error);
+        if (isMounted) setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
+      }
+    };
+    loadImage();
+    return () => { isMounted = false; };
+  }, []);
+
 
   const onSubmit: SubmitHandler<HostingRequestFormValues> = async (data) => {
     console.log(data);
@@ -67,7 +95,13 @@ export default function HostingRequestPage() {
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="text-center mb-12">
-        <Image src="https://placehold.co/1200x400.png" alt="استضافة برنامج" width={1200} height={400} className="w-full h-auto object-cover rounded-lg mb-6" data-ai-hint="school collaboration meeting"/>
+        <Image 
+          src={headerImageUrl} 
+          alt={IMAGE_DETAIL.alt} 
+          width={1200} 
+          height={400} 
+          className="w-full h-auto object-cover rounded-lg mb-6"
+        />
         <h1 className="text-4xl md:text-5xl font-headline font-bold text-primary mb-4">استضافة البرامج داخل المدارس والمراكز التعليمية</h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           هل ترغب في تقديم برامج منصة صُنّاع الأثَر داخل مؤسستك التعليمية؟ نحن نتيح لكم فرصة استضافة معسكراتنا ودوراتنا بتنفيذ كامل من فريقنا.

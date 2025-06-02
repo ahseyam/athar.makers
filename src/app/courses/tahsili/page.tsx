@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -5,6 +7,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, BookText, Users, TrendingUp, HelpCircle, ShoppingCart, Brain, TestTube, Sigma, Atom, Dna, Percent, CalendarDays } from 'lucide-react';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
 
 const subjects = [
   { name: 'الأحياء', icon: <Dna className="w-8 h-8 text-primary" />, محور: 'التنفس – الوراثة – التصنيف – وظائف الأعضاء' },
@@ -27,11 +31,42 @@ const faqItemsTahsili = [
   { question: "هل أحتاج كتابًا خارجيًا?", answer: "لا، يتم توفير جميع المواد والمذكرات إلكترونيًا داخل المنصة." },
 ];
 
+const IMAGE_DETAIL = {
+  originalSrc: "https://placehold.co/1200x400.png",
+  hint: "university entrance exam",
+  alt: "اختبار التحصيلي",
+};
+
 export default function TahsiliPage() {
+  const [headerImageUrl, setHeaderImageUrl] = useState<string>(IMAGE_DETAIL.originalSrc);
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadImage = async () => {
+      try {
+        const result = await generateImageFromHint({ hint: IMAGE_DETAIL.hint });
+        if (isMounted) {
+          setHeaderImageUrl(result.imageDataUri);
+        }
+      } catch (error) {
+        console.error(`Failed to generate image for hint "${IMAGE_DETAIL.hint}":`, error);
+        if (isMounted) setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
+      }
+    };
+    loadImage();
+    return () => { isMounted = false; };
+  }, []);
+
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="text-center mb-12">
-        <Image src="https://placehold.co/1200x400.png" alt="اختبار التحصيلي" width={1200} height={400} className="w-full h-auto object-cover rounded-lg mb-6" data-ai-hint="university entrance exam"/>
+        <Image 
+          src={headerImageUrl} 
+          alt={IMAGE_DETAIL.alt} 
+          width={1200} 
+          height={400} 
+          className="w-full h-auto object-cover rounded-lg mb-6"
+        />
         <h1 className="text-4xl md:text-5xl font-headline font-bold text-primary mb-4">دورات التحصيلي – اجتز اختبارك بثقة</h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           اختبار التحصيلي هو الخطوة الحاسمة قبل دخولك الجامعة. نوفر لك برنامجًا تدريبيًا متكاملًا لمساعدتك على مراجعة المواد العلمية الأربع بأسلوب تفاعلي.

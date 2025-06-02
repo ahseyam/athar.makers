@@ -12,6 +12,8 @@ import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
+import { useState, useEffect } from 'react';
+import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
 
 const loginSchema = z.object({
   email: z.string().email("بريد إلكتروني غير صالح"),
@@ -20,28 +22,56 @@ const loginSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
+const IMAGE_DETAIL = {
+  originalSrc: "https://placehold.co/150x80.png",
+  hint: "logo education platform",
+  alt: "شعار صناع الأثر",
+};
+
 export default function LoginPage() {
   const { toast } = useToast();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
   });
 
+  const [logoImageUrl, setLogoImageUrl] = useState<string>(IMAGE_DETAIL.originalSrc);
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadImage = async () => {
+      try {
+        const result = await generateImageFromHint({ hint: IMAGE_DETAIL.hint });
+        if (isMounted) {
+          setLogoImageUrl(result.imageDataUri);
+        }
+      } catch (error) {
+        console.error(`Failed to generate image for hint "${IMAGE_DETAIL.hint}":`, error);
+        if (isMounted) setLogoImageUrl(IMAGE_DETAIL.originalSrc);
+      }
+    };
+    loadImage();
+    return () => { isMounted = false; };
+  }, []);
+
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     console.log(data);
-    // Here you would typically call an API to login the user
     toast({
       title: "تم تسجيل الدخول بنجاح!",
       description: "مرحباً بعودتك.",
     });
-    // Optionally redirect to dashboard
-    // router.push('/dashboard/student'); 
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-primary/10 to-background p-4">
       <Card className="w-full max-w-md shadow-2xl">
         <CardHeader className="text-center">
-          <Image src="https://placehold.co/150x80.png" alt="شعار صناع الأثر" width={150} height={80} className="mx-auto mb-4" data-ai-hint="logo education platform"/>
+          <Image 
+            src={logoImageUrl} 
+            alt={IMAGE_DETAIL.alt} 
+            width={150} 
+            height={80} 
+            className="mx-auto mb-4"
+          />
           <CardTitle className="text-3xl font-headline text-primary">تسجيل الدخول</CardTitle>
           <CardDescription>مرحباً بعودتك إلى منصة صُنّاع الأثَر.</CardDescription>
         </CardHeader>
@@ -75,10 +105,6 @@ export default function LoginPage() {
                 )}
               />
               <div className="flex items-center justify-between">
-                {/* <div className="flex items-center space-x-2 space-x-reverse">
-                  <Checkbox id="remember-me" />
-                  <Label htmlFor="remember-me" className="text-sm">تذكرني</Label>
-                </div> */}
                 <Link href="#" className="text-sm text-primary hover:underline">
                   هل نسيت كلمة المرور؟
                 </Link>
