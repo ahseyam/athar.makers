@@ -34,11 +34,8 @@ export default function Header() {
     <header className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         
-        <Link href="/" className="text-xl lg:text-2xl font-headline font-bold whitespace-nowrap">
-          أكاديمية صٌنَّاع الأَثَر
-        </Link>
+        <Link href="/" className="text-xl lg:text-2xl font-headline font-bold whitespace-nowrap">أكاديمية صٌنَّاع الأَثَر</Link>
         
-        {/* Desktop Navigation - Links centered and spread */}
         <nav className="hidden md:flex flex-grow items-center justify-center gap-x-1 lg:gap-x-2">
           {mainNavLinks.map((link) => (
             <Link key={link.href} href={link.href} className="hover:bg-primary/80 hover:text-primary-foreground/90 transition-colors px-2.5 py-2 rounded-md text-sm font-medium flex items-center">
@@ -72,7 +69,6 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Action Buttons for Desktop */}
         <div className="hidden md:flex items-center gap-x-2">
           <Link href="/register">
             <Button
@@ -104,9 +100,7 @@ export default function Header() {
             <SheetContent side="right" className="w-[280px] bg-primary text-primary-foreground p-0">
               <SheetHeader className="p-4 border-b border-primary-foreground/20 text-start">
                 <SheetTitle>
-                  <Link href="/" className="text-xl font-headline font-bold text-primary-foreground">
-                    أكاديمية صٌنَّاع الأَثَر
-                  </Link>
+                  <Link href="/" className="text-xl font-headline font-bold text-primary-foreground">أكاديمية صٌنَّاع الأَثَر</Link>
                 </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col space-y-1 p-4">
@@ -150,7 +144,6 @@ export default function Header() {
                     </Link>
                 )
                 )}
-                {/* Add About Us and Contact Us for mobile menu as they are common there */}
                 <Link href="/about" className="hover:bg-primary/80 transition-colors px-3 py-2 rounded-md text-sm font-medium flex items-center">
                 <Info className="me-1 h-4 w-4" />
                 من نحن
