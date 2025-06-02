@@ -32,14 +32,14 @@ const faqItems = [
 ];
 
 export default function FaqPage({
-  params,
-  searchParams,
+  params: _params,
+  searchParams: _searchParams,
 }: {
   params: { [key: string]: string | string[] | undefined };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const usedParams = use(params);
-  const usedSearchParams = use(searchParams);
+  const params = use(_params);
+  const searchParams = use(_searchParams);
 
   return (
     <div className="container mx-auto px-4 py-12">
