@@ -15,7 +15,6 @@ import Image from "next/image";
 import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
 import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
 
-// Mock data - in a real app, this would come from query params, context, or state management
 const mockOrderDetails = {
   studentName: "اسم الطالب الافتراضي",
   parentName: "اسم ولي الأمر الافتراضي",
@@ -27,9 +26,9 @@ const mockOrderDetails = {
 };
 
 const IMAGE_DETAILS = {
-  mada: { originalSrc: "https://placehold.co/40x25.png", hint: "mada logo", alt: "مدى" },
-  visaMastercard: { originalSrc: "https://placehold.co/80x25.png", hint: "visa mastercard logos", alt: "Visa/Mastercard" },
-  applePay: { originalSrc: "https://placehold.co/50x25.png", hint: "apple pay logo", alt: "Apple Pay" },
+  mada: { id: "checkout_mada_logo", originalSrc: "https://placehold.co/40x25.png", hint: "mada logo", alt: "مدى" },
+  visaMastercard: { id: "checkout_visa_mastercard_logo", originalSrc: "https://placehold.co/80x25.png", hint: "visa mastercard logos", alt: "Visa/Mastercard" },
+  applePay: { id: "checkout_applepay_logo", originalSrc: "https://placehold.co/50x25.png", hint: "apple pay logo", alt: "Apple Pay" },
 };
 
 export default function CheckoutPage() {
@@ -49,32 +48,37 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     let isMounted = true;
-    const loadImage = async (hint: string, setter: React.Dispatch<React.SetStateAction<string>>, originalSrc: string) => {
+    const loadImage = async (imageIdentifier: string, hint: string, originalSrc: string, setter: React.Dispatch<React.SetStateAction<string>>) => {
+      console.log(`[DebugImage] Page: CheckoutPage, ID: ${imageIdentifier}. Initiating image load. Hint: "${hint}", Original: ${originalSrc}`);
       try {
         const result = await generateImageFromHint({ hint });
         if (isMounted) {
           if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
+            console.warn(`[DebugImage] Page: CheckoutPage, ID: ${imageIdentifier}. AI FAILED or FALLBACK. Attempting to set placeholder: ${originalSrc}`);
             setter(originalSrc);
           } else {
+            console.log(`[DebugImage] Page: CheckoutPage, ID: ${imageIdentifier}. AI SUCCEEDED. Attempting to set AI image (first 100 chars): ${result.imageDataUri.substring(0,100)}...`);
             setter(result.imageDataUri);
           }
         }
       } catch (error) {
-        console.warn(`Failed to load or generate image for hint "${hint}":`, error);
-        if (isMounted) setter(originalSrc);
+        console.error(`[DebugImage] Page: CheckoutPage, ID: ${imageIdentifier}. EXCEPTION caught for hint "${hint}":`, error);
+        if (isMounted) {
+           console.warn(`[DebugImage] Page: CheckoutPage, ID: ${imageIdentifier}. EXCEPTION. Attempting to set placeholder: ${originalSrc}`);
+           setter(originalSrc);
+        }
       }
     };
 
-    loadImage(IMAGE_DETAILS.mada.hint, setMadaLogoUrl, IMAGE_DETAILS.mada.originalSrc);
-    loadImage(IMAGE_DETAILS.visaMastercard.hint, setVisaMastercardLogoUrl, IMAGE_DETAILS.visaMastercard.originalSrc);
-    loadImage(IMAGE_DETAILS.applePay.hint, setApplePayLogoUrl, IMAGE_DETAILS.applePay.originalSrc);
+    loadImage(IMAGE_DETAILS.mada.id, IMAGE_DETAILS.mada.hint, IMAGE_DETAILS.mada.originalSrc, setMadaLogoUrl);
+    loadImage(IMAGE_DETAILS.visaMastercard.id, IMAGE_DETAILS.visaMastercard.hint, IMAGE_DETAILS.visaMastercard.originalSrc, setVisaMastercardLogoUrl);
+    loadImage(IMAGE_DETAILS.applePay.id, IMAGE_DETAILS.applePay.hint, IMAGE_DETAILS.applePay.originalSrc, setApplePayLogoUrl);
   
     return () => { isMounted = false; };
   }, []);
 
 
   useEffect(() => {
-    // Generate subscription ID only after client-side hydration and if payment is successful
     if (isPaid && !subscriptionId && typeof window !== 'undefined') {
       setSubscriptionId(`SONNA3-${Math.floor(Math.random() * 100000)}`);
     }

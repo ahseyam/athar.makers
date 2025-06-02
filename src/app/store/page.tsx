@@ -54,6 +54,7 @@ const CategoryIcon = ({ category }: { category: Product['category'] }) => {
 };
 
 const HEADER_IMAGE_DETAIL = {
+  id: "store_header",
   originalSrc: "https://placehold.co/1200x300.png",
   hint: "modern online store interface showcasing various digital educational products like e-books, training kits, and templates",
   alt: "المتجر الإلكتروني",
@@ -70,26 +71,32 @@ export default function StorePage() {
 
   useEffect(() => {
     let isMounted = true;
-    const loadDynamicImage = async (hint: string, originalSrc: string, setter: (url: string) => void) => {
+    const loadDynamicImage = async (imageIdentifier: string, hint: string, originalSrc: string, setter: (url: string) => void) => {
+      console.log(`[DebugImage] Page: StorePage, ID: ${imageIdentifier}. Initiating image load. Hint: "${hint}", Original: ${originalSrc}`);
       try {
         const result = await generateImageFromHint({ hint });
         if (isMounted) {
           if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
+            console.warn(`[DebugImage] Page: StorePage, ID: ${imageIdentifier}. AI FAILED or FALLBACK. Attempting to set placeholder: ${originalSrc}`);
             setter(originalSrc);
           } else {
+            console.log(`[DebugImage] Page: StorePage, ID: ${imageIdentifier}. AI SUCCEEDED. Attempting to set AI image (first 100 chars): ${result.imageDataUri.substring(0,100)}...`);
             setter(result.imageDataUri);
           }
         }
       } catch (error) {
-        console.warn(`Failed to load or generate image for hint "${hint}":`, error);
-        if (isMounted) setter(originalSrc);
+        console.error(`[DebugImage] Page: StorePage, ID: ${imageIdentifier}. EXCEPTION caught for hint "${hint}":`, error);
+        if (isMounted) {
+            console.warn(`[DebugImage] Page: StorePage, ID: ${imageIdentifier}. EXCEPTION. Attempting to set placeholder: ${originalSrc}`);
+            setter(originalSrc);
+        }
       }
     };
 
-    loadDynamicImage(HEADER_IMAGE_DETAIL.hint, HEADER_IMAGE_DETAIL.originalSrc, setHeaderImageUrl);
+    loadDynamicImage(HEADER_IMAGE_DETAIL.id, HEADER_IMAGE_DETAIL.hint, HEADER_IMAGE_DETAIL.originalSrc, setHeaderImageUrl);
 
     initialSampleProductsData.forEach(productInfo => {
-      loadDynamicImage(productInfo.imageHint, productInfo.originalImage, (imageDataUri) => {
+      loadDynamicImage(`product-${productInfo.id}`, productInfo.imageHint, productInfo.originalImage, (imageDataUri) => {
         if (isMounted) {
           setProducts(prevProducts =>
             prevProducts.map(p =>

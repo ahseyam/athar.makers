@@ -26,11 +26,13 @@ const methodologySteps = [
 
 const IMAGE_DETAILS = {
   students: {
+    id: "about_students",
     originalSrc: "https://placehold.co/600x450.png",
     hint: "diverse group of young students enthusiastically collaborating on a colorful educational project in a bright, sunlit modern classroom setting",
     alt: "طلاب يتعلمون",
   },
   team: {
+    id: "about_team",
     originalSrc: "https://placehold.co/600x450.png",
     hint: "professional and diverse team working together congenially in a modern, well-lit office environment, possibly discussing ideas around a table or whiteboard",
     alt: "فريق العمل",
@@ -43,26 +45,30 @@ export default function AboutPage() {
 
   useEffect(() => {
     let isMounted = true;
-    const loadImage = async (hint: string, setter: React.Dispatch<React.SetStateAction<string>>, originalSrc: string) => {
+    const loadImage = async (imageIdentifier: string, hint: string, originalSrc: string, setter: React.Dispatch<React.SetStateAction<string>>) => {
+      console.log(`[DebugImage] Page: AboutPage, ID: ${imageIdentifier}. Initiating image load. Hint: "${hint}", Original: ${originalSrc}`);
       try {
         const result = await generateImageFromHint({ hint });
         if (isMounted) {
           if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
+            console.warn(`[DebugImage] Page: AboutPage, ID: ${imageIdentifier}. AI FAILED or FALLBACK. Attempting to set placeholder: ${originalSrc}`);
             setter(originalSrc);
           } else {
+            console.log(`[DebugImage] Page: AboutPage, ID: ${imageIdentifier}. AI SUCCEEDED. Attempting to set AI image (first 100 chars): ${result.imageDataUri.substring(0,100)}...`);
             setter(result.imageDataUri);
           }
         }
       } catch (error) {
-        console.warn(`Failed to load or generate image for hint "${hint}":`, error);
+        console.error(`[DebugImage] Page: AboutPage, ID: ${imageIdentifier}. EXCEPTION caught for hint "${hint}":`, error);
         if (isMounted) {
+          console.warn(`[DebugImage] Page: AboutPage, ID: ${imageIdentifier}. EXCEPTION. Attempting to set placeholder: ${originalSrc}`);
           setter(originalSrc); 
         }
       }
     };
 
-    loadImage(IMAGE_DETAILS.students.hint, setStudentsImageUrl, IMAGE_DETAILS.students.originalSrc);
-    loadImage(IMAGE_DETAILS.team.hint, setTeamImageUrl, IMAGE_DETAILS.team.originalSrc);
+    loadImage(IMAGE_DETAILS.students.id, IMAGE_DETAILS.students.hint, IMAGE_DETAILS.students.originalSrc, setStudentsImageUrl);
+    loadImage(IMAGE_DETAILS.team.id, IMAGE_DETAILS.team.hint, IMAGE_DETAILS.team.originalSrc, setTeamImageUrl);
     
     return () => {
       isMounted = false;

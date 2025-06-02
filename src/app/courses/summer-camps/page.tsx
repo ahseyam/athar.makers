@@ -110,29 +110,34 @@ export default function SummerCampPage() {
   useEffect(() => {
     let isMounted = true;
 
-    const loadGalleryImages = async (imageDetails: GalleryImageDetail[], setter: React.Dispatch<React.SetStateAction<string[]>>) => {
-      const loadedImages = await Promise.all(
-        imageDetails.map(async (detail) => {
-          try {
-            const result = await generateImageFromHint({ hint: detail.hint });
-            if (isMounted) {
-              return result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK ? detail.originalSrc : result.imageDataUri;
-            }
-            return detail.originalSrc; 
-          } catch (error) {
-            console.warn(`Failed to load or generate image for hint "${detail.hint}":`, error);
-            return detail.originalSrc; 
+    const loadGalleryImageSet = async (imageDetailsSet: GalleryImageDetail[], setter: React.Dispatch<React.SetStateAction<string[]>>, galleryName: string) => {
+      const loadedImagesPromises = imageDetailsSet.map(async (detail, index) => {
+        const imageIdentifier = `${galleryName}-${detail.id}-${index}`;
+        console.log(`[DebugImage] Page: SummerCampPage, ID: ${imageIdentifier}. Initiating gallery image load. Hint: "${detail.hint}", Original: ${detail.originalSrc}`);
+        try {
+          const result = await generateImageFromHint({ hint: detail.hint });
+          if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
+            console.warn(`[DebugImage] Page: SummerCampPage, ID: ${imageIdentifier}. AI FAILED or FALLBACK. Using placeholder: ${detail.originalSrc}`);
+            return detail.originalSrc;
           }
-        })
-      );
+          console.log(`[DebugImage] Page: SummerCampPage, ID: ${imageIdentifier}. AI SUCCEEDED. Using AI image.`);
+          return result.imageDataUri;
+        } catch (error) {
+          console.error(`[DebugImage] Page: SummerCampPage, ID: ${imageIdentifier}. EXCEPTION caught for hint "${detail.hint}":`, error);
+          console.warn(`[DebugImage] Page: SummerCampPage, ID: ${imageIdentifier}. EXCEPTION. Using placeholder: ${detail.originalSrc}`);
+          return detail.originalSrc;
+        }
+      });
+      
+      const resolvedImages = await Promise.all(loadedImagesPromises);
       if (isMounted) {
-        setter(loadedImages);
+        setter(resolvedImages);
       }
     };
 
-    loadGalleryImages(IMAGE_GALLERY_DETAILS.scientific, setScientificGalleryImages);
-    loadGalleryImages(IMAGE_GALLERY_DETAILS.skill, setSkillGalleryImages);
-    loadGalleryImages(IMAGE_GALLERY_DETAILS.sports, setSportsGalleryImages);
+    loadGalleryImageSet(IMAGE_GALLERY_DETAILS.scientific, setScientificGalleryImages, 'scientific');
+    loadGalleryImageSet(IMAGE_GALLERY_DETAILS.skill, setSkillGalleryImages, 'skill');
+    loadGalleryImageSet(IMAGE_GALLERY_DETAILS.sports, setSportsGalleryImages, 'sports');
     
     return () => {
       isMounted = false;
@@ -218,7 +223,7 @@ export default function SummerCampPage() {
           
           {selectedGender && selectedScientificPackageId && (
              <div className="border-b pb-6">
-              <Label className="text-lg font-semibold mb-4 block"><Dumbbell className="inline-block me-2 w-5 h-5 text-primary" />5. اختر النشاط الرياضي:</Label>
+              <Label className="text-lg font-semibold mb-4 block"><Dumbbell className="inline-block me-2 w-5 h-5 text-primary" />5. النشاط الرياضي (أساسي - اختر النوع والمدة):</Label>
               <div className="space-y-4 p-4 border rounded-lg bg-muted/50">
                 <Label className="mb-2 block">اختر نوع النشاط:</Label>
                 <RadioGroup value={selectedSport} onValueChange={setSelectedSport} className="grid md:grid-cols-3 gap-2">

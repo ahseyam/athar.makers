@@ -25,6 +25,7 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 const IMAGE_DETAIL = {
+  id: "login_logo",
   originalSrc: "https://placehold.co/150x80.png",
   hint: "logo education platform",
   alt: "شعار صناع الأثر",
@@ -41,18 +42,24 @@ export default function LoginPage() {
   useEffect(() => {
     let isMounted = true;
     const loadImage = async () => {
+      console.log(`[DebugImage] Page: LoginPage, ID: ${IMAGE_DETAIL.id}. Initiating image load. Hint: "${IMAGE_DETAIL.hint}", Original: ${IMAGE_DETAIL.originalSrc}`);
       try {
         const result = await generateImageFromHint({ hint: IMAGE_DETAIL.hint });
         if (isMounted) {
           if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
+            console.warn(`[DebugImage] Page: LoginPage, ID: ${IMAGE_DETAIL.id}. AI FAILED or FALLBACK. Attempting to set placeholder: ${IMAGE_DETAIL.originalSrc}`);
             setLogoImageUrl(IMAGE_DETAIL.originalSrc);
           } else {
+            console.log(`[DebugImage] Page: LoginPage, ID: ${IMAGE_DETAIL.id}. AI SUCCEEDED. Attempting to set AI image (first 100 chars): ${result.imageDataUri.substring(0,100)}...`);
             setLogoImageUrl(result.imageDataUri);
           }
         }
       } catch (error) {
-        console.warn(`Failed to load or generate image for hint "${IMAGE_DETAIL.hint}":`, error);
-        if (isMounted) setLogoImageUrl(IMAGE_DETAIL.originalSrc);
+        console.error(`[DebugImage] Page: LoginPage, ID: ${IMAGE_DETAIL.id}. EXCEPTION caught for hint "${IMAGE_DETAIL.hint}":`, error);
+        if (isMounted) {
+          console.warn(`[DebugImage] Page: LoginPage, ID: ${IMAGE_DETAIL.id}. EXCEPTION. Attempting to set placeholder: ${IMAGE_DETAIL.originalSrc}`);
+          setLogoImageUrl(IMAGE_DETAIL.originalSrc);
+        }
       }
     };
     loadImage();

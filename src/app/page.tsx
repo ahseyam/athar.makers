@@ -76,26 +76,30 @@ export default function HomePage() {
   useEffect(() => {
     let isMounted = true;
 
-    const loadDynamicImage = async (hint: string, originalSrc: string, setter: React.Dispatch<React.SetStateAction<string>>) => {
+    const loadDynamicImage = async (imageIdentifier: string, hint: string, originalSrc: string, setter: React.Dispatch<React.SetStateAction<string>>) => {
+      console.log(`[DebugImage] Page: HomePage, ID: ${imageIdentifier}. Initiating image load. Hint: "${hint}", Original: ${originalSrc}`);
       try {
         const result = await generateImageFromHint({ hint });
         if (isMounted) {
           if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
+            console.warn(`[DebugImage] Page: HomePage, ID: ${imageIdentifier}. AI FAILED or FALLBACK. Attempting to set placeholder: ${originalSrc}`);
             setter(originalSrc);
           } else {
+            console.log(`[DebugImage] Page: HomePage, ID: ${imageIdentifier}. AI SUCCEEDED. Attempting to set AI image (first 100 chars): ${result.imageDataUri.substring(0,100)}...`);
             setter(result.imageDataUri);
           }
         }
       } catch (error) {
-        console.warn(`Failed to load or generate image for hint "${hint}":`, error);
+        console.error(`[DebugImage] Page: HomePage, ID: ${imageIdentifier}. EXCEPTION caught for hint "${hint}":`, error);
         if (isMounted) {
+          console.warn(`[DebugImage] Page: HomePage, ID: ${imageIdentifier}. EXCEPTION. Attempting to set placeholder: ${originalSrc}`);
           setter(originalSrc);
         }
       }
     };
 
     initialProgramTracksRaw.forEach(trackInfo => {
-        loadDynamicImage(trackInfo.imageHint, trackInfo.originalImage, (imageDataUri) => {
+        loadDynamicImage(`track-${trackInfo.id}`, trackInfo.imageHint, trackInfo.originalImage, (imageDataUri) => {
          if (isMounted) {
             setProgramTracks(prevTracks =>
                 prevTracks.map(track =>
@@ -106,8 +110,8 @@ export default function HomePage() {
         });
     });
     
-    loadDynamicImage(visionMissionImages.vision.hint, visionMissionImages.vision.originalSrc, setVisionImageUrl);
-    loadDynamicImage(visionMissionImages.mission.hint, visionMissionImages.mission.originalSrc, setMissionImageUrl);
+    loadDynamicImage(visionMissionImages.vision.id, visionMissionImages.vision.hint, visionMissionImages.vision.originalSrc, setVisionImageUrl);
+    loadDynamicImage(visionMissionImages.mission.id, visionMissionImages.mission.hint, visionMissionImages.mission.originalSrc, setMissionImageUrl);
 
     return () => { isMounted = false; };
   }, []);

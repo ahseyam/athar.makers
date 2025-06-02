@@ -50,6 +50,7 @@ const hostingRequestSchema = z.object({
 type HostingRequestFormValues = z.infer<typeof hostingRequestSchema>;
 
 const IMAGE_DETAIL = {
+  id: "hosting_request_header",
   originalSrc: "https://placehold.co/1200x400.png",
   hint: "modern school building exterior or bright, collaborative meeting space within an educational institution, suitable for discussing program hosting partnerships",
   alt: "استضافة برنامج",
@@ -70,18 +71,24 @@ export default function HostingRequestPage() {
   useEffect(() => {
     let isMounted = true;
     const loadImage = async () => {
+      console.log(`[DebugImage] Page: HostingRequestPage, ID: ${IMAGE_DETAIL.id}. Initiating image load. Hint: "${IMAGE_DETAIL.hint}", Original: ${IMAGE_DETAIL.originalSrc}`);
       try {
         const result = await generateImageFromHint({ hint: IMAGE_DETAIL.hint });
         if (isMounted) {
           if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
+             console.warn(`[DebugImage] Page: HostingRequestPage, ID: ${IMAGE_DETAIL.id}. AI FAILED or FALLBACK. Attempting to set placeholder: ${IMAGE_DETAIL.originalSrc}`);
             setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
           } else {
+            console.log(`[DebugImage] Page: HostingRequestPage, ID: ${IMAGE_DETAIL.id}. AI SUCCEEDED. Attempting to set AI image (first 100 chars): ${result.imageDataUri.substring(0,100)}...`);
             setHeaderImageUrl(result.imageDataUri);
           }
         }
       } catch (error) {
-        console.warn(`Failed to load or generate image for hint "${IMAGE_DETAIL.hint}":`, error);
-        if (isMounted) setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
+        console.error(`[DebugImage] Page: HostingRequestPage, ID: ${IMAGE_DETAIL.id}. EXCEPTION caught for hint "${IMAGE_DETAIL.hint}":`, error);
+        if (isMounted) {
+          console.warn(`[DebugImage] Page: HostingRequestPage, ID: ${IMAGE_DETAIL.id}. EXCEPTION. Attempting to set placeholder: ${IMAGE_DETAIL.originalSrc}`);
+          setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
+        }
       }
     };
     loadImage();
