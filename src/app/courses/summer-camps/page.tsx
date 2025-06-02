@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-// Removed Checkbox import as it's no longer used for sports
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
@@ -80,7 +79,6 @@ export default function SummerCampPage() {
   const [selectedGender, setSelectedGender] = useState<Gender | undefined>(undefined);
   const [selectedStage, setSelectedStage] = useState<Stage | undefined>(undefined);
   const [selectedScientificPackageId, setSelectedScientificPackageId] = useState<string | undefined>(undefined);
-  // Removed includeSports state
   const [selectedSport, setSelectedSport] = useState<string | undefined>(undefined);
   const [sportDuration, setSportDuration] = useState<'6' | '12' | undefined>(undefined);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -103,7 +101,6 @@ export default function SummerCampPage() {
       currentTotal += selectedScientificPackageDetails.price;
     }
 
-    // Price calculation no longer depends on includeSports
     if (selectedSportDetails && sportDuration) {
       currentTotal += sportDuration === '6' ? selectedSportDetails.price6 : selectedSportDetails.price12;
     }
@@ -421,5 +418,3 @@ export default function SummerCampPage() {
     </div>
   );
 }
-
-    

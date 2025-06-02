@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle, BookOpen, Target, Lightbulb, BarChart, Sparkles } from 'lucide-react'; // Changed Users to Sparkles
+import { CheckCircle, BookOpen, Target, Lightbulb, BarChart, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
 import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
@@ -15,7 +15,7 @@ const initialProgramTracksRaw = [
     id: 'summerCamps',
     title: 'المعسكرات الصيفية والمسائية',
     description: 'برامج مكثفة تجمع بين العلم والمهارة والمرح لصناعة جيل مبدع.',
-    icon: <Sparkles className="w-12 h-12 text-primary mb-4" />, // Changed from Users
+    icon: <Sparkles className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/summer-camps',
     originalImage: 'https://placehold.co/600x400.png',
     imageHint: 'group of diverse children happily engaged in a fun and educational summer camp activity, outdoors or in a bright classroom, focus on creativity and exploration'
@@ -149,7 +149,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {programTracks.map((track) => (
               <Card 
-                key={track.title} 
+                key={track.id} 
                 className="shadow-lg flex flex-col transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1"
               >
                 <CardHeader className="items-center text-center">
