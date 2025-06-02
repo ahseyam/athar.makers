@@ -25,8 +25,8 @@ const dropdownNavLinks = [
 ];
 
 const secondaryNavLinks = [
+  { href: '/institutions/hosting-request', label: 'طلبات استضافة لبرامجنا', icon: <Briefcase className="me-1 h-4 w-4" /> },
   { href: '/store', label: 'المتجر', icon: <Store className="me-1 h-4 w-4" /> },
-  { href: '/institutions/hosting-request', label: 'استضافة للمؤسسات', icon: <Briefcase className="me-1 h-4 w-4" /> },
   { href: '/trainers/apply', label: 'انضم كمدرب', icon: <UserCheck className="me-1 h-4 w-4" /> },
 ];
 
