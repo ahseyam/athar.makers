@@ -40,6 +40,24 @@ const generateImageFlow = ai.defineFlow(
         prompt: `Generate a high-quality, realistic, and natural-looking photograph for an educational platform. Depict: "${input.hint}". The style should be modern, engaging, and suitable for the content and age group. Avoid cartoonish or abstract styles. Focus on clear subjects and good lighting.`,
         config: {
           responseModalities: ['TEXT', 'IMAGE'], // MUST provide both TEXT and IMAGE
+          safetySettings: [ // Added safety settings
+            {
+              category: 'HARM_CATEGORY_HATE_SPEECH',
+              threshold: 'BLOCK_MEDIUM_AND_ABOVE',
+            },
+            {
+              category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+              threshold: 'BLOCK_MEDIUM_AND_ABOVE',
+            },
+            {
+              category: 'HARM_CATEGORY_HARASSMENT',
+              threshold: 'BLOCK_MEDIUM_AND_ABOVE',
+            },
+            {
+              category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+              threshold: 'BLOCK_MEDIUM_AND_ABOVE',
+            },
+          ],
         },
       });
 
@@ -66,6 +84,8 @@ const generateImageFlow = ai.defineFlow(
             userFriendlyAdvice = "The specified AI model for image generation ('googleai/gemini-2.0-flash-exp') might be unavailable or incorrect. Please ensure this is the correct and active model for your project. Check the console for more specific error messages.";
         } else if (errorMessage.toLowerCase().includes('billing')) {
             userFriendlyAdvice = "There might be an issue with billing for your Google Cloud project. Please ensure billing is enabled and active for the project associated with your API key. Check the console for more specific error messages.";
+        } else if (errorMessage.toLowerCase().includes('safety') || errorMessage.toLowerCase().includes('blocked')) {
+            userFriendlyAdvice = "The image generation was blocked due to safety filters. You may need to adjust the prompt hint or review the safety settings in the Genkit flow. Check the console for more specific error messages."
         }
       }
       
