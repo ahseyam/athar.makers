@@ -32,7 +32,7 @@ const secondaryNavLinks = [
 export default function Header() {
   return (
     <header className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between"> {/* Increased height */}
+      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         
         <Link href="/" className="text-xl lg:text-2xl font-headline font-bold whitespace-nowrap">
           أكاديمية صٌنَّاع الأَثَر
@@ -75,17 +75,17 @@ export default function Header() {
         {/* Action Buttons for Desktop */}
         <div className="hidden md:flex items-center gap-x-2">
           <Link href="/register">
-            <Button 
-              variant="secondary" 
+            <Button
+              variant="secondary"
               className="bg-accent text-accent-foreground hover:bg-accent/90 px-4 py-2 shadow-md hover:shadow-lg transition-shadow"
             >
               سجّل الآن
             </Button>
           </Link>
           <Link href="/login">
-            <Button 
-              variant="outline" 
-              className="border-primary-foreground/70 text-accent hover:bg-primary-foreground/20 hover:text-accent px-4 py-2 bg-primary-foreground/10 shadow-md hover:shadow-lg transition-shadow"
+            <Button
+              variant="outline"
+              className="px-4 py-2 border-primary-foreground/70 text-accent hover:bg-primary-foreground/20 hover:text-accent bg-primary-foreground/10 shadow-md hover:shadow-lg transition-shadow"
             >
               <LogIn className="me-2 h-4 w-4" />
               دخول
