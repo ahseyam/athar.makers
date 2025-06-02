@@ -1,8 +1,9 @@
+
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Menu, BookOpenText, ShoppingCart, Users, UserPlus, Info, Phone } from 'lucide-react';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -79,11 +80,13 @@ export default function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[250px] bg-primary text-primary-foreground p-0">
-              <div className="p-4 border-b border-primary-foreground/20">
-                <Link href="/" className="text-xl font-headline font-bold">
-                  صُنّاع الأثَر
-                </Link>
-              </div>
+              <SheetHeader className="p-4 border-b border-primary-foreground/20 text-start">
+                <SheetTitle asChild>
+                  <Link href="/" className="text-xl font-headline font-bold">
+                    صُنّاع الأثَر
+                  </Link>
+                </SheetTitle>
+              </SheetHeader>
               <nav className="flex flex-col space-y-2 p-4">
                 {navLinks.map((link) =>
                   link.dropdown ? (
