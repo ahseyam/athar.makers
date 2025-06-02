@@ -21,19 +21,20 @@ interface Product {
   fileType: 'PDF' | 'Word' | 'Excel' | 'PowerPoint' | 'ZIP';
   price: number;
   originalImage: string; 
-  currentImage: string;
+  // currentImage: string; // Removed, will use originalImage directly for src
   imageHint: string;
+  alt: string; // Added alt text for images
   sampleUrl?: string;
   rating?: number;
 }
 
-const initialSampleProductsData: Omit<Product, 'currentImage'>[] = [
-  { id: 'plan1', name: 'خطة المدرسة التشغيلية الكاملة', description: 'خطة تشغيلية للعام الدراسي مبنية على مؤشرات الأداء. قابلة للتعديل.', category: 'الخطط التشغيلية', fileType: 'Word', price: 89, originalImage: 'https://placehold.co/300x200.png', imageHint: 'professional school operational plan document, possibly with charts and graphs, on a clean desk' },
-  { id: 'bag1', name: 'حقيبة "صانع الأثر – المستوى الأول"', description: 'حقيبة مهارية كاملة لطلاب الصفوف العليا الابتدائية. تشمل دفتر الطالب ودليل المعلم.', category: 'الحقائب التدريبية', fileType: 'ZIP', price: 179, originalImage: 'https://placehold.co/300x200.png', imageHint: 'colorful and engaging training materials for elementary school students, focusing on skill-building' },
-  { id: 'template1', name: 'نماذج تقارير الطلاب', description: 'أكثر من 20 نموذج متابعة وتقييم بواجهات جذابة ومؤشرات جاهزة.', category: 'النماذج الإدارية', fileType: 'Excel', price: 59, originalImage: 'https://placehold.co/300x200.png', imageHint: 'well-designed student report templates or spreadsheets with appealing visuals and clear indicators' },
-  { id: 'visual1', name: 'ملصقات تحفيزية للفصول', description: 'مجموعة ملصقات عالية الجودة لتعزيز البيئة التعليمية الإيجابية.', category: 'أدوات مرئية داعمة', fileType: 'PDF', price: 39, originalImage: 'https://placehold.co/300x200.png', imageHint: 'collection of vibrant and motivational classroom posters with positive messages for students' },
-  { id: 'plan2', name: 'خطة رائد النشاط المدرسي', description: 'خطة متكاملة لتنظيم الأنشطة الطلابية اللاصفية بفعالية.', category: 'الخطط التشغيلية', fileType: 'Word', price: 69, originalImage: 'https://placehold.co/300x200.png', imageHint: 'comprehensive plan for a school activity coordinator, outlining extracurricular student activities' },
-  { id: 'bag2', name: 'حقيبة "الروبوتيكس للمبتدئين"', description: 'محتوى تدريبي تفاعلي لتعليم أساسيات الروبوت والبرمجة.', category: 'الحقائب التدريبية', fileType: 'ZIP', price: 249, originalImage: 'https://placehold.co/300x200.png', imageHint: 'beginner-friendly robotics kit or training materials showing simple robots and programming interfaces' },
+const sampleProductsData: Product[] = [
+  { id: 'plan1', name: 'خطة المدرسة التشغيلية الكاملة', description: 'خطة تشغيلية للعام الدراسي مبنية على مؤشرات الأداء. قابلة للتعديل.', category: 'الخطط التشغيلية', fileType: 'Word', price: 89, originalImage: 'https://placehold.co/300x200.png', imageHint: 'professional school operational plan document, possibly with charts and graphs, on a clean desk', alt: 'خطة المدرسة التشغيلية' },
+  { id: 'bag1', name: 'حقيبة "صانع الأثر – المستوى الأول"', description: 'حقيبة مهارية كاملة لطلاب الصفوف العليا الابتدائية. تشمل دفتر الطالب ودليل المعلم.', category: 'الحقائب التدريبية', fileType: 'ZIP', price: 179, originalImage: 'https://placehold.co/300x200.png', imageHint: 'colorful and engaging training materials for elementary school students, focusing on skill-building', alt: 'حقيبة صانع الأثر' },
+  { id: 'template1', name: 'نماذج تقارير الطلاب', description: 'أكثر من 20 نموذج متابعة وتقييم بواجهات جذابة ومؤشرات جاهزة.', category: 'النماذج الإدارية', fileType: 'Excel', price: 59, originalImage: 'https://placehold.co/300x200.png', imageHint: 'well-designed student report templates or spreadsheets with appealing visuals and clear indicators', alt: 'نماذج تقارير الطلاب' },
+  { id: 'visual1', name: 'ملصقات تحفيزية للفصول', description: 'مجموعة ملصقات عالية الجودة لتعزيز البيئة التعليمية الإيجابية.', category: 'أدوات مرئية داعمة', fileType: 'PDF', price: 39, originalImage: 'https://placehold.co/300x200.png', imageHint: 'collection of vibrant and motivational classroom posters with positive messages for students', alt: 'ملصقات تحفيزية' },
+  { id: 'plan2', name: 'خطة رائد النشاط المدرسي', description: 'خطة متكاملة لتنظيم الأنشطة الطلابية اللاصفية بفعالية.', category: 'الخطط التشغيلية', fileType: 'Word', price: 69, originalImage: 'https://placehold.co/300x200.png', imageHint: 'comprehensive plan for a school activity coordinator, outlining extracurricular student activities', alt: 'خطة رائد النشاط' },
+  { id: 'bag2', name: 'حقيبة "الروبوتيكس للمبتدئين"', description: 'محتوى تدريبي تفاعلي لتعليم أساسيات الروبوت والبرمجة.', category: 'الحقائب التدريبية', fileType: 'ZIP', price: 249, originalImage: 'https://placehold.co/300x200.png', imageHint: 'beginner-friendly robotics kit or training materials showing simple robots and programming interfaces', alt: 'حقيبة الروبوتيكس' },
 ];
 
 const categories = ['الكل', 'الخطط التشغيلية', 'الحقائب التدريبية', 'النماذج الإدارية', 'أدوات مرئية داعمة'];
@@ -64,9 +65,7 @@ export default function StorePage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('الكل');
   const [sortBy, setSortBy] = useState('newest');
-  const [products, setProducts] = useState<Product[]>(
-    initialSampleProductsData.map(p => ({ ...p, currentImage: p.originalImage }))
-  );
+  // const [products, setProducts] = useState<Product[]>(initialSampleProductsData); // Use initial data directly
   const [headerImageUrl, setHeaderImageUrl] = useState<string>(HEADER_IMAGE_DETAIL.originalSrc);
 
   useEffect(() => {
@@ -95,22 +94,15 @@ export default function StorePage() {
 
     loadDynamicImage(HEADER_IMAGE_DETAIL.id, HEADER_IMAGE_DETAIL.hint, HEADER_IMAGE_DETAIL.originalSrc, setHeaderImageUrl);
 
-    initialSampleProductsData.forEach(productInfo => {
-      loadDynamicImage(`product-${productInfo.id}`, productInfo.imageHint, productInfo.originalImage, (imageDataUri) => {
-        if (isMounted) {
-          setProducts(prevProducts =>
-            prevProducts.map(p =>
-              p.id === productInfo.id ? { ...p, currentImage: imageDataUri } : p
-            )
-          );
-        }
-      });
-    });
+    // Product images are now directly using originalImage, so no dynamic loading loop here.
+    // If individual product images were to be AI-generated, that logic would go here,
+    // but for performance, we're using placeholders for the list.
+
     return () => { isMounted = false; };
   }, []);
 
 
-  const filteredProducts = products
+  const filteredProducts = sampleProductsData // Use sampleProductsData directly
     .filter(product => 
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
       product.description.toLowerCase().includes(searchTerm.toLowerCase())
@@ -135,6 +127,7 @@ export default function StorePage() {
             objectFit="cover"
             className="z-0"
             priority
+            data-ai-hint={HEADER_IMAGE_DETAIL.hint}
           />
         <div className="absolute inset-0 bg-primary/70 flex flex-col items-center justify-center text-center p-4 z-10">
           <h1 className="text-3xl md:text-4xl font-headline font-bold text-primary-foreground mb-3">
@@ -192,7 +185,14 @@ export default function StorePage() {
           {filteredProducts.map(product => (
             <Card key={product.id} className="shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col overflow-hidden">
               <CardHeader className="p-0 relative">
-                <Image src={product.currentImage} alt={product.name} width={300} height={200} className="w-full h-48 object-cover" />
+                <Image 
+                  src={product.originalImage} // Use originalImage directly
+                  alt={product.alt} 
+                  width={300} 
+                  height={200} 
+                  className="w-full h-48 object-cover" 
+                  data-ai-hint={product.imageHint} 
+                />
                 <Button size="icon" variant="ghost" className="absolute top-2 left-2 bg-background/70 hover:bg-background text-destructive rounded-full">
                   <Heart className="w-5 h-5" />
                 </Button>
@@ -218,7 +218,7 @@ export default function StorePage() {
               <CardFooter className="flex-col items-start p-4 pt-2">
                 <p className="text-xl font-bold text-primary mb-3">{product.price} ر.س</p>
                 <div className="w-full space-y-2">
-                  <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary/10">
+                  <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary/5">
                     <Download className="w-4 h-4 me-2" /> استعراض التفاصيل
                   </Button>
                   <Link href="/checkout" className="block w-full">

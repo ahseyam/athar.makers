@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
 import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
 
-const initialProgramTracksRaw = [
+const programTracksData = [
   {
     id: 'summerCamps',
     title: 'المعسكرات الصيفية والمسائية',
@@ -18,7 +18,8 @@ const initialProgramTracksRaw = [
     icon: <Sparkles className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/summer-camps',
     originalImage: 'https://placehold.co/600x400.png',
-    imageHint: 'group of diverse children happily engaged in a fun and educational summer camp activity, outdoors or in a bright classroom, focus on creativity and exploration'
+    imageHint: 'group of diverse children happily engaged in a fun and educational summer camp activity, outdoors or in a bright classroom, focus on creativity and exploration',
+    alt: 'المعسكرات الصيفية'
   },
   {
     id: 'qiyasGat',
@@ -27,7 +28,8 @@ const initialProgramTracksRaw = [
     icon: <BarChart className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/qiyas-gat',
     originalImage: 'https://placehold.co/600x400.png',
-    imageHint: 'focused high school students studying diligently for the Qiyas (GAT) standardized test, perhaps in a modern library setting, conveying seriousness and preparation'
+    imageHint: 'focused high school students studying diligently for the Qiyas (GAT) standardized test, perhaps in a modern library setting, conveying seriousness and preparation',
+    alt: 'دورات القدرات'
   },
   {
     id: 'mawhiba',
@@ -36,7 +38,8 @@ const initialProgramTracksRaw = [
     icon: <Lightbulb className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/mawhiba',
     originalImage: 'https://placehold.co/600x400.png',
-    imageHint: 'young, bright student solving a complex puzzle or engaging in a creative thinking exercise, related to the Mawhiba giftedness test, conveying intelligence and innovation'
+    imageHint: 'young, bright student solving a complex puzzle or engaging in a creative thinking exercise, related to the Mawhiba giftedness test, conveying intelligence and innovation',
+    alt: 'مقياس موهبة'
   },
   {
     id: 'tahsili',
@@ -45,7 +48,8 @@ const initialProgramTracksRaw = [
     icon: <BookOpen className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/tahsili',
     originalImage: 'https://placehold.co/600x400.png',
-    imageHint: 'Saudi Arabian high school students intensely focused on studying science subjects (physics, chemistry, biology, math) for the Tahsili achievement test, conveying academic rigor'
+    imageHint: 'Saudi Arabian high school students intensely focused on studying science subjects (physics, chemistry, biology, math) for the Tahsili achievement test, conveying academic rigor',
+    alt: 'دورات التحصيلي'
   },
 ];
 
@@ -64,12 +68,7 @@ const visionMissionImages = {
   }
 };
 
-type ProgramTrack = typeof initialProgramTracksRaw[0] & { currentImage: string };
-
 export default function HomePage() {
-  const [programTracks, setProgramTracks] = useState<ProgramTrack[]>(
-    initialProgramTracksRaw.map(track => ({ ...track, currentImage: track.originalImage }))
-  );
   const [visionImageUrl, setVisionImageUrl] = useState<string>(visionMissionImages.vision.originalSrc);
   const [missionImageUrl, setMissionImageUrl] = useState<string>(visionMissionImages.mission.originalSrc);
 
@@ -97,18 +96,6 @@ export default function HomePage() {
         }
       }
     };
-
-    initialProgramTracksRaw.forEach(trackInfo => {
-        loadDynamicImage(`track-${trackInfo.id}`, trackInfo.imageHint, trackInfo.originalImage, (imageDataUri) => {
-         if (isMounted) {
-            setProgramTracks(prevTracks =>
-                prevTracks.map(track =>
-                track.id === trackInfo.id ? { ...track, currentImage: imageDataUri } : track
-                )
-            );
-         }
-        });
-    });
     
     loadDynamicImage(visionMissionImages.vision.id, visionMissionImages.vision.hint, visionMissionImages.vision.originalSrc, setVisionImageUrl);
     loadDynamicImage(visionMissionImages.mission.id, visionMissionImages.mission.hint, visionMissionImages.mission.originalSrc, setMissionImageUrl);
@@ -137,7 +124,7 @@ export default function HomePage() {
               </Button>
             </Link>
             <Link href="/register">
-              <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/10">
+              <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/5">
                 سجّل الآن
               </Button>
             </Link>
@@ -151,14 +138,20 @@ export default function HomePage() {
             مساراتنا التدريبية
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {programTracks.map((track) => (
+            {programTracksData.map((track) => (
               <Card 
                 key={track.id} 
                 className="shadow-lg flex flex-col transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1"
               >
                 <CardHeader className="items-center text-center">
                   <div className="relative w-full h-48 mb-4 rounded-t-lg overflow-hidden">
-                    <Image src={track.currentImage} alt={track.title} layout="fill" objectFit="cover" />
+                    <Image 
+                      src={track.originalImage} 
+                      alt={track.alt} 
+                      layout="fill" 
+                      objectFit="cover" 
+                      data-ai-hint={track.imageHint} 
+                    />
                   </div>
                   {track.icon}
                   <CardTitle className="font-headline text-xl">{track.title}</CardTitle>
@@ -190,7 +183,14 @@ export default function HomePage() {
               </p>
             </div>
             <div>
-              <Image src={visionImageUrl} alt={visionMissionImages.vision.alt} width={600} height={400} className="rounded-lg shadow-md" />
+              <Image 
+                src={visionImageUrl} 
+                alt={visionMissionImages.vision.alt} 
+                width={600} 
+                height={400} 
+                className="rounded-lg shadow-md" 
+                data-ai-hint={visionMissionImages.vision.hint}
+              />
             </div>
           </div>
           <div className="grid md:grid-cols-2 gap-12 items-center mt-16">
@@ -202,7 +202,14 @@ export default function HomePage() {
               </p>
             </div>
             <div className="md:order-first">
-              <Image src={missionImageUrl} alt={visionMissionImages.mission.alt} width={600} height={400} className="rounded-lg shadow-md" />
+              <Image 
+                src={missionImageUrl} 
+                alt={visionMissionImages.mission.alt} 
+                width={600} 
+                height={400} 
+                className="rounded-lg shadow-md" 
+                data-ai-hint={visionMissionImages.mission.hint}
+              />
             </div>
           </div>
         </div>

@@ -12,8 +12,8 @@ import { Badge } from '@/components/ui/badge';
 import { AlertCircle, Check, Sparkles, Brain, Rocket, Dumbbell, Info, ShoppingCart, Clock, TargetIcon, Users } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
-import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
+// import { generateImageFromHint } from '@/ai/flows/image-generator-flow'; // Commented out as we'll use placeholders for gallery
+// import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants'; // Commented out
 
 const scientificPackages = [
   { id: 'inventor', name: 'كُن مخترعًا', category: 'المستكشفين', description: 'تجارب وابتكارات مبنية على أدوات من البيئة', price: 750, duration: "12 يومًا", dailyTime: "90 دقيقة/يوم", skills: ["التفكير الإبداعي", "حل المشكلات", "الاستكشاف العلمي", "استخدام الأدوات البسيطة"] },
@@ -83,9 +83,10 @@ export default function SummerCampPage() {
   const [sportDuration, setSportDuration] = useState<'6' | '12' | undefined>(undefined);
   const [totalPrice, setTotalPrice] = useState(0);
 
-  const [scientificGalleryImages, setScientificGalleryImages] = useState<string[]>(IMAGE_GALLERY_DETAILS.scientific.map(img => img.originalSrc));
-  const [skillGalleryImages, setSkillGalleryImages] = useState<string[]>(IMAGE_GALLERY_DETAILS.skill.map(img => img.originalSrc));
-  const [sportsGalleryImages, setSportsGalleryImages] = useState<string[]>(IMAGE_GALLERY_DETAILS.sports.map(img => img.originalSrc));
+  // Removed state for dynamic gallery images; will use originalSrc directly
+  // const [scientificGalleryImages, setScientificGalleryImages] = useState<string[]>(IMAGE_GALLERY_DETAILS.scientific.map(img => img.originalSrc));
+  // const [skillGalleryImages, setSkillGalleryImages] = useState<string[]>(IMAGE_GALLERY_DETAILS.skill.map(img => img.originalSrc));
+  // const [sportsGalleryImages, setSportsGalleryImages] = useState<string[]>(IMAGE_GALLERY_DETAILS.sports.map(img => img.originalSrc));
 
   const filteredScientificPackages = scientificPackages.filter(pkg => !selectedStage || pkg.category === selectedStage);
   const currentSkillPackageDetails = selectedStage ? skillPackagesData[selectedStage] : undefined;
@@ -107,42 +108,10 @@ export default function SummerCampPage() {
     setTotalPrice(currentTotal);
   }, [selectedScientificPackageId, selectedSport, sportDuration, selectedScientificPackageDetails, selectedSportDetails]); 
 
-  useEffect(() => {
-    let isMounted = true;
-
-    const loadGalleryImageSet = async (imageDetailsSet: GalleryImageDetail[], setter: React.Dispatch<React.SetStateAction<string[]>>, galleryName: string) => {
-      const loadedImagesPromises = imageDetailsSet.map(async (detail, index) => {
-        const imageIdentifier = `${galleryName}-${detail.id}-${index}`;
-        console.log(`[DebugImage] Page: SummerCampPage, ID: ${imageIdentifier}. Initiating gallery image load. Hint: "${detail.hint}", Original: ${detail.originalSrc}`);
-        try {
-          const result = await generateImageFromHint({ hint: detail.hint });
-          if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
-            console.warn(`[DebugImage] Page: SummerCampPage, ID: ${imageIdentifier}. AI FAILED or FALLBACK. Using placeholder: ${detail.originalSrc}`);
-            return detail.originalSrc;
-          }
-          console.log(`[DebugImage] Page: SummerCampPage, ID: ${imageIdentifier}. AI SUCCEEDED. Using AI image.`);
-          return result.imageDataUri;
-        } catch (error) {
-          console.error(`[DebugImage] Page: SummerCampPage, ID: ${imageIdentifier}. EXCEPTION caught for hint "${detail.hint}":`, error);
-          console.warn(`[DebugImage] Page: SummerCampPage, ID: ${imageIdentifier}. EXCEPTION. Using placeholder: ${detail.originalSrc}`);
-          return detail.originalSrc;
-        }
-      });
-      
-      const resolvedImages = await Promise.all(loadedImagesPromises);
-      if (isMounted) {
-        setter(resolvedImages);
-      }
-    };
-
-    loadGalleryImageSet(IMAGE_GALLERY_DETAILS.scientific, setScientificGalleryImages, 'scientific');
-    loadGalleryImageSet(IMAGE_GALLERY_DETAILS.skill, setSkillGalleryImages, 'skill');
-    loadGalleryImageSet(IMAGE_GALLERY_DETAILS.sports, setSportsGalleryImages, 'sports');
-    
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  // Removed useEffect for loading gallery images dynamically
+  // useEffect(() => {
+  //   // ... dynamic loading logic was here ...
+  // }, []);
 
 
   return (
@@ -167,7 +136,7 @@ export default function SummerCampPage() {
           <div className="grid md:grid-cols-2 gap-6 border-b pb-6">
             <div>
               <Label className="text-lg font-semibold mb-2 block">1. اختر الجنس:</Label>
-              <Select onValueChange={(value: Gender) => {setSelectedGender(value); setSelectedSport(undefined); setSportDuration(undefined);}} defaultValue={selectedGender}>
+              <Select onValueChange={(value: Gender) => {setSelectedGender(value); setSelectedSport(undefined); setSportDuration(undefined);}} value={selectedGender}>
                 <SelectTrigger><SelectValue placeholder="اختر الجنس" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="البنين">البنين</SelectItem>
@@ -177,7 +146,7 @@ export default function SummerCampPage() {
             </div>
             <div>
               <Label className="text-lg font-semibold mb-2 block">2. اختر المرحلة الدراسية:</Label>
-              <Select onValueChange={(value: Stage) => {setSelectedStage(value); setSelectedScientificPackageId(undefined); setSelectedSport(undefined); setSportDuration(undefined);}} defaultValue={selectedStage}>
+              <Select onValueChange={(value: Stage) => {setSelectedStage(value); setSelectedScientificPackageId(undefined); setSelectedSport(undefined); setSportDuration(undefined);}} value={selectedStage}>
                 <SelectTrigger><SelectValue placeholder="اختر المرحلة" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="المستكشفين">مستوى المستكشفين (رابع – سادس ابتدائي)</SelectItem>
@@ -283,14 +252,15 @@ export default function SummerCampPage() {
               <CardHeader className="text-center"><CardTitle>طلابنا في الحقيبة العلمية</CardTitle></CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
-                  {scientificGalleryImages.map((src, index) => (
+                  {IMAGE_GALLERY_DETAILS.scientific.map((imgDetail, index) => (
                     <div key={`sci-gal-${index}`} className="rounded-lg overflow-hidden shadow-md aspect-video">
                       <Image 
-                        src={src} 
-                        alt={IMAGE_GALLERY_DETAILS.scientific[index]?.alt || 'صورة من الحقيبة العلمية'} 
+                        src={imgDetail.originalSrc} 
+                        alt={imgDetail.alt} 
                         width={250} 
                         height={180} 
                         className="w-full h-full object-cover"
+                        data-ai-hint={imgDetail.hint}
                       />
                     </div>
                   ))}
@@ -323,14 +293,15 @@ export default function SummerCampPage() {
               <CardHeader className="text-center"><CardTitle>طلابنا في الحقائب المهارية</CardTitle></CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
-                  {skillGalleryImages.map((src, index) => (
+                  {IMAGE_GALLERY_DETAILS.skill.map((imgDetail, index) => (
                      <div key={`skill-gal-${index}`} className="rounded-lg overflow-hidden shadow-md aspect-video">
                         <Image 
-                            src={src} 
-                            alt={IMAGE_GALLERY_DETAILS.skill[index]?.alt || 'صورة من الحقائب المهارية'} 
+                            src={imgDetail.originalSrc} 
+                            alt={imgDetail.alt} 
                             width={250} 
                             height={180} 
                             className="w-full h-full object-cover"
+                            data-ai-hint={imgDetail.hint}
                         />
                     </div>
                   ))}
@@ -368,14 +339,15 @@ export default function SummerCampPage() {
               <CardHeader className="text-center"><CardTitle>طلابنا في النشاط الرياضي</CardTitle></CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
-                  {sportsGalleryImages.map((src, index) => (
+                  {IMAGE_GALLERY_DETAILS.sports.map((imgDetail, index) => (
                     <div key={`sport-gal-${index}`} className="rounded-lg overflow-hidden shadow-md aspect-video">
                         <Image 
-                            src={src} 
-                            alt={IMAGE_GALLERY_DETAILS.sports[index]?.alt || 'صورة من النشاط الرياضي'} 
+                            src={imgDetail.originalSrc} 
+                            alt={imgDetail.alt} 
                             width={250} 
                             height={180} 
                             className="w-full h-full object-cover"
+                            data-ai-hint={imgDetail.hint}
                         />
                     </div>
                   ))}
