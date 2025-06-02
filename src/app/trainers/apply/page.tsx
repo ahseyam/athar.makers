@@ -16,6 +16,7 @@ import Image from "next/image";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState, useEffect } from 'react';
 import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
+import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
 
 const trainerApplicationSchema = z.object({
   fullName: z.string().min(1, "الاسم الكامل مطلوب"),
@@ -66,10 +67,14 @@ export default function TrainerApplyPage() {
       try {
         const result = await generateImageFromHint({ hint: IMAGE_DETAIL.hint });
         if (isMounted) {
-          setHeaderImageUrl(result.imageDataUri);
+          if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
+            setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
+          } else {
+            setHeaderImageUrl(result.imageDataUri);
+          }
         }
       } catch (error) {
-        console.error(`Failed to generate image for hint "${IMAGE_DETAIL.hint}":`, error);
+        console.warn(`Failed to load or generate image for hint "${IMAGE_DETAIL.hint}":`, error);
         if (isMounted) setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
       }
     };

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { useState, useEffect } from 'react';
 import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
+import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
 
 
 const programsList = [
@@ -71,10 +73,14 @@ export default function HostingRequestPage() {
       try {
         const result = await generateImageFromHint({ hint: IMAGE_DETAIL.hint });
         if (isMounted) {
-          setHeaderImageUrl(result.imageDataUri);
+          if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
+            setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
+          } else {
+            setHeaderImageUrl(result.imageDataUri);
+          }
         }
       } catch (error) {
-        console.error(`Failed to generate image for hint "${IMAGE_DETAIL.hint}":`, error);
+        console.warn(`Failed to load or generate image for hint "${IMAGE_DETAIL.hint}":`, error);
         if (isMounted) setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
       }
     };

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from "@/components/ui/button";
@@ -15,6 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { useState, useEffect } from 'react';
 import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
+import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
 
 const registrationSchema = z.object({
   fullName: z.string().min(3, "الاسم يجب أن لا يقل عن 3 أحرف"),
@@ -52,10 +54,14 @@ export default function RegisterPage() {
       try {
         const result = await generateImageFromHint({ hint: IMAGE_DETAIL.hint });
         if (isMounted) {
-          setLogoImageUrl(result.imageDataUri);
+          if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
+            setLogoImageUrl(IMAGE_DETAIL.originalSrc);
+          } else {
+            setLogoImageUrl(result.imageDataUri);
+          }
         }
       } catch (error) {
-        console.error(`Failed to generate image for hint "${IMAGE_DETAIL.hint}":`, error);
+        console.warn(`Failed to load or generate image for hint "${IMAGE_DETAIL.hint}":`, error);
         if (isMounted) setLogoImageUrl(IMAGE_DETAIL.originalSrc);
       }
     };

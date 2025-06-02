@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview A Genkit flow for generating images based on a text prompt.
@@ -9,6 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
 
 const GenerateImageInputSchema = z.object({
   hint: z.string().describe('A textual hint or description for the image to be generated.'),
@@ -16,7 +18,7 @@ const GenerateImageInputSchema = z.object({
 export type GenerateImageInput = z.infer<typeof GenerateImageInputSchema>;
 
 const GenerateImageOutputSchema = z.object({
-  imageDataUri: z.string().describe("The generated image as a data URI. Format: 'data:image/png;base64,<encoded_data>'."),
+  imageDataUri: z.string().describe("The generated image as a data URI. Format: 'data:image/png;base64,<encoded_data>' or 'GENERATION_FAILED_USE_ORIGINAL' if failed."),
 });
 export type GenerateImageOutput = z.infer<typeof GenerateImageOutputSchema>;
 
@@ -31,21 +33,23 @@ const generateImageFlow = ai.defineFlow(
     outputSchema: GenerateImageOutputSchema,
   },
   async (input) => {
-    const { media } = await ai.generate({
-      model: 'googleai/gemini-2.0-flash-exp', // IMPORTANT: Use the specified model for image generation
-      prompt: `Generate an image of ${input.hint}`,
-      config: {
-        responseModalities: ['TEXT', 'IMAGE'], // MUST provide both TEXT and IMAGE
-      },
-    });
+    try {
+      const { media } = await ai.generate({
+        model: 'googleai/gemini-2.0-flash-exp', // IMPORTANT: Use the specified model for image generation
+        prompt: `Generate an image of ${input.hint}`,
+        config: {
+          responseModalities: ['TEXT', 'IMAGE'], // MUST provide both TEXT and IMAGE
+        },
+      });
 
-    if (!media || !media.url) {
-      // Fallback or error for safety, though Genkit typically provides a URL or throws.
-      // In a real scenario, you might return a default placeholder or throw a more specific error.
-      console.error('Image generation failed or returned no media URL for hint:', input.hint);
-      // Returning a transparent 1x1 pixel PNG as a fallback data URI
-      return { imageDataUri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=' };
+      if (!media || !media.url) {
+        console.warn('Image generation returned no media URL for hint:', input.hint);
+        return { imageDataUri: IMAGE_GENERATION_FAILED_FALLBACK };
+      }
+      return { imageDataUri: media.url };
+    } catch (error) {
+      console.warn(`Error during image generation for hint "${input.hint}":`, error);
+      return { imageDataUri: IMAGE_GENERATION_FAILED_FALLBACK };
     }
-    return { imageDataUri: media.url };
   }
 );

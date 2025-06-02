@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -5,6 +6,7 @@ import { Target, Send, Award, Brain, Users, CheckCircle, Milestone } from "lucid
 import Image from "next/image";
 import { useState, useEffect } from 'react';
 import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
+import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
 
 const values = [
   { title: "التأثير المستدام", description: "لا نهدف لنقل المعلومة فقط، بل لصناعة أثر دائم في سلوك المتعلم.", icon: <Target className="w-8 h-8 text-primary" /> },
@@ -45,12 +47,16 @@ export default function AboutPage() {
       try {
         const result = await generateImageFromHint({ hint });
         if (isMounted) {
-          setter(result.imageDataUri);
+          if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
+            setter(originalSrc);
+          } else {
+            setter(result.imageDataUri);
+          }
         }
       } catch (error) {
-        console.error(`Failed to generate image for hint "${hint}":`, error);
+        console.warn(`Failed to load or generate image for hint "${hint}":`, error);
         if (isMounted) {
-          setter(originalSrc); // Fallback to original placeholder on error
+          setter(originalSrc); 
         }
       }
     };

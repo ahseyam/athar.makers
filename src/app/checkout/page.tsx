@@ -13,6 +13,7 @@ import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
+import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
 
 // Mock data - in a real app, this would come from query params, context, or state management
 const mockOrderDetails = {
@@ -51,9 +52,15 @@ export default function CheckoutPage() {
     const loadImage = async (hint: string, setter: React.Dispatch<React.SetStateAction<string>>, originalSrc: string) => {
       try {
         const result = await generateImageFromHint({ hint });
-        if (isMounted) setter(result.imageDataUri);
+        if (isMounted) {
+          if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
+            setter(originalSrc);
+          } else {
+            setter(result.imageDataUri);
+          }
+        }
       } catch (error) {
-        console.error(`Failed to generate image for hint "${hint}":`, error);
+        console.warn(`Failed to load or generate image for hint "${hint}":`, error);
         if (isMounted) setter(originalSrc);
       }
     };
@@ -67,7 +74,8 @@ export default function CheckoutPage() {
 
 
   useEffect(() => {
-    if (isPaid && !subscriptionId) {
+    // Generate subscription ID only after client-side hydration and if payment is successful
+    if (isPaid && !subscriptionId && typeof window !== 'undefined') {
       setSubscriptionId(`SONNA3-${Math.floor(Math.random() * 100000)}`);
     }
   }, [isPaid, subscriptionId]);

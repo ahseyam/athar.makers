@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -9,6 +10,7 @@ import { CheckCircle, Users, Brain, BookOpen, TrendingUp, Star, HelpCircle, Shop
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
+import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
 
 const targetGroups = [
   { level: 'المستوى الأول', grades: 'الثالث – الرابع – الخامس الابتدائي', age: '8 – 11 سنة' },
@@ -54,10 +56,14 @@ export default function MawhibaPage() {
       try {
         const result = await generateImageFromHint({ hint: IMAGE_DETAIL.hint });
         if (isMounted) {
-          setHeaderImageUrl(result.imageDataUri);
+          if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
+            setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
+          } else {
+            setHeaderImageUrl(result.imageDataUri);
+          }
         }
       } catch (error) {
-        console.error(`Failed to generate image for hint "${IMAGE_DETAIL.hint}":`, error);
+        console.warn(`Failed to load or generate image for hint "${IMAGE_DETAIL.hint}":`, error);
         if (isMounted) setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
       }
     };

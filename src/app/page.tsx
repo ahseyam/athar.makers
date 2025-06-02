@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -7,8 +8,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { CheckCircle, BookOpen, Users, Target, Lightbulb, BarChart } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
+import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
 
-const initialProgramTracks = [
+const initialProgramTracksRaw = [
   {
     id: 'summerCamps',
     title: 'المعسكرات الصيفية والمسائية',
@@ -62,11 +64,11 @@ const visionMissionImages = {
   }
 };
 
-type ProgramTrack = typeof initialProgramTracks[0] & { currentImage: string };
+type ProgramTrack = typeof initialProgramTracksRaw[0] & { currentImage: string };
 
 export default function HomePage() {
   const [programTracks, setProgramTracks] = useState<ProgramTrack[]>(
-    initialProgramTracks.map(track => ({ ...track, currentImage: track.originalImage }))
+    initialProgramTracksRaw.map(track => ({ ...track, currentImage: track.originalImage }))
   );
   const [visionImageUrl, setVisionImageUrl] = useState<string>(visionMissionImages.vision.originalSrc);
   const [missionImageUrl, setMissionImageUrl] = useState<string>(visionMissionImages.mission.originalSrc);
@@ -74,34 +76,38 @@ export default function HomePage() {
   useEffect(() => {
     let isMounted = true;
 
-    const loadImage = async (hint: string, originalSrc: string): Promise<string> => {
+    const loadDynamicImage = async (hint: string, originalSrc: string, setter: React.Dispatch<React.SetStateAction<string>>) => {
       try {
         const result = await generateImageFromHint({ hint });
-        return result.imageDataUri;
+        if (isMounted) {
+          if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
+            setter(originalSrc);
+          } else {
+            setter(result.imageDataUri);
+          }
+        }
       } catch (error) {
-        console.error(`Failed to generate image for hint "${hint}":`, error);
-        return originalSrc; // Fallback to original placeholder
+        console.warn(`Failed to load or generate image for hint "${hint}":`, error);
+        if (isMounted) {
+          setter(originalSrc);
+        }
       }
     };
 
-    initialProgramTracks.forEach(trackInfo => {
-      loadImage(trackInfo.imageHint, trackInfo.originalImage).then(imageDataUri => {
-        if (isMounted) {
-          setProgramTracks(prevTracks =>
-            prevTracks.map(track =>
-              track.id === trackInfo.id ? { ...track, currentImage: imageDataUri } : track
-            )
-          );
-        }
-      });
+    initialProgramTracksRaw.forEach(trackInfo => {
+        loadDynamicImage(trackInfo.imageHint, trackInfo.originalImage, (imageDataUri) => {
+         if (isMounted) {
+            setProgramTracks(prevTracks =>
+                prevTracks.map(track =>
+                track.id === trackInfo.id ? { ...track, currentImage: imageDataUri } : track
+                )
+            );
+         }
+        });
     });
     
-    loadImage(visionMissionImages.vision.hint, visionMissionImages.vision.originalSrc).then(url => {
-      if (isMounted) setVisionImageUrl(url);
-    });
-    loadImage(visionMissionImages.mission.hint, visionMissionImages.mission.originalSrc).then(url => {
-      if (isMounted) setMissionImageUrl(url);
-    });
+    loadDynamicImage(visionMissionImages.vision.hint, visionMissionImages.vision.originalSrc, setVisionImageUrl);
+    loadDynamicImage(visionMissionImages.mission.hint, visionMissionImages.mission.originalSrc, setMissionImageUrl);
 
     return () => { isMounted = false; };
   }, []);

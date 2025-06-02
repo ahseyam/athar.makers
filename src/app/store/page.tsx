@@ -1,3 +1,4 @@
+
 'use client';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
@@ -10,6 +11,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Label } from "@/components/ui/label";
 import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
+import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
 
 interface Product {
   id: string;
@@ -18,14 +20,14 @@ interface Product {
   category: 'الخطط التشغيلية' | 'الحقائب التدريبية' | 'النماذج الإدارية' | 'أدوات مرئية داعمة';
   fileType: 'PDF' | 'Word' | 'Excel' | 'PowerPoint' | 'ZIP';
   price: number;
-  originalImage: string; // Renamed from image
-  currentImage: string;  // Added for dynamic loading
+  originalImage: string; 
+  currentImage: string;
   imageHint: string;
   sampleUrl?: string;
   rating?: number;
 }
 
-const initialSampleProducts: Omit<Product, 'currentImage'>[] = [
+const initialSampleProductsData: Omit<Product, 'currentImage'>[] = [
   { id: 'plan1', name: 'خطة المدرسة التشغيلية الكاملة', description: 'خطة تشغيلية للعام الدراسي مبنية على مؤشرات الأداء. قابلة للتعديل.', category: 'الخطط التشغيلية', fileType: 'Word', price: 89, originalImage: 'https://placehold.co/300x200.png', imageHint: 'school plan document' },
   { id: 'bag1', name: 'حقيبة "صانع الأثر – المستوى الأول"', description: 'حقيبة مهارية كاملة لطلاب الصفوف العليا الابتدائية. تشمل دفتر الطالب ودليل المعلم.', category: 'الحقائب التدريبية', fileType: 'ZIP', price: 179, originalImage: 'https://placehold.co/300x200.png', imageHint: 'training materials kids' },
   { id: 'template1', name: 'نماذج تقارير الطلاب', description: 'أكثر من 20 نموذج متابعة وتقييم بواجهات جذابة ومؤشرات جاهزة.', category: 'النماذج الإدارية', fileType: 'Excel', price: 59, originalImage: 'https://placehold.co/300x200.png', imageHint: 'student report template' },
@@ -62,28 +64,32 @@ export default function StorePage() {
   const [selectedCategory, setSelectedCategory] = useState('الكل');
   const [sortBy, setSortBy] = useState('newest');
   const [products, setProducts] = useState<Product[]>(
-    initialSampleProducts.map(p => ({ ...p, currentImage: p.originalImage }))
+    initialSampleProductsData.map(p => ({ ...p, currentImage: p.originalImage }))
   );
   const [headerImageUrl, setHeaderImageUrl] = useState<string>(HEADER_IMAGE_DETAIL.originalSrc);
 
   useEffect(() => {
     let isMounted = true;
-    const loadImage = async (hint: string, originalSrc: string): Promise<string> => {
+    const loadDynamicImage = async (hint: string, originalSrc: string, setter: (url: string) => void) => {
       try {
         const result = await generateImageFromHint({ hint });
-        return result.imageDataUri;
+        if (isMounted) {
+          if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
+            setter(originalSrc);
+          } else {
+            setter(result.imageDataUri);
+          }
+        }
       } catch (error) {
-        console.error(`Failed to generate image for hint "${hint}":`, error);
-        return originalSrc;
+        console.warn(`Failed to load or generate image for hint "${hint}":`, error);
+        if (isMounted) setter(originalSrc);
       }
     };
 
-    loadImage(HEADER_IMAGE_DETAIL.hint, HEADER_IMAGE_DETAIL.originalSrc).then(url => {
-      if (isMounted) setHeaderImageUrl(url);
-    });
+    loadDynamicImage(HEADER_IMAGE_DETAIL.hint, HEADER_IMAGE_DETAIL.originalSrc, setHeaderImageUrl);
 
-    initialSampleProducts.forEach(productInfo => {
-      loadImage(productInfo.imageHint, productInfo.originalImage).then(imageDataUri => {
+    initialSampleProductsData.forEach(productInfo => {
+      loadDynamicImage(productInfo.imageHint, productInfo.originalImage, (imageDataUri) => {
         if (isMounted) {
           setProducts(prevProducts =>
             prevProducts.map(p =>
