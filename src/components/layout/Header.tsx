@@ -32,15 +32,12 @@ const secondaryNavLinks = [
 export default function Header() {
   return (
     <header className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50">
-      {/* MODIFIED: justify-between, removed relative from main container */}
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         
-        {/* Site Title - Now part of the main flow, on the right (RTL start) */}
         <Link href="/" className="text-2xl font-headline font-bold whitespace-nowrap">
           أكاديمية صٌنَّاع الأَثَر
         </Link>
         
-        {/* Navigation elements grouped to the left */}
         <div className="flex items-center">
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-1 space-x-reverse">
@@ -78,7 +75,7 @@ export default function Header() {
                 <Button variant="secondary" className="bg-accent text-accent-foreground hover:bg-accent/90 mx-2">سجّل الآن</Button>
             </Link>
             <Link href="/login">
-                <Button variant="outline" className="border-primary-foreground/50 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground">
+                <Button variant="outline" className="border-primary-foreground/50 text-black hover:bg-primary-foreground/10 hover:text-black">
                     <LogIn className="me-2 h-4 w-4" />
                     دخول
                 </Button>
@@ -156,7 +153,7 @@ export default function Header() {
                         <Button variant="secondary" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">سجّل الآن</Button>
                         </Link>
                         <Link href="/login">
-                        <Button variant="outline" className="w-full border-primary-foreground/50 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground">
+                        <Button variant="outline" className="w-full border-primary-foreground/50 text-black hover:bg-primary-foreground/10 hover:text-black">
                             <LogIn className="me-2 h-4 w-4" />
                             دخول
                         </Button>
