@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from "@/components/ui/button";
@@ -17,7 +18,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 const trainerApplicationSchema = z.object({
   fullName: z.string().min(1, "الاسم الكامل مطلوب"),
   city: z.string().min(1, "المدينة مطلوبة"),
-  gender: z.enum(["ذكر", "أنثى"]),
+  gender: z.enum(["ذكر", "أنثى"], { required_error: "الجنس مطلوب" }),
   email: z.string().email("بريد إلكتروني غير صالح"),
   phone: z.string().min(10, "رقم الجوال مطلوب"),
   linkedin: z.string().url("رابط LinkedIn غير صالح").optional().or(z.literal('')),
