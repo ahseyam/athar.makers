@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -11,6 +12,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { AlertCircle, Check, Sparkles, Brain, Rocket, Dumbbell, Info, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
+import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
 
 const scientificPackages = [
   { id: 'inventor', name: 'كُن مخترعًا', category: 'المستكشفين', description: 'تجارب وابتكارات مبنية على أدوات من البيئة', price: 750 },
@@ -40,6 +44,32 @@ const sportsActivities = {
 type Gender = 'البنين' | 'البنات';
 type Stage = 'المستكشفين' | 'الروّاد';
 
+interface GalleryImageDetail {
+  id: string;
+  originalSrc: string;
+  hint: string;
+  alt: string;
+}
+
+const IMAGE_GALLERY_DETAILS = {
+  scientific: [
+    { id: 'sci_img1', originalSrc: 'https://placehold.co/250x180.png', hint: 'diverse group of elementary students excitedly conducting a colorful chemistry experiment in a bright classroom', alt: 'طلاب يقومون بتجربة علمية' },
+    { id: 'sci_img2', originalSrc: 'https://placehold.co/250x180.png', hint: 'middle school students collaboratively building and programming a small robot with a kit', alt: 'طلاب يبنون روبوت' },
+    { id: 'sci_img3', originalSrc: 'https://placehold.co/250x180.png', hint: 'children looking through microscopes with focused expressions in a science lab setting', alt: 'طلاب يستخدمون المجهر' },
+  ],
+  skill: [
+    { id: 'skill_img1', originalSrc: 'https://placehold.co/250x180.png', hint: 'young student confidently giving a presentation to peers in a supportive classroom environment', alt: 'طالب يلقي عرضًا تقديميًا' },
+    { id: 'skill_img2', originalSrc: 'https://placehold.co/250x180.png', hint: 'group of students engaged in a creative storytelling or drama workshop, expressing themselves', alt: 'طلاب في ورشة عمل مهارية' },
+    { id: 'skill_img3', originalSrc: 'https://placehold.co/250x180.png', hint: 'children participating in a team-building activity, showing collaboration and problem-solving', alt: 'طلاب في نشاط جماعي مهاري' },
+  ],
+  sports: [
+    { id: 'sport_img1', originalSrc: 'https://placehold.co/250x180.png', hint: 'boys joyfully playing a soccer match on a green field during a summer camp', alt: 'أولاد يلعبون كرة القدم' },
+    { id: 'sport_img2', originalSrc: 'https://placehold.co/250x180.png', hint: 'girls practicing gymnastics routines in a well-equipped gymnasium with instructor guidance', alt: 'بنات يمارسن الجمباز' },
+    { id: 'sport_img3', originalSrc: 'https://placehold.co/250x180.png', hint: 'children learning to swim in a pool with a swimming instructor during a sports activity', alt: 'أطفال يتعلمون السباحة' },
+  ],
+};
+
+
 export default function SummerCampPage() {
   const [selectedGender, setSelectedGender] = useState<Gender | undefined>(undefined);
   const [selectedStage, setSelectedStage] = useState<Stage | undefined>(undefined);
@@ -48,6 +78,10 @@ export default function SummerCampPage() {
   const [selectedSport, setSelectedSport] = useState<string | undefined>(undefined);
   const [sportDuration, setSportDuration] = useState<'6' | '12' | undefined>(undefined);
   const [totalPrice, setTotalPrice] = useState(0);
+
+  const [scientificGalleryImages, setScientificGalleryImages] = useState<string[]>(IMAGE_GALLERY_DETAILS.scientific.map(img => img.originalSrc));
+  const [skillGalleryImages, setSkillGalleryImages] = useState<string[]>(IMAGE_GALLERY_DETAILS.skill.map(img => img.originalSrc));
+  const [sportsGalleryImages, setSportsGalleryImages] = useState<string[]>(IMAGE_GALLERY_DETAILS.sports.map(img => img.originalSrc));
 
   const filteredScientificPackages = scientificPackages.filter(pkg => !selectedStage || pkg.category === selectedStage);
   const currentSkillPackages = selectedStage ? skillPackages[selectedStage] : undefined;
@@ -68,6 +102,36 @@ export default function SummerCampPage() {
     }
     setTotalPrice(currentTotal);
   }, [selectedScientificPackageId, includeSports, selectedSport, sportDuration, availableSports]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadGalleryImages = async (imageDetails: GalleryImageDetail[], setter: React.Dispatch<React.SetStateAction<string[]>>) => {
+      const loadedImages = await Promise.all(
+        imageDetails.map(async (detail) => {
+          try {
+            const result = await generateImageFromHint({ hint: detail.hint });
+            return result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK ? detail.originalSrc : result.imageDataUri;
+          } catch (error) {
+            console.warn(`Failed to load or generate image for hint "${detail.hint}":`, error);
+            return detail.originalSrc;
+          }
+        })
+      );
+      if (isMounted) {
+        setter(loadedImages);
+      }
+    };
+
+    loadGalleryImages(IMAGE_GALLERY_DETAILS.scientific, setScientificGalleryImages);
+    loadGalleryImages(IMAGE_GALLERY_DETAILS.skill, setSkillGalleryImages);
+    loadGalleryImages(IMAGE_GALLERY_DETAILS.sports, setSportsGalleryImages);
+    
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -206,34 +270,64 @@ export default function SummerCampPage() {
           </TabsList>
           <TabsContent value="scientific">
             <Card>
-              <CardHeader><CardTitle>ماذا سيتعلم الطالب في الحقيبة العلمية؟</CardTitle></CardHeader>
-              <CardContent className="space-y-2 text-muted-foreground">
-                <p><Check className="inline-block text-green-500 me-2" />تعلم خطوات التصميم والتجريب.</p>
-                <p><Check className="inline-block text-green-500 me-2" />مهارات تركيب الروبوتات وبرمجتها.</p>
-                <p><Check className="inline-block text-green-500 me-2" />التفكير في الحلول الهندسية للمشكلات.</p>
-                <p><Check className="inline-block text-green-500 me-2" />التعلم بالممارسة والعمل الجماعي.</p>
+              <CardHeader><CardTitle>طلابنا في الحقيبة العلمية</CardTitle></CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
+                  {scientificGalleryImages.map((src, index) => (
+                    <div key={`sci-gal-${index}`} className="rounded-lg overflow-hidden shadow-md">
+                      <Image 
+                        src={src} 
+                        alt={IMAGE_GALLERY_DETAILS.scientific[index]?.alt || 'صورة من الحقيبة العلمية'} 
+                        width={250} 
+                        height={180} 
+                        className="w-full h-auto object-cover aspect-[250/180]"
+                      />
+                    </div>
+                  ))}
+                </div>
+                 <p className="text-center text-muted-foreground mt-4">شاهد طلابنا وهم يكتشفون ويبتكرون في بيئة تعليمية محفزة!</p>
               </CardContent>
             </Card>
           </TabsContent>
           <TabsContent value="skill">
             <Card>
-              <CardHeader><CardTitle>ماذا سيتعلم الطالب في الحقائب المهارية؟</CardTitle></CardHeader>
-              <CardContent className="space-y-2 text-muted-foreground">
-                <p><Check className="inline-block text-green-500 me-2" />تنمية التعبير والثقة بالنفس.</p>
-                <p><Check className="inline-block text-green-500 me-2" />قيادة المواقف الجماعية والتأثير الإيجابي.</p>
-                <p><Check className="inline-block text-green-500 me-2" />كتابة القصص وتمثيل المواقف.</p>
-                <p><Check className="inline-block text-green-500 me-2" />العمل ضمن فريق وتحفيز الذات.</p>
+              <CardHeader><CardTitle>طلابنا في الحقائب المهارية</CardTitle></CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
+                  {skillGalleryImages.map((src, index) => (
+                     <div key={`skill-gal-${index}`} className="rounded-lg overflow-hidden shadow-md">
+                        <Image 
+                            src={src} 
+                            alt={IMAGE_GALLERY_DETAILS.skill[index]?.alt || 'صورة من الحقائب المهارية'} 
+                            width={250} 
+                            height={180} 
+                            className="w-full h-auto object-cover aspect-[250/180]"
+                        />
+                    </div>
+                  ))}
+                </div>
+                <p className="text-center text-muted-foreground mt-4">ننمي مهاراتهم القيادية والتعبيرية من خلال أنشطة تفاعلية وممتعة.</p>
               </CardContent>
             </Card>
           </TabsContent>
           <TabsContent value="sports">
             <Card>
-              <CardHeader><CardTitle>ماذا سيتعلم الطالب في النشاط الرياضي؟</CardTitle></CardHeader>
-              <CardContent className="space-y-2 text-muted-foreground">
-                <p><Check className="inline-block text-green-500 me-2" />تطوير اللياقة الجسدية.</p>
-                <p><Check className="inline-block text-green-500 me-2" />مهارات رياضية خاصة حسب النوع (كرة، جمباز، سباحة...).</p>
-                <p><Check className="inline-block text-green-500 me-2" />تدريب عملي على الحركة والتوازن والانضباط.</p>
-                <p><Check className="inline-block text-green-500 me-2" />رفع التفاعل والانتماء للمجموعة.</p>
+              <CardHeader><CardTitle>طلابنا في النشاط الرياضي</CardTitle></CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
+                  {sportsGalleryImages.map((src, index) => (
+                    <div key={`sport-gal-${index}`} className="rounded-lg overflow-hidden shadow-md">
+                        <Image 
+                            src={src} 
+                            alt={IMAGE_GALLERY_DETAILS.sports[index]?.alt || 'صورة من النشاط الرياضي'} 
+                            width={250} 
+                            height={180} 
+                            className="w-full h-auto object-cover aspect-[250/180]"
+                        />
+                    </div>
+                  ))}
+                </div>
+                <p className="text-center text-muted-foreground mt-4">لياقة بدنية، روح رياضية، ومتعة لا تُنسى في أنشطتنا الرياضية المتنوعة.</p>
               </CardContent>
             </Card>
           </TabsContent>
@@ -252,3 +346,4 @@ export default function SummerCampPage() {
     </div>
   );
 }
+
