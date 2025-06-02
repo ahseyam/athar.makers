@@ -1,7 +1,17 @@
+
+'use client';
+
 import Link from 'next/link';
 import { Facebook, Twitter, Instagram, Linkedin, Youtube } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function Footer() {
+  const [currentYear, setCurrentYear] = useState<number | string>('');
+
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear());
+  }, []);
+
   return (
     <footer className="bg-muted text-muted-foreground py-8">
       <div className="container mx-auto px-4">
@@ -37,7 +47,11 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-border text-center text-xs">
-          <p>&copy; {new Date().getFullYear()} منصة صُنّاع الأثَر. جميع الحقوق محفوظة.</p>
+          {currentYear ? (
+            <p>&copy; {currentYear} منصة صُنّاع الأثَر. جميع الحقوق محفوظة.</p>
+          ) : (
+            <p>&copy; منصة صُنّاع الأثَر. جميع الحقوق محفوظة.</p>
+          )}
           <p>تصميم وتطوير بواسطة فريق العمل.</p>
         </div>
       </div>

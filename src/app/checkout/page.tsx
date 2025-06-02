@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from "@/components/ui/button";
@@ -28,11 +29,19 @@ export default function CheckoutPage() {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | undefined>(undefined);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
+  const [subscriptionId, setSubscriptionId] = useState<string | null>(null);
 
   const subtotal = mockOrderDetails.scientificPackage.price + (mockOrderDetails.sportsActivity?.price || 0);
   // Assume 15% VAT for example
   const vat = subtotal * 0.15;
   const total = subtotal + vat;
+
+  useEffect(() => {
+    if (isPaid && !subscriptionId) {
+      // Generate subscription ID only on the client, after payment is confirmed
+      setSubscriptionId(`SONNA3-${Math.floor(Math.random() * 100000)}`);
+    }
+  }, [isPaid, subscriptionId]);
 
   const handlePayment = () => {
     if (!selectedPaymentMethod) {
@@ -72,7 +81,7 @@ export default function CheckoutPage() {
             </p>
             <Separator className="my-4" />
             <div className="text-sm text-muted-foreground">
-              <p>رقم الاشتراك: <span className="font-mono">SONNA3-{Math.floor(Math.random()*100000)}</span></p>
+              <p>رقم الاشتراك: <span className="font-mono">{subscriptionId || 'جاري الإنشاء...'}</span></p>
               <p>المبلغ المدفوع: <span className="font-semibold">{total.toFixed(2)} ر.س</span></p>
             </div>
           </CardContent>
