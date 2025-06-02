@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
+// Removed Checkbox import as it's no longer used for sports
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
@@ -80,7 +80,7 @@ export default function SummerCampPage() {
   const [selectedGender, setSelectedGender] = useState<Gender | undefined>(undefined);
   const [selectedStage, setSelectedStage] = useState<Stage | undefined>(undefined);
   const [selectedScientificPackageId, setSelectedScientificPackageId] = useState<string | undefined>(undefined);
-  const [includeSports, setIncludeSports] = useState(false);
+  // Removed includeSports state
   const [selectedSport, setSelectedSport] = useState<string | undefined>(undefined);
   const [sportDuration, setSportDuration] = useState<'6' | '12' | undefined>(undefined);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -103,11 +103,12 @@ export default function SummerCampPage() {
       currentTotal += selectedScientificPackageDetails.price;
     }
 
-    if (includeSports && selectedSportDetails && sportDuration) {
+    // Price calculation no longer depends on includeSports
+    if (selectedSportDetails && sportDuration) {
       currentTotal += sportDuration === '6' ? selectedSportDetails.price6 : selectedSportDetails.price12;
     }
     setTotalPrice(currentTotal);
-  }, [selectedScientificPackageId, includeSports, selectedSport, sportDuration, availableSportsDetails, selectedScientificPackageDetails, selectedSportDetails]);
+  }, [selectedScientificPackageId, selectedSport, sportDuration, selectedScientificPackageDetails, selectedSportDetails]); 
 
   useEffect(() => {
     let isMounted = true;
@@ -156,7 +157,7 @@ export default function SummerCampPage() {
         <CardHeader>
           <CardTitle className="text-2xl font-headline text-center">اختر مسارك التدريبي</CardTitle>
           <CardDescription className="text-center">
-            المسار مكوّن من: حقيبة علمية رئيسية، حقيبتين مهاريتين مجانيتين، ونشاط رياضي اختياري.
+            المسار مكوّن من: حقيبة علمية رئيسية، حقيبتين مهاريتين مجانيتين، ونشاط رياضي (اختر النوع والمدة).
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-8">
@@ -164,7 +165,7 @@ export default function SummerCampPage() {
           <div className="grid md:grid-cols-2 gap-6 border-b pb-6">
             <div>
               <Label className="text-lg font-semibold mb-2 block">1. اختر الجنس:</Label>
-              <Select onValueChange={(value: Gender) => setSelectedGender(value)}>
+              <Select onValueChange={(value: Gender) => {setSelectedGender(value); setSelectedSport(undefined); setSportDuration(undefined);}} defaultValue={selectedGender}>
                 <SelectTrigger><SelectValue placeholder="اختر الجنس" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="البنين">البنين</SelectItem>
@@ -174,7 +175,7 @@ export default function SummerCampPage() {
             </div>
             <div>
               <Label className="text-lg font-semibold mb-2 block">2. اختر المرحلة الدراسية:</Label>
-              <Select onValueChange={(value: Stage) => {setSelectedStage(value); setSelectedScientificPackageId(undefined);}}>
+              <Select onValueChange={(value: Stage) => {setSelectedStage(value); setSelectedScientificPackageId(undefined); setSelectedSport(undefined); setSportDuration(undefined);}} defaultValue={selectedStage}>
                 <SelectTrigger><SelectValue placeholder="اختر المرحلة" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="المستكشفين">مستوى المستكشفين (رابع – سادس ابتدائي)</SelectItem>
@@ -220,48 +221,45 @@ export default function SummerCampPage() {
           
           {selectedGender && selectedScientificPackageId && (
              <div className="border-b pb-6">
-              <div className="flex items-center space-x-2 space-x-reverse mb-4">
-                <Checkbox id="includeSports" checked={includeSports} onCheckedChange={(checked) => setIncludeSports(Boolean(checked))} />
-                <Label htmlFor="includeSports" className="text-lg font-semibold cursor-pointer"><Dumbbell className="inline-block me-2 w-5 h-5 text-primary" />5. النشاط الرياضي (اختياري):</Label>
-              </div>
-              {includeSports && (
-                <div className="space-y-4 p-4 border rounded-lg bg-muted/50">
-                  <Label className="mb-2 block">اختر النشاط:</Label>
-                  <RadioGroup value={selectedSport} onValueChange={setSelectedSport} className="grid md:grid-cols-3 gap-2">
-                    {availableSportsDetails.map(sport => (
-                      <Label key={sport.name} htmlFor={sport.name} className="flex items-center p-3 border rounded-md hover:bg-background cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
-                        <RadioGroupItem value={sport.name} id={sport.name} className="me-2" />
-                        <span>{sport.name}</span>
+              <Label className="text-lg font-semibold mb-4 block"><Dumbbell className="inline-block me-2 w-5 h-5 text-primary" />5. اختر النشاط الرياضي:</Label>
+              <div className="space-y-4 p-4 border rounded-lg bg-muted/50">
+                <Label className="mb-2 block">اختر نوع النشاط:</Label>
+                <RadioGroup value={selectedSport} onValueChange={setSelectedSport} className="grid md:grid-cols-3 gap-2">
+                  {availableSportsDetails.map(sport => (
+                    <Label key={sport.name} htmlFor={`sport-${sport.name}`} className="flex items-center p-3 border rounded-md hover:bg-background cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
+                      <RadioGroupItem value={sport.name} id={`sport-${sport.name}`} className="me-2" />
+                      <span>{sport.name}</span>
+                    </Label>
+                  ))}
+                </RadioGroup>
+                {selectedSportDetails && (
+                  <div>
+                    <Label className="mb-2 block mt-4">اختر المدة للنشاط الرياضي:</Label>
+                    <RadioGroup value={sportDuration} onValueChange={(val: '6' | '12') => setSportDuration(val)} className="flex space-x-4 space-x-reverse">
+                      <Label htmlFor="duration6" className="flex items-center p-3 border rounded-md hover:bg-background cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
+                        <RadioGroupItem value="6" id="duration6" className="me-2" />
+                         6 أيام ({selectedSportDetails.price6} ريال)
                       </Label>
-                    ))}
-                  </RadioGroup>
-                  {selectedSportDetails && (
-                    <div>
-                      <Label className="mb-2 block mt-4">اختر المدة:</Label>
-                      <RadioGroup value={sportDuration} onValueChange={(val: '6' | '12') => setSportDuration(val)} className="flex space-x-4 space-x-reverse">
-                        <Label htmlFor="duration6" className="flex items-center p-3 border rounded-md hover:bg-background cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
-                          <RadioGroupItem value="6" id="duration6" className="me-2" />
-                           6 أيام ({selectedSportDetails.price6} ريال)
-                        </Label>
-                        <Label htmlFor="duration12" className="flex items-center p-3 border rounded-md hover:bg-background cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
-                          <RadioGroupItem value="12" id="duration12" className="me-2" />
-                           12 يوم ({selectedSportDetails.price12} ريال)
-                        </Label>
-                      </RadioGroup>
-                    </div>
-                  )}
-                </div>
-              )}
+                      <Label htmlFor="duration12" className="flex items-center p-3 border rounded-md hover:bg-background cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
+                        <RadioGroupItem value="12" id="duration12" className="me-2" />
+                         12 يوم ({selectedSportDetails.price12} ريال)
+                      </Label>
+                    </RadioGroup>
+                  </div>
+                )}
+                {!selectedSport && <p className="text-sm text-destructive mt-2">يرجى اختيار نوع النشاط الرياضي.</p>}
+                {selectedSport && !sportDuration && <p className="text-sm text-destructive mt-2">يرجى اختيار مدة النشاط الرياضي.</p>}
+              </div>
             </div>
           )}
 
           
-          {selectedScientificPackageId && (
+          {selectedScientificPackageId && ( 
             <div className="pt-6 text-center">
               <h3 className="text-2xl font-headline font-bold mb-2">💰 حساب السعر:</h3>
               <p className="text-3xl text-primary font-bold mb-2">{totalPrice} ريال</p>
               <p className="text-sm text-muted-foreground">
-                السعر يتم احتسابه تلقائيًا: سعر الحقيبة العلمية + سعر النشاط الرياضي (إن وُجد).
+                السعر يتم احتسابه تلقائيًا: سعر الحقيبة العلمية + سعر النشاط الرياضي المختار.
                 <br/> الحقائب المهارية والنشاطات الإثرائية مجانية ومضافة تلقائيًا.
               </p>
             </div>
@@ -381,18 +379,18 @@ export default function SummerCampPage() {
                   ))}
                 </div>
                 <div className="mt-6 pt-6 border-t text-center">
-                    <h4 className="text-xl font-headline font-semibold text-foreground mb-3">طاقة وحيوية في النشاط الرياضي الاختياري</h4>
+                    <h4 className="text-xl font-headline font-semibold text-foreground mb-3">طاقة وحيوية في النشاط الرياضي</h4>
                      {selectedGender ? (
                         <>
                         <p className="text-muted-foreground mb-2">
-                            النشاط الرياضي هو جزء اختياري من المعسكر، يهدف إلى تعزيز اللياقة البدنية وروح الفريق والمرح. يمكن للطلاب اختيار رياضتهم المفضلة من بين:
+                            النشاط الرياضي هو جزء أساسي من المعسكر، يهدف إلى تعزيز اللياقة البدنية وروح الفريق والمرح. يختار الطلاب رياضتهم المفضلة من بين:
                         </p>
                         <ul className="list-disc list-inside ps-5 text-muted-foreground mb-3 inline-block text-right md:text-center">
                             {availableSportsDetails.map(sport => <li key={sport.name}>{sport.name} (المهارات المستهدفة: {sport.skills.join("، ")})</li>)}
                         </ul>
                         <p className="text-sm text-muted-foreground mb-1 clear-both"><Clock className="inline-block me-2 w-4 h-4 text-primary" /> <strong>خيارات المدة:</strong> 6 أيام أو 12 يومًا.</p>
                         <p className="text-muted-foreground">
-                            يتم التدريب بإشراف مدربين متخصصين لضمان سلامة الطلاب وتقديم تجربة رياضية ممتعة ومفيدة. الأسعار تختلف حسب النشاط والمدة المختارة (انظر قسم الاختيار أعلاه).
+                            يتم التدريب بإشراف مدربين متخصصين لضمان سلامة الطلاب وتقديم تجربة رياضية ممتعة ومفيدة. الأسعار تختلف حسب النشاط والمدة المختارة.
                         </p>
                         </>
                      ) : (
@@ -408,13 +406,20 @@ export default function SummerCampPage() {
       
       <div className="text-center">
         <Link href="/checkout">
-          <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground" disabled={!selectedScientificPackageId}>
+          <Button 
+            size="lg" 
+            className="bg-accent hover:bg-accent/90 text-accent-foreground" 
+            disabled={!selectedScientificPackageId || !selectedSport || !sportDuration}
+          >
              <ShoppingCart className="me-2 h-5 w-5" /> أكمل التسجيل الآن
           </Button>
         </Link>
-        {!selectedScientificPackageId && <p className="text-red-500 mt-2 text-sm">يرجى اختيار الجنس والمرحلة والحقيبة العلمية أولاً.</p>}
+        {(!selectedScientificPackageId || !selectedSport || !sportDuration) && 
+          <p className="text-red-500 mt-2 text-sm">يرجى إكمال جميع الاختيارات المطلوبة (الحقيبة العلمية، نوع ومدة النشاط الرياضي).</p>
+        }
       </div>
     </div>
   );
 }
 
+    
