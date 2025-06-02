@@ -51,7 +51,7 @@ type HostingRequestFormValues = z.infer<typeof hostingRequestSchema>;
 
 const IMAGE_DETAIL = {
   originalSrc: "https://placehold.co/1200x400.png",
-  hint: "school collaboration meeting",
+  hint: "modern school building exterior or bright, collaborative meeting space within an educational institution, suitable for discussing program hosting partnerships",
   alt: "استضافة برنامج",
 };
 

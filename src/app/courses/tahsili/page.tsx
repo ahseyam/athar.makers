@@ -35,7 +35,7 @@ const faqItemsTahsili = [
 
 const IMAGE_DETAIL = {
   originalSrc: "https://placehold.co/1200x400.png",
-  hint: "university entrance exam",
+  hint: "Saudi high school student diligently studying for the Tahsili university entrance exam, surrounded by science textbooks (physics, chemistry, biology, math) in a well-lit study area",
   alt: "اختبار التحصيلي",
 };
 

@@ -46,7 +46,7 @@ const accreditationSteps = [
 
 const IMAGE_DETAIL = {
   originalSrc: "https://placehold.co/1200x400.png",
-  hint: "teacher presentation classroom",
+  hint: "professional and engaging trainer delivering a presentation or workshop to an attentive audience in a modern training room or classroom setting",
   alt: "انضم كمدرب",
 };
 

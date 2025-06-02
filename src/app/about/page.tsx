@@ -27,12 +27,12 @@ const methodologySteps = [
 const IMAGE_DETAILS = {
   students: {
     originalSrc: "https://placehold.co/600x450.png",
-    hint: "students collaborating classroom",
+    hint: "diverse group of young students enthusiastically collaborating on a colorful educational project in a bright, sunlit modern classroom setting",
     alt: "طلاب يتعلمون",
   },
   team: {
     originalSrc: "https://placehold.co/600x450.png",
-    hint: "team working office",
+    hint: "professional and diverse team working together congenially in a modern, well-lit office environment, possibly discussing ideas around a table or whiteboard",
     alt: "فريق العمل",
   }
 };

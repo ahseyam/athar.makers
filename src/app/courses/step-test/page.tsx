@@ -34,7 +34,7 @@ const faqItemsStep = [
 
 const IMAGE_DETAIL = {
   originalSrc: "https://placehold.co/1200x400.png",
-  hint: "english language learning test",
+  hint: "student focused on an English language proficiency test (STEP test) on a computer screen or booklet, in a quiet, academic testing environment",
   alt: "STEP Test",
 };
 

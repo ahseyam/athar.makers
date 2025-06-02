@@ -35,7 +35,7 @@ const faqItems = [
 
 const IMAGE_DETAIL = {
   originalSrc: "https://placehold.co/1200x400.png",
-  hint: "students exam hall",
+  hint: "group of high school students seriously preparing for standardized Qiyas Gat test, possibly in a library or study hall, with books and notes",
   alt: "اختبار القدرات قياس",
 };
 

@@ -36,7 +36,7 @@ const generateImageFlow = ai.defineFlow(
     try {
       const { media } = await ai.generate({
         model: 'googleai/gemini-2.0-flash-exp', // IMPORTANT: Use the specified model for image generation
-        prompt: `Generate an image of ${input.hint}`,
+        prompt: `Generate a high-quality, realistic and natural-looking photograph relevant to an educational platform. The image should depict: "${input.hint}". Ensure the style is modern, engaging, and suitable for the described content and potential age group. Avoid overly cartoonish or abstract styles.`,
         config: {
           responseModalities: ['TEXT', 'IMAGE'], // MUST provide both TEXT and IMAGE
         },

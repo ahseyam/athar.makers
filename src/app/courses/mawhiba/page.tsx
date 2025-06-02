@@ -43,7 +43,7 @@ const faqItemsMawhiba = [
 
 const IMAGE_DETAIL = {
   originalSrc: "https://placehold.co/1200x400.png",
-  hint: "student creativity thinking",
+  hint: "focused young student deeply engaged in creative problem-solving or advanced thinking exercise, perhaps with abstract shapes or puzzles, in a bright, stimulating learning environment suitable for gifted children program",
   alt: "مقياس موهبة",
 };
 

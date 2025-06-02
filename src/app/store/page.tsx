@@ -28,12 +28,12 @@ interface Product {
 }
 
 const initialSampleProductsData: Omit<Product, 'currentImage'>[] = [
-  { id: 'plan1', name: 'خطة المدرسة التشغيلية الكاملة', description: 'خطة تشغيلية للعام الدراسي مبنية على مؤشرات الأداء. قابلة للتعديل.', category: 'الخطط التشغيلية', fileType: 'Word', price: 89, originalImage: 'https://placehold.co/300x200.png', imageHint: 'school plan document' },
-  { id: 'bag1', name: 'حقيبة "صانع الأثر – المستوى الأول"', description: 'حقيبة مهارية كاملة لطلاب الصفوف العليا الابتدائية. تشمل دفتر الطالب ودليل المعلم.', category: 'الحقائب التدريبية', fileType: 'ZIP', price: 179, originalImage: 'https://placehold.co/300x200.png', imageHint: 'training materials kids' },
-  { id: 'template1', name: 'نماذج تقارير الطلاب', description: 'أكثر من 20 نموذج متابعة وتقييم بواجهات جذابة ومؤشرات جاهزة.', category: 'النماذج الإدارية', fileType: 'Excel', price: 59, originalImage: 'https://placehold.co/300x200.png', imageHint: 'student report template' },
-  { id: 'visual1', name: 'ملصقات تحفيزية للفصول', description: 'مجموعة ملصقات عالية الجودة لتعزيز البيئة التعليمية الإيجابية.', category: 'أدوات مرئية داعمة', fileType: 'PDF', price: 39, originalImage: 'https://placehold.co/300x200.png', imageHint: 'classroom posters motivational' },
-  { id: 'plan2', name: 'خطة رائد النشاط المدرسي', description: 'خطة متكاملة لتنظيم الأنشطة الطلابية اللاصفية بفعالية.', category: 'الخطط التشغيلية', fileType: 'Word', price: 69, originalImage: 'https://placehold.co/300x200.png', imageHint: 'activity plan school' },
-  { id: 'bag2', name: 'حقيبة "الروبوتيكس للمبتدئين"', description: 'محتوى تدريبي تفاعلي لتعليم أساسيات الروبوت والبرمجة.', category: 'الحقائب التدريبية', fileType: 'ZIP', price: 249, originalImage: 'https://placehold.co/300x200.png', imageHint: 'robotics kit beginner' },
+  { id: 'plan1', name: 'خطة المدرسة التشغيلية الكاملة', description: 'خطة تشغيلية للعام الدراسي مبنية على مؤشرات الأداء. قابلة للتعديل.', category: 'الخطط التشغيلية', fileType: 'Word', price: 89, originalImage: 'https://placehold.co/300x200.png', imageHint: 'professional school operational plan document, possibly with charts and graphs, on a clean desk' },
+  { id: 'bag1', name: 'حقيبة "صانع الأثر – المستوى الأول"', description: 'حقيبة مهارية كاملة لطلاب الصفوف العليا الابتدائية. تشمل دفتر الطالب ودليل المعلم.', category: 'الحقائب التدريبية', fileType: 'ZIP', price: 179, originalImage: 'https://placehold.co/300x200.png', imageHint: 'colorful and engaging training materials for elementary school students, focusing on skill-building' },
+  { id: 'template1', name: 'نماذج تقارير الطلاب', description: 'أكثر من 20 نموذج متابعة وتقييم بواجهات جذابة ومؤشرات جاهزة.', category: 'النماذج الإدارية', fileType: 'Excel', price: 59, originalImage: 'https://placehold.co/300x200.png', imageHint: 'well-designed student report templates or spreadsheets with appealing visuals and clear indicators' },
+  { id: 'visual1', name: 'ملصقات تحفيزية للفصول', description: 'مجموعة ملصقات عالية الجودة لتعزيز البيئة التعليمية الإيجابية.', category: 'أدوات مرئية داعمة', fileType: 'PDF', price: 39, originalImage: 'https://placehold.co/300x200.png', imageHint: 'collection of vibrant and motivational classroom posters with positive messages for students' },
+  { id: 'plan2', name: 'خطة رائد النشاط المدرسي', description: 'خطة متكاملة لتنظيم الأنشطة الطلابية اللاصفية بفعالية.', category: 'الخطط التشغيلية', fileType: 'Word', price: 69, originalImage: 'https://placehold.co/300x200.png', imageHint: 'comprehensive plan for a school activity coordinator, outlining extracurricular student activities' },
+  { id: 'bag2', name: 'حقيبة "الروبوتيكس للمبتدئين"', description: 'محتوى تدريبي تفاعلي لتعليم أساسيات الروبوت والبرمجة.', category: 'الحقائب التدريبية', fileType: 'ZIP', price: 249, originalImage: 'https://placehold.co/300x200.png', imageHint: 'beginner-friendly robotics kit or training materials showing simple robots and programming interfaces' },
 ];
 
 const categories = ['الكل', 'الخطط التشغيلية', 'الحقائب التدريبية', 'النماذج الإدارية', 'أدوات مرئية داعمة'];
@@ -55,7 +55,7 @@ const CategoryIcon = ({ category }: { category: Product['category'] }) => {
 
 const HEADER_IMAGE_DETAIL = {
   originalSrc: "https://placehold.co/1200x300.png",
-  hint: "digital products education",
+  hint: "modern online store interface showcasing various digital educational products like e-books, training kits, and templates",
   alt: "المتجر الإلكتروني",
 };
 

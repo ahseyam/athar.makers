@@ -18,7 +18,7 @@ const initialProgramTracksRaw = [
     icon: <Users className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/summer-camps',
     originalImage: 'https://placehold.co/600x400.png',
-    imageHint: 'children learning summer camp'
+    imageHint: 'group of diverse children happily engaged in a fun and educational summer camp activity, outdoors or in a bright classroom'
   },
   {
     id: 'qiyasGat',
@@ -27,7 +27,7 @@ const initialProgramTracksRaw = [
     icon: <BarChart className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/qiyas-gat',
     originalImage: 'https://placehold.co/600x400.png',
-    imageHint: 'students test preparation'
+    imageHint: 'focused high school students studying diligently for the Qiyas (GAT) standardized test, perhaps in a modern library setting'
   },
   {
     id: 'mawhiba',
@@ -36,7 +36,7 @@ const initialProgramTracksRaw = [
     icon: <Lightbulb className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/mawhiba',
     originalImage: 'https://placehold.co/600x400.png',
-    imageHint: 'gifted student thinking'
+    imageHint: 'young, bright student solving a complex puzzle or engaging in a creative thinking exercise, related to the Mawhiba giftedness test'
   },
   {
     id: 'tahsili',
@@ -45,7 +45,7 @@ const initialProgramTracksRaw = [
     icon: <BookOpen className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/tahsili',
     originalImage: 'https://placehold.co/600x400.png',
-    imageHint: 'science textbook exam'
+    imageHint: 'Saudi Arabian high school students intensely focused on studying science subjects for the Tahsili achievement test'
   },
 ];
 
@@ -54,13 +54,13 @@ const visionMissionImages = {
     id: 'visionImage',
     originalSrc: "https://placehold.co/600x400.png",
     alt: "رؤيتنا",
-    hint: "vision future education",
+    hint: "futuristic and inspiring educational landscape, symbolizing a leading educational platform in the Arab world, with diverse learners achieving excellence",
   },
   mission: {
     id: 'missionImage',
     originalSrc: "https://placehold.co/600x400.png",
     alt: "رسالتنا",
-    hint: "mission education goals",
+    hint: "interactive learning environment where students are engaged in hands-on activities and collaborative projects, guided by an inspiring educator, embodying deep understanding and practical application",
   }
 };
 
