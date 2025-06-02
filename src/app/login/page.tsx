@@ -14,8 +14,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { useState, useEffect } from 'react';
-import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
-import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
+// import { generateImageFromHint } from '@/ai/flows/image-generator-flow'; // Removed
+// import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants'; // Removed
 
 const loginSchema = z.object({
   email: z.string().email("بريد إلكتروني غير صالح"),
@@ -27,7 +27,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 const IMAGE_DETAIL = {
   id: "login_logo",
   originalSrc: "https://placehold.co/150x80.png",
-  hint: "logo education platform",
+  hint: "education platform logo", // Max 2 words
   alt: "شعار صناع الأثر",
 };
 
@@ -37,34 +37,8 @@ export default function LoginPage() {
     resolver: zodResolver(loginSchema),
   });
 
-  const [logoImageUrl, setLogoImageUrl] = useState<string>(IMAGE_DETAIL.originalSrc);
-
-  useEffect(() => {
-    let isMounted = true;
-    const loadImage = async () => {
-      console.log(`[DebugImage] Page: LoginPage, ID: ${IMAGE_DETAIL.id}. Initiating image load. Hint: "${IMAGE_DETAIL.hint}", Original: ${IMAGE_DETAIL.originalSrc}`);
-      try {
-        const result = await generateImageFromHint({ hint: IMAGE_DETAIL.hint });
-        if (isMounted) {
-          if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
-            console.warn(`[DebugImage] Page: LoginPage, ID: ${IMAGE_DETAIL.id}. AI FAILED or FALLBACK. Attempting to set placeholder: ${IMAGE_DETAIL.originalSrc}`);
-            setLogoImageUrl(IMAGE_DETAIL.originalSrc);
-          } else {
-            console.log(`[DebugImage] Page: LoginPage, ID: ${IMAGE_DETAIL.id}. AI SUCCEEDED. Attempting to set AI image (first 100 chars): ${result.imageDataUri.substring(0,100)}...`);
-            setLogoImageUrl(result.imageDataUri);
-          }
-        }
-      } catch (error) {
-        console.error(`[DebugImage] Page: LoginPage, ID: ${IMAGE_DETAIL.id}. EXCEPTION caught for hint "${IMAGE_DETAIL.hint}":`, error);
-        if (isMounted) {
-          console.warn(`[DebugImage] Page: LoginPage, ID: ${IMAGE_DETAIL.id}. EXCEPTION. Attempting to set placeholder: ${IMAGE_DETAIL.originalSrc}`);
-          setLogoImageUrl(IMAGE_DETAIL.originalSrc);
-        }
-      }
-    };
-    loadImage();
-    return () => { isMounted = false; };
-  }, []);
+  // Directly use originalSrc, removed dynamic loading for this image
+  const logoImageUrl = IMAGE_DETAIL.originalSrc;
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     console.log(data);
@@ -84,6 +58,7 @@ export default function LoginPage() {
             width={150} 
             height={80} 
             className="mx-auto mb-4"
+            data-ai-hint={IMAGE_DETAIL.hint}
           />
           <CardTitle className="text-3xl font-headline text-primary">تسجيل الدخول</CardTitle>
           <CardDescription>مرحباً بعودتك إلى منصة صُنّاع الأثَر.</CardDescription>

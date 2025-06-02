@@ -9,8 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import { CheckCircle, BookText, Users, TrendingUp, HelpCircle, ShoppingCart, Brain, TestTube, Sigma, Atom, Dna, Percent, CalendarDays } from 'lucide-react';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
-import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
+// import { generateImageFromHint } from '@/ai/flows/image-generator-flow'; // Removed
+// import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants'; // Removed
 
 const subjects = [
   { name: 'الأحياء', icon: <Dna className="w-8 h-8 text-primary" />, محور: 'التنفس – الوراثة – التصنيف – وظائف الأعضاء' },
@@ -36,39 +36,13 @@ const faqItemsTahsili = [
 const IMAGE_DETAIL = {
   id: "tahsili_header",
   originalSrc: "https://placehold.co/1200x400.png",
-  hint: "Saudi high school student diligently studying for the Tahsili university entrance exam, surrounded by science textbooks (physics, chemistry, biology, math) in a well-lit study area",
+  hint: "saudi high school student studying Tahsili university entrance exam science textbooks", // Max 2 words
   alt: "اختبار التحصيلي",
 };
 
 export default function TahsiliPage() {
-  const [headerImageUrl, setHeaderImageUrl] = useState<string>(IMAGE_DETAIL.originalSrc);
-
-  useEffect(() => {
-    let isMounted = true;
-    const loadImage = async () => {
-      console.log(`[DebugImage] Page: TahsiliPage, ID: ${IMAGE_DETAIL.id}. Initiating image load. Hint: "${IMAGE_DETAIL.hint}", Original: ${IMAGE_DETAIL.originalSrc}`);
-      try {
-        const result = await generateImageFromHint({ hint: IMAGE_DETAIL.hint });
-        if (isMounted) {
-          if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
-            console.warn(`[DebugImage] Page: TahsiliPage, ID: ${IMAGE_DETAIL.id}. AI FAILED or FALLBACK. Attempting to set placeholder: ${IMAGE_DETAIL.originalSrc}`);
-            setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
-          } else {
-            console.log(`[DebugImage] Page: TahsiliPage, ID: ${IMAGE_DETAIL.id}. AI SUCCEEDED. Attempting to set AI image (first 100 chars): ${result.imageDataUri.substring(0,100)}...`);
-            setHeaderImageUrl(result.imageDataUri);
-          }
-        }
-      } catch (error) {
-        console.error(`[DebugImage] Page: TahsiliPage, ID: ${IMAGE_DETAIL.id}. EXCEPTION caught for hint "${IMAGE_DETAIL.hint}":`, error);
-        if (isMounted) {
-          console.warn(`[DebugImage] Page: TahsiliPage, ID: ${IMAGE_DETAIL.id}. EXCEPTION. Attempting to set placeholder: ${IMAGE_DETAIL.originalSrc}`);
-          setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
-        }
-      }
-    };
-    loadImage();
-    return () => { isMounted = false; };
-  }, []);
+  // Directly use originalSrc, removed dynamic loading for this image
+  const headerImageUrl = IMAGE_DETAIL.originalSrc;
 
   const pageTitle = "دورات التحصيلي – اجتز اختبارك بثقة";
   const pageSubtitle = "اختبار التحصيلي هو الخطوة الحاسمة قبل دخولك الجامعة. نوفر لك برنامجًا تدريبيًا متكاملًا لمساعدتك على مراجعة المواد العلمية الأربع بأسلوب تفاعلي.";
@@ -83,6 +57,7 @@ export default function TahsiliPage() {
           objectFit="cover"
           className="z-0"
           priority
+          data-ai-hint={IMAGE_DETAIL.hint}
         />
         <div className="absolute inset-0 bg-primary/70 flex flex-col items-center justify-center text-center p-4 z-10">
           <h1 className="text-3xl md:text-4xl font-headline font-bold text-primary-foreground mb-3">

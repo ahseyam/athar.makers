@@ -12,8 +12,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
-import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
-import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
+// import { generateImageFromHint } from '@/ai/flows/image-generator-flow'; // Removed
+// import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants'; // Removed
 
 const mockOrderDetails = {
   studentName: "اسم الطالب الافتراضي",
@@ -38,45 +38,14 @@ export default function CheckoutPage() {
   const [isPaid, setIsPaid] = useState(false);
   const [subscriptionId, setSubscriptionId] = useState<string | null>(null);
 
-  const [madaLogoUrl, setMadaLogoUrl] = useState<string>(IMAGE_DETAILS.mada.originalSrc);
-  const [visaMastercardLogoUrl, setVisaMastercardLogoUrl] = useState<string>(IMAGE_DETAILS.visaMastercard.originalSrc);
-  const [applePayLogoUrl, setApplePayLogoUrl] = useState<string>(IMAGE_DETAILS.applePay.originalSrc);
+  // Directly use originalSrc, removed dynamic loading for these images
+  const madaLogoUrl = IMAGE_DETAILS.mada.originalSrc;
+  const visaMastercardLogoUrl = IMAGE_DETAILS.visaMastercard.originalSrc;
+  const applePayLogoUrl = IMAGE_DETAILS.applePay.originalSrc;
 
   const subtotal = mockOrderDetails.scientificPackage.price + (mockOrderDetails.sportsActivity?.price || 0);
   const vat = subtotal * 0.15;
   const total = subtotal + vat;
-
-  useEffect(() => {
-    let isMounted = true;
-    const loadImage = async (imageIdentifier: string, hint: string, originalSrc: string, setter: React.Dispatch<React.SetStateAction<string>>) => {
-      console.log(`[DebugImage] Page: CheckoutPage, ID: ${imageIdentifier}. Initiating image load. Hint: "${hint}", Original: ${originalSrc}`);
-      try {
-        const result = await generateImageFromHint({ hint });
-        if (isMounted) {
-          if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
-            console.warn(`[DebugImage] Page: CheckoutPage, ID: ${imageIdentifier}. AI FAILED or FALLBACK. Attempting to set placeholder: ${originalSrc}`);
-            setter(originalSrc);
-          } else {
-            console.log(`[DebugImage] Page: CheckoutPage, ID: ${imageIdentifier}. AI SUCCEEDED. Attempting to set AI image (first 100 chars): ${result.imageDataUri.substring(0,100)}...`);
-            setter(result.imageDataUri);
-          }
-        }
-      } catch (error) {
-        console.error(`[DebugImage] Page: CheckoutPage, ID: ${imageIdentifier}. EXCEPTION caught for hint "${hint}":`, error);
-        if (isMounted) {
-           console.warn(`[DebugImage] Page: CheckoutPage, ID: ${imageIdentifier}. EXCEPTION. Attempting to set placeholder: ${originalSrc}`);
-           setter(originalSrc);
-        }
-      }
-    };
-
-    loadImage(IMAGE_DETAILS.mada.id, IMAGE_DETAILS.mada.hint, IMAGE_DETAILS.mada.originalSrc, setMadaLogoUrl);
-    loadImage(IMAGE_DETAILS.visaMastercard.id, IMAGE_DETAILS.visaMastercard.hint, IMAGE_DETAILS.visaMastercard.originalSrc, setVisaMastercardLogoUrl);
-    loadImage(IMAGE_DETAILS.applePay.id, IMAGE_DETAILS.applePay.hint, IMAGE_DETAILS.applePay.originalSrc, setApplePayLogoUrl);
-  
-    return () => { isMounted = false; };
-  }, []);
-
 
   useEffect(() => {
     if (isPaid && !subscriptionId && typeof window !== 'undefined') {
@@ -211,17 +180,17 @@ export default function CheckoutPage() {
                 <RadioGroup value={selectedPaymentMethod} onValueChange={setSelectedPaymentMethod} className="space-y-2">
                   <Label htmlFor="mada" className="flex items-center p-4 border rounded-lg hover:bg-muted cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
                     <RadioGroupItem value="mada" id="mada" className="me-3" />
-                    <Image src={madaLogoUrl} alt={IMAGE_DETAILS.mada.alt} width={40} height={25} className="me-3"/>
+                    <Image src={madaLogoUrl} alt={IMAGE_DETAILS.mada.alt} width={40} height={25} className="me-3" data-ai-hint={IMAGE_DETAILS.mada.hint}/>
                     مدى
                   </Label>
                   <Label htmlFor="visa_mastercard" className="flex items-center p-4 border rounded-lg hover:bg-muted cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
                     <RadioGroupItem value="visa_mastercard" id="visa_mastercard" className="me-3" />
-                    <Image src={visaMastercardLogoUrl} alt={IMAGE_DETAILS.visaMastercard.alt} width={80} height={25} className="me-3"/>
+                    <Image src={visaMastercardLogoUrl} alt={IMAGE_DETAILS.visaMastercard.alt} width={80} height={25} className="me-3" data-ai-hint={IMAGE_DETAILS.visaMastercard.hint}/>
                     Visa / MasterCard
                   </Label>
                    <Label htmlFor="apple_pay" className="flex items-center p-4 border rounded-lg hover:bg-muted cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
                     <RadioGroupItem value="apple_pay" id="apple_pay" className="me-3" />
-                    <Image src={applePayLogoUrl} alt={IMAGE_DETAILS.applePay.alt} width={50} height={25} className="me-3"/>
+                    <Image src={applePayLogoUrl} alt={IMAGE_DETAILS.applePay.alt} width={50} height={25} className="me-3" data-ai-hint={IMAGE_DETAILS.applePay.hint}/>
                     Apple Pay
                   </Label>
                   <Label htmlFor="bank_transfer" className="flex items-center p-4 border rounded-lg hover:bg-muted cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">

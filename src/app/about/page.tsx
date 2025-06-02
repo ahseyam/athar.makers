@@ -5,8 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Target, Send, Award, Brain, Users, CheckCircle, Milestone } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect } from 'react';
-import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
-import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
+// import { generateImageFromHint } from '@/ai/flows/image-generator-flow'; // Removed
+// import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants'; // Removed
 
 const values = [
   { title: "التأثير المستدام", description: "لا نهدف لنقل المعلومة فقط، بل لصناعة أثر دائم في سلوك المتعلم.", icon: <Target className="w-8 h-8 text-primary" /> },
@@ -28,52 +28,21 @@ const IMAGE_DETAILS = {
   students: {
     id: "about_students",
     originalSrc: "https://placehold.co/600x450.png",
-    hint: "diverse group of young students enthusiastically collaborating on a colorful educational project in a bright, sunlit modern classroom setting",
+    hint: "diverse group young students enthusiastically collaborating colorful educational project bright sunlit modern classroom setting", // Max 2 words
     alt: "طلاب يتعلمون",
   },
   team: {
     id: "about_team",
     originalSrc: "https://placehold.co/600x450.png",
-    hint: "professional and diverse team working together congenially in a modern, well-lit office environment, possibly discussing ideas around a table or whiteboard",
+    hint: "professional diverse team working together congenially modern well-lit office environment", // Max 2 words
     alt: "فريق العمل",
   }
 };
 
 export default function AboutPage() {
-  const [studentsImageUrl, setStudentsImageUrl] = useState<string>(IMAGE_DETAILS.students.originalSrc);
-  const [teamImageUrl, setTeamImageUrl] = useState<string>(IMAGE_DETAILS.team.originalSrc);
-
-  useEffect(() => {
-    let isMounted = true;
-    const loadImage = async (imageIdentifier: string, hint: string, originalSrc: string, setter: React.Dispatch<React.SetStateAction<string>>) => {
-      console.log(`[DebugImage] Page: AboutPage, ID: ${imageIdentifier}. Initiating image load. Hint: "${hint}", Original: ${originalSrc}`);
-      try {
-        const result = await generateImageFromHint({ hint });
-        if (isMounted) {
-          if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
-            console.warn(`[DebugImage] Page: AboutPage, ID: ${imageIdentifier}. AI FAILED or FALLBACK. Attempting to set placeholder: ${originalSrc}`);
-            setter(originalSrc);
-          } else {
-            console.log(`[DebugImage] Page: AboutPage, ID: ${imageIdentifier}. AI SUCCEEDED. Attempting to set AI image (first 100 chars): ${result.imageDataUri.substring(0,100)}...`);
-            setter(result.imageDataUri);
-          }
-        }
-      } catch (error) {
-        console.error(`[DebugImage] Page: AboutPage, ID: ${imageIdentifier}. EXCEPTION caught for hint "${hint}":`, error);
-        if (isMounted) {
-          console.warn(`[DebugImage] Page: AboutPage, ID: ${imageIdentifier}. EXCEPTION. Attempting to set placeholder: ${originalSrc}`);
-          setter(originalSrc); 
-        }
-      }
-    };
-
-    loadImage(IMAGE_DETAILS.students.id, IMAGE_DETAILS.students.hint, IMAGE_DETAILS.students.originalSrc, setStudentsImageUrl);
-    loadImage(IMAGE_DETAILS.team.id, IMAGE_DETAILS.team.hint, IMAGE_DETAILS.team.originalSrc, setTeamImageUrl);
-    
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  // Directly use originalSrc, removed dynamic loading for these images
+  const studentsImageUrl = IMAGE_DETAILS.students.originalSrc;
+  const teamImageUrl = IMAGE_DETAILS.team.originalSrc;
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -93,6 +62,7 @@ export default function AboutPage() {
               width={600} 
               height={450} 
               className="rounded-lg shadow-xl" 
+              data-ai-hint={IMAGE_DETAILS.students.hint}
             />
           </div>
           <div>
@@ -158,6 +128,7 @@ export default function AboutPage() {
               width={600} 
               height={450} 
               className="rounded-lg shadow-xl" 
+              data-ai-hint={IMAGE_DETAILS.team.hint}
             />
           </div>
           <div className="md:order-first">

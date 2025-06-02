@@ -17,8 +17,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { useState, useEffect } from 'react';
-import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
-import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
+// import { generateImageFromHint } from '@/ai/flows/image-generator-flow'; // Removed
+// import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants'; // Removed
 
 
 const programsList = [
@@ -52,7 +52,7 @@ type HostingRequestFormValues = z.infer<typeof hostingRequestSchema>;
 const IMAGE_DETAIL = {
   id: "hosting_request_header",
   originalSrc: "https://placehold.co/1200x400.png",
-  hint: "modern school building exterior or bright, collaborative meeting space within an educational institution, suitable for discussing program hosting partnerships",
+  hint: "modern school building collaborative meeting space educational institution program hosting partnerships", // Max 2 words
   alt: "استضافة برنامج",
 };
 
@@ -66,34 +66,8 @@ export default function HostingRequestPage() {
     },
   });
 
-  const [headerImageUrl, setHeaderImageUrl] = useState<string>(IMAGE_DETAIL.originalSrc);
-
-  useEffect(() => {
-    let isMounted = true;
-    const loadImage = async () => {
-      console.log(`[DebugImage] Page: HostingRequestPage, ID: ${IMAGE_DETAIL.id}. Initiating image load. Hint: "${IMAGE_DETAIL.hint}", Original: ${IMAGE_DETAIL.originalSrc}`);
-      try {
-        const result = await generateImageFromHint({ hint: IMAGE_DETAIL.hint });
-        if (isMounted) {
-          if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
-             console.warn(`[DebugImage] Page: HostingRequestPage, ID: ${IMAGE_DETAIL.id}. AI FAILED or FALLBACK. Attempting to set placeholder: ${IMAGE_DETAIL.originalSrc}`);
-            setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
-          } else {
-            console.log(`[DebugImage] Page: HostingRequestPage, ID: ${IMAGE_DETAIL.id}. AI SUCCEEDED. Attempting to set AI image (first 100 chars): ${result.imageDataUri.substring(0,100)}...`);
-            setHeaderImageUrl(result.imageDataUri);
-          }
-        }
-      } catch (error) {
-        console.error(`[DebugImage] Page: HostingRequestPage, ID: ${IMAGE_DETAIL.id}. EXCEPTION caught for hint "${IMAGE_DETAIL.hint}":`, error);
-        if (isMounted) {
-          console.warn(`[DebugImage] Page: HostingRequestPage, ID: ${IMAGE_DETAIL.id}. EXCEPTION. Attempting to set placeholder: ${IMAGE_DETAIL.originalSrc}`);
-          setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
-        }
-      }
-    };
-    loadImage();
-    return () => { isMounted = false; };
-  }, []);
+  // Directly use originalSrc, removed dynamic loading for this image
+  const headerImageUrl = IMAGE_DETAIL.originalSrc;
 
 
   const onSubmit: SubmitHandler<HostingRequestFormValues> = async (data) => {
@@ -119,6 +93,7 @@ export default function HostingRequestPage() {
           objectFit="cover"
           className="z-0"
           priority
+          data-ai-hint={IMAGE_DETAIL.hint}
         />
         <div className="absolute inset-0 bg-primary/70 flex flex-col items-center justify-center text-center p-4 z-10">
           <h1 className="text-3xl md:text-4xl font-headline font-bold text-primary-foreground mb-3">

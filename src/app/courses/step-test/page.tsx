@@ -9,8 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import { CheckCircle, BookOpen, Users, MessageSquare, TrendingUp, Star, HelpCircle, ShoppingCart, Percent, Headphones, Edit3, MonitorPlay, FileText } from 'lucide-react';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
-import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
+// import { generateImageFromHint } from '@/ai/flows/image-generator-flow'; // Removed
+// import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants'; // Removed
 
 const stepComponents = [
   { name: 'الفهم القرائي', percent: '40%', skills: 'قراءة نصوص أكاديمية – تحليل واستنتاج – الإجابة عن الأسئلة', icon: <BookOpen className="w-8 h-8 text-primary"/> },
@@ -35,39 +35,13 @@ const faqItemsStep = [
 const IMAGE_DETAIL = {
   id: "step_test_header",
   originalSrc: "https://placehold.co/1200x400.png",
-  hint: "student focused on an English language proficiency test (STEP test) on a computer screen or booklet, in a quiet, academic testing environment",
+  hint: "student focused English proficiency STEP test computer academic testing environment", // Max 2 words
   alt: "STEP Test",
 };
 
 export default function StepTestPage() {
-  const [headerImageUrl, setHeaderImageUrl] = useState<string>(IMAGE_DETAIL.originalSrc);
-
-  useEffect(() => {
-    let isMounted = true;
-    const loadImage = async () => {
-      console.log(`[DebugImage] Page: StepTestPage, ID: ${IMAGE_DETAIL.id}. Initiating image load. Hint: "${IMAGE_DETAIL.hint}", Original: ${IMAGE_DETAIL.originalSrc}`);
-      try {
-        const result = await generateImageFromHint({ hint: IMAGE_DETAIL.hint });
-        if (isMounted) {
-          if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
-            console.warn(`[DebugImage] Page: StepTestPage, ID: ${IMAGE_DETAIL.id}. AI FAILED or FALLBACK. Attempting to set placeholder: ${IMAGE_DETAIL.originalSrc}`);
-            setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
-          } else {
-            console.log(`[DebugImage] Page: StepTestPage, ID: ${IMAGE_DETAIL.id}. AI SUCCEEDED. Attempting to set AI image (first 100 chars): ${result.imageDataUri.substring(0,100)}...`);
-            setHeaderImageUrl(result.imageDataUri);
-          }
-        }
-      } catch (error) {
-        console.error(`[DebugImage] Page: StepTestPage, ID: ${IMAGE_DETAIL.id}. EXCEPTION caught for hint "${IMAGE_DETAIL.hint}":`, error);
-        if (isMounted) {
-          console.warn(`[DebugImage] Page: StepTestPage, ID: ${IMAGE_DETAIL.id}. EXCEPTION. Attempting to set placeholder: ${IMAGE_DETAIL.originalSrc}`);
-          setHeaderImageUrl(IMAGE_DETAIL.originalSrc);
-        }
-      }
-    };
-    loadImage();
-    return () => { isMounted = false; };
-  }, []);
+  // Directly use originalSrc, removed dynamic loading for this image
+  const headerImageUrl = IMAGE_DETAIL.originalSrc;
 
   const pageTitle = "دورة STEP – أتقن اللغة، تقدَّم بثقة";
   const pageSubtitle = "استعد لاجتياز اختبار STEP من المركز الوطني للقياس ببرنامج تدريبي مصمّم خصيصًا لمحاور الاختبار الرسمي.";
@@ -82,6 +56,7 @@ export default function StepTestPage() {
           objectFit="cover"
           className="z-0"
           priority
+          data-ai-hint={IMAGE_DETAIL.hint}
         />
         <div className="absolute inset-0 bg-primary/70 flex flex-col items-center justify-center text-center p-4 z-10">
           <h1 className="text-3xl md:text-4xl font-headline font-bold text-primary-foreground mb-3">

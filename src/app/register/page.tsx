@@ -15,8 +15,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { useState, useEffect } from 'react';
-import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
-import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
+// import { generateImageFromHint } from '@/ai/flows/image-generator-flow'; // Removed
+// import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants'; // Removed
 
 const registrationSchema = z.object({
   fullName: z.string().min(3, "الاسم يجب أن لا يقل عن 3 أحرف"),
@@ -32,8 +32,9 @@ const registrationSchema = z.object({
 type RegistrationFormValues = z.infer<typeof registrationSchema>;
 
 const IMAGE_DETAIL = {
+  id: "register_logo", // Added id for consistency
   originalSrc: "https://placehold.co/150x80.png",
-  hint: "logo education platform",
+  hint: "education platform logo", // Max 2 words
   alt: "شعار صناع الأثر",
 };
 
@@ -46,28 +47,8 @@ export default function RegisterPage() {
     },
   });
 
-  const [logoImageUrl, setLogoImageUrl] = useState<string>(IMAGE_DETAIL.originalSrc);
-
-  useEffect(() => {
-    let isMounted = true;
-    const loadImage = async () => {
-      try {
-        const result = await generateImageFromHint({ hint: IMAGE_DETAIL.hint });
-        if (isMounted) {
-          if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
-            setLogoImageUrl(IMAGE_DETAIL.originalSrc);
-          } else {
-            setLogoImageUrl(result.imageDataUri);
-          }
-        }
-      } catch (error) {
-        console.warn(`Failed to load or generate image for hint "${IMAGE_DETAIL.hint}":`, error);
-        if (isMounted) setLogoImageUrl(IMAGE_DETAIL.originalSrc);
-      }
-    };
-    loadImage();
-    return () => { isMounted = false; };
-  }, []);
+  // Directly use originalSrc, removed dynamic loading for this image
+  const logoImageUrl = IMAGE_DETAIL.originalSrc;
 
   const onSubmit: SubmitHandler<RegistrationFormValues> = async (data) => {
     console.log(data);
@@ -87,6 +68,7 @@ export default function RegisterPage() {
             width={150} 
             height={80} 
             className="mx-auto mb-4"
+            data-ai-hint={IMAGE_DETAIL.hint}
           />
           <CardTitle className="text-3xl font-headline text-primary">إنشاء حساب جديد</CardTitle>
           <CardDescription>انضم إلى منصة صُنّاع الأثَر وابدأ رحلتك التعليمية.</CardDescription>
