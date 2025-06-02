@@ -37,8 +37,7 @@ const generateImageFlow = ai.defineFlow(
       console.log(`[generateImageFlow] Attempting to generate image for hint: "${input.hint}"`);
       const { media } = await ai.generate({
         model: 'googleai/gemini-2.0-flash-exp', // IMPORTANT: Use the specified model for image generation
-        // Slightly simplified prompt
-        prompt: `Generate a high-quality, realistic photograph for an educational platform. Depict: "${input.hint}". The style should be modern, engaging, and suitable for the content and age group. Avoid cartoonish or abstract styles.`,
+        prompt: `Generate a high-quality, realistic, and natural-looking photograph for an educational platform. Depict: "${input.hint}". The style should be modern, engaging, and suitable for the content and age group. Avoid cartoonish or abstract styles. Focus on clear subjects and good lighting.`,
         config: {
           responseModalities: ['TEXT', 'IMAGE'], // MUST provide both TEXT and IMAGE
         },
@@ -51,9 +50,27 @@ const generateImageFlow = ai.defineFlow(
       console.log(`[generateImageFlow] Successfully generated image for hint: "${input.hint}"`);
       return { imageDataUri: media.url };
     } catch (error) {
-      // Log the error object itself for more details in the console
       const errorMessage = error instanceof Error ? error.message : String(error);
-      console.error(`[generateImageFlow] Error during image generation for hint "${input.hint}": ${errorMessage}`, error);
+      const fullErrorMessage = `[generateImageFlow] Error during image generation for hint "${input.hint}": ${errorMessage}`;
+      
+      console.error(fullErrorMessage, error); // Log the original error object too for full details
+
+      let userFriendlyAdvice = "An unexpected error occurred while trying to generate the image. Please check the browser console and any server-side Genkit logs for more details.";
+
+      if (typeof errorMessage === 'string') {
+        if (errorMessage.toLowerCase().includes('api key') || errorMessage.toLowerCase().includes('permission denied') || errorMessage.toLowerCase().includes('authentication')) {
+          userFriendlyAdvice = "It seems there might be an issue with your Google AI API key configuration or permissions. Please ensure your API key is correctly set up in your environment and that the Generative Language API (or Vertex AI API, depending on your setup) is enabled for your project with billing configured. Check the console for more specific error messages.";
+        } else if (errorMessage.toLowerCase().includes('quota')) {
+          userFriendlyAdvice = "You might have exceeded your API usage quota for Google AI. Please check your Google Cloud console for quota limits and usage. Check the console for more specific error messages.";
+        } else if (errorMessage.toLowerCase().includes('model not found') || errorMessage.toLowerCase().includes('invalid model')) {
+            userFriendlyAdvice = "The specified AI model for image generation ('googleai/gemini-2.0-flash-exp') might be unavailable or incorrect. Please ensure this is the correct and active model for your project. Check the console for more specific error messages.";
+        } else if (errorMessage.toLowerCase().includes('billing')) {
+            userFriendlyAdvice = "There might be an issue with billing for your Google Cloud project. Please ensure billing is enabled and active for the project associated with your API key. Check the console for more specific error messages.";
+        }
+      }
+      
+      console.error(`[generateImageFlow] ADVICE FOR USER: ${userFriendlyAdvice}`);
+
       return { imageDataUri: IMAGE_GENERATION_FAILED_FALLBACK };
     }
   }
