@@ -120,10 +120,10 @@ export default function SummerCampPage() {
             if (isMounted) {
               return result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK ? detail.originalSrc : result.imageDataUri;
             }
-            return detail.originalSrc; // return original if not mounted
+            return detail.originalSrc; 
           } catch (error) {
             console.warn(`Failed to load or generate image for hint "${detail.hint}":`, error);
-            return detail.originalSrc; // return original on error
+            return detail.originalSrc; 
           }
         })
       );
@@ -160,7 +160,7 @@ export default function SummerCampPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-8">
-          {/* Step 1: Gender and Stage Selection */}
+          
           <div className="grid md:grid-cols-2 gap-6 border-b pb-6">
             <div>
               <Label className="text-lg font-semibold mb-2 block">1. اختر الجنس:</Label>
@@ -184,7 +184,7 @@ export default function SummerCampPage() {
             </div>
           </div>
 
-          {/* Step 2: Scientific Package */}
+          
           {selectedStage && (
             <div className="border-b pb-6">
               <Label className="text-lg font-semibold mb-4 block"><Rocket className="inline-block me-2 w-5 h-5 text-primary" />3. اختر الحقيبة العلمية:</Label>
@@ -203,7 +203,7 @@ export default function SummerCampPage() {
             </div>
           )}
           
-          {/* Step 3: Skill Packages (Automatic) */}
+          
           {currentSkillPackageDetails && selectedScientificPackageId && (
             <div className="border-b pb-6">
               <Label className="text-lg font-semibold mb-2 block"><Brain className="inline-block me-2 w-5 h-5 text-primary" />4. الحقيبتان المهاريتان (مجانية ومضافة تلقائيًا):</Label>
@@ -217,7 +217,7 @@ export default function SummerCampPage() {
             </div>
           )}
 
-          {/* Step 4: Sports Activity (Optional) */}
+          
           {selectedGender && selectedScientificPackageId && (
              <div className="border-b pb-6">
               <div className="flex items-center space-x-2 space-x-reverse mb-4">
@@ -255,7 +255,7 @@ export default function SummerCampPage() {
             </div>
           )}
 
-          {/* Price Calculation */}
+          
           {selectedScientificPackageId && (
             <div className="pt-6 text-center">
               <h3 className="text-2xl font-headline font-bold mb-2">💰 حساب السعر:</h3>
@@ -269,7 +269,7 @@ export default function SummerCampPage() {
         </CardContent>
       </Card>
       
-      {/* "What will we offer you?" Tabs Section */}
+      
       <section className="mb-12">
         <Tabs defaultValue="scientific" className="w-full">
           <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 mb-6">
@@ -280,7 +280,7 @@ export default function SummerCampPage() {
           
           <TabsContent value="scientific">
             <Card>
-              <CardHeader><CardTitle>طلابنا في الحقيبة العلمية</CardTitle></CardHeader>
+              <CardHeader className="text-center"><CardTitle>طلابنا في الحقيبة العلمية</CardTitle></CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
                   {scientificGalleryImages.map((src, index) => (
@@ -320,7 +320,7 @@ export default function SummerCampPage() {
 
           <TabsContent value="skill">
             <Card>
-              <CardHeader><CardTitle>طلابنا في الحقائب المهارية</CardTitle></CardHeader>
+              <CardHeader className="text-center"><CardTitle>طلابنا في الحقائب المهارية</CardTitle></CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
                   {skillGalleryImages.map((src, index) => (
@@ -365,7 +365,7 @@ export default function SummerCampPage() {
 
           <TabsContent value="sports">
             <Card>
-              <CardHeader><CardTitle>طلابنا في النشاط الرياضي</CardTitle></CardHeader>
+              <CardHeader className="text-center"><CardTitle>طلابنا في النشاط الرياضي</CardTitle></CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
                   {sportsGalleryImages.map((src, index) => (
@@ -387,7 +387,7 @@ export default function SummerCampPage() {
                         <p className="text-muted-foreground mb-2">
                             النشاط الرياضي هو جزء اختياري من المعسكر، يهدف إلى تعزيز اللياقة البدنية وروح الفريق والمرح. يمكن للطلاب اختيار رياضتهم المفضلة من بين:
                         </p>
-                        <ul className="list-disc ps-5 text-muted-foreground mb-3 inline-block text-right">
+                        <ul className="list-disc list-inside ps-5 text-muted-foreground mb-3 inline-block text-right md:text-center">
                             {availableSportsDetails.map(sport => <li key={sport.name}>{sport.name} (المهارات المستهدفة: {sport.skills.join("، ")})</li>)}
                         </ul>
                         <p className="text-sm text-muted-foreground mb-1 clear-both"><Clock className="inline-block me-2 w-4 h-4 text-primary" /> <strong>خيارات المدة:</strong> 6 أيام أو 12 يومًا.</p>
@@ -405,7 +405,7 @@ export default function SummerCampPage() {
         </Tabs>
       </section>
 
-      {/* Final Registration Button */}
+      
       <div className="text-center">
         <Link href="/checkout">
           <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground" disabled={!selectedScientificPackageId}>
