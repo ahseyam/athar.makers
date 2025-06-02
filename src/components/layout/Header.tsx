@@ -32,21 +32,21 @@ const secondaryNavLinks = [
 
 export default function Header() {
   return (
-    <header className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50">
+    <header data-testid="main-header" className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         
         <Link href="/" className="text-xl lg:text-2xl font-headline font-bold whitespace-nowrap">أكاديمية صٌنَّاع الأَثَر</Link>
         
         <nav className="hidden md:flex flex-grow items-center justify-center gap-x-1 lg:gap-x-2">
           {mainNavLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="hover:bg-primary/80 hover:text-primary-foreground/90 transition-colors px-2.5 py-2 rounded-md text-sm font-medium flex items-center">
+            <Link key={link.href} href={link.href} className="hover:bg-primary/90 hover:text-primary-foreground/90 transition-colors px-2.5 py-2 rounded-md text-sm font-medium flex items-center">
               {link.icon}
               {link.label}
             </Link>
           ))}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="text-primary-foreground hover:bg-primary/80 hover:text-primary-foreground px-2.5 py-2 text-sm font-medium">
+              <Button variant="ghost" className="text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground px-2.5 py-2 text-sm font-medium">
                 <BookMarked className="me-1 h-4 w-4" />
                 البرامج التدريبية
                 <ChevronDownIcon className="ms-1 h-4 w-4" />
@@ -63,7 +63,7 @@ export default function Header() {
             </DropdownMenuContent>
           </DropdownMenu>
           {secondaryNavLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="hover:bg-primary/80 hover:text-primary-foreground/90 transition-colors px-2.5 py-2 rounded-md text-sm font-medium flex items-center">
+            <Link key={link.href} href={link.href} className="hover:bg-primary/90 hover:text-primary-foreground/90 transition-colors px-2.5 py-2 rounded-md text-sm font-medium flex items-center">
               {link.icon}
               {link.label}
             </Link>
@@ -82,7 +82,7 @@ export default function Header() {
           <Link href="/login">
             <Button
               variant="outline"
-              className="bg-primary-foreground/10 border-primary-foreground/50 text-secondary hover:bg-primary-foreground/20 hover:text-secondary/90 px-4 py-2 shadow-md hover:shadow-lg transition-shadow"
+              className="border-secondary/70 text-secondary hover:bg-secondary/10 hover:text-secondary/90 px-4 py-2 bg-background/10 shadow-md hover:shadow-lg transition-shadow"
             >
               <LogIn className="me-2 h-4 w-4" />
               دخول
@@ -107,9 +107,9 @@ export default function Header() {
               <nav className="flex flex-col space-y-1 p-4">
                 {mainNavLinks.map((link) => (
                     <Link
-                    key={link.href}
+                    key={'mobile-' + link.href}
                     href={link.href}
-                    className="hover:bg-primary/80 transition-colors px-3 py-2 rounded-md text-sm font-medium flex items-center"
+                    className="hover:bg-primary/90 transition-colors px-3 py-2 rounded-md text-sm font-medium flex items-center"
                     >
                     {link.icon}
                     {link.label}
@@ -118,7 +118,7 @@ export default function Header() {
                 )}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="justify-start w-full text-primary-foreground hover:bg-primary/80 hover:text-primary-foreground px-3 py-2 text-sm font-medium">
+                    <Button variant="ghost" className="justify-start w-full text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground px-3 py-2 text-sm font-medium">
                         <BookMarked className="me-1 h-4 w-4" />
                         البرامج التدريبية
                         <ChevronDownIcon className="ms-auto h-4 w-4" />
@@ -126,7 +126,7 @@ export default function Header() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="start" side="bottom" className="bg-card text-card-foreground w-[230px]">
                     {dropdownNavLinks.map((item) => (
-                        <DropdownMenuItem key={item.href} asChild>
+                        <DropdownMenuItem key={'mobile-dd-' + item.href} asChild>
                         <Link href={item.href} className="block px-3 py-2 text-sm hover:bg-accent/10 focus:bg-accent/10">
                             {item.label}
                         </Link>
@@ -136,20 +136,20 @@ export default function Header() {
                 </DropdownMenu>
                 {secondaryNavLinks.map((link) => (
                     <Link
-                    key={link.href}
+                    key={'mobile-sec-' + link.href}
                     href={link.href}
-                    className="hover:bg-primary/80 transition-colors px-3 py-2 rounded-md text-sm font-medium flex items-center"
+                    className="hover:bg-primary/90 transition-colors px-3 py-2 rounded-md text-sm font-medium flex items-center"
                     >
                     {link.icon}
                     {link.label}
                     </Link>
                 )
                 )}
-                <Link href="/about" className="hover:bg-primary/80 transition-colors px-3 py-2 rounded-md text-sm font-medium flex items-center">
+                <Link href="/about" className="hover:bg-primary/90 transition-colors px-3 py-2 rounded-md text-sm font-medium flex items-center">
                 <Info className="me-1 h-4 w-4" />
                 من نحن
                 </Link>
-                <Link href="/contact" className="hover:bg-primary/80 transition-colors px-3 py-2 rounded-md text-sm font-medium flex items-center">
+                <Link href="/contact" className="hover:bg-primary/90 transition-colors px-3 py-2 rounded-md text-sm font-medium flex items-center">
                 <Phone className="me-1 h-4 w-4" />
                 اتصل بنا
                 </Link>
@@ -158,7 +158,7 @@ export default function Header() {
                     <Button variant="secondary" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">سجّل الآن</Button>
                     </Link>
                     <Link href="/login">
-                    <Button variant="outline" className="w-full border-primary-foreground/50 text-secondary hover:bg-primary-foreground/10 hover:text-secondary/90">
+                    <Button variant="outline" className="w-full border-secondary/70 text-secondary hover:bg-secondary/10 hover:text-secondary/90 bg-background/10">
                         <LogIn className="me-2 h-4 w-4" />
                         دخول
                     </Button>
@@ -172,3 +172,5 @@ export default function Header() {
     </header>
   );
 }
+
+    
