@@ -3,41 +3,47 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { AlertCircle, Check, Sparkles, Brain, Rocket, Dumbbell, Info, ShoppingCart } from 'lucide-react';
+import { AlertCircle, Check, Sparkles, Brain, Rocket, Dumbbell, Info, ShoppingCart, Clock, TargetIcon, Users } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
 import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
 
 const scientificPackages = [
-  { id: 'inventor', name: 'كُن مخترعًا', category: 'المستكشفين', description: 'تجارب وابتكارات مبنية على أدوات من البيئة', price: 750 },
-  { id: 'spike', name: 'الروبوتيكس باستخدام SPIKE', category: 'المستكشفين', description: 'روبوتات تفاعلية + برمجة + تركيب', price: 900 },
-  { id: 'engineers', name: 'مهندسو المستقبل', category: 'الروّاد', description: 'تصميم هندسي + مشكلات من الواقع', price: 750 },
-  { id: 'vex_iq', name: 'AI Robotics باستخدام VEX IQ', category: 'الروّاد', description: 'برمجة وذكاء اصطناعي + مشاريع روبوت', price: 900 },
+  { id: 'inventor', name: 'كُن مخترعًا', category: 'المستكشفين', description: 'تجارب وابتكارات مبنية على أدوات من البيئة', price: 750, duration: "12 يومًا", dailyTime: "90 دقيقة/يوم", skills: ["التفكير الإبداعي", "حل المشكلات", "الاستكشاف العلمي", "استخدام الأدوات البسيطة"] },
+  { id: 'spike', name: 'الروبوتيكس باستخدام SPIKE', category: 'المستكشفين', description: 'روبوتات تفاعلية + برمجة + تركيب', price: 900, duration: "12 يومًا", dailyTime: "90 دقيقة/يوم", skills: ["أساسيات الروبوت", "برمجة السحب والإفلات", "التفكير المنطقي", "التركيب الميكانيكي"] },
+  { id: 'engineers', name: 'مهندسو المستقبل', category: 'الروّاد', description: 'تصميم هندسي + مشكلات من الواقع', price: 750, duration: "12 يومًا", dailyTime: "90 دقيقة/يوم", skills: ["مبادئ التصميم الهندسي", "تحليل المشكلات الواقعية", "النمذجة الأولية", "العمل الجماعي"] },
+  { id: 'vex_iq', name: 'AI Robotics باستخدام VEX IQ', category: 'الروّاد', description: 'برمجة وذكاء اصطناعي + مشاريع روبوت', price: 900, duration: "12 يومًا", dailyTime: "90 دقيقة/يوم", skills: ["برمجة الروبوت المتقدمة", "مفاهيم الذكاء الاصطناعي", "تصميم وبناء الروبوتات", "المشاركة في تحديات"] },
 ];
 
-const skillPackages = {
-  المستكشفين: { bag1: 'قوة التأثير – صانع الأثر', bag2: 'ألوان الحكاية – 1' },
-  الروّاد: { bag1: 'روّاد التأثير – قيادة المواقف', bag2: 'ألوان الحكاية – 2' },
+const skillPackagesData = {
+  المستكشفين: { 
+    bag1: { name: 'قوة التأثير – صانع الأثر', skills: ["الثقة بالنفس", "التعبير عن الذات", "مهارات التواصل الأساسية"] },
+    bag2: { name: 'ألوان الحكاية – 1', skills: ["أساسيات القصة", "تنمية الخيال", "التعبير اللفظي والإبداعي"] } 
+  },
+  الروّاد: { 
+    bag1: { name: 'روّاد التأثير – قيادة المواقف', skills: ["مهارات القيادة", "اتخاذ القرار", "التأثير الإيجابي في الآخرين"] },
+    bag2: { name: 'ألوان الحكاية – 2', skills: ["كتابة القصة المتقدمة", "بناء الشخصيات", "السرد القصصي الجذاب"] }
+  },
 };
 
-const sportsActivities = {
+const sportsActivitiesData = {
   البنين: [
-    { name: 'كرة القدم', price6: 125, price12: 200 },
-    { name: 'كاراتيه', price6: 125, price12: 200 },
-    { name: 'سباحة', price6: 150, price12: 250 },
+    { name: 'كرة القدم', price6: 125, price12: 200, skills: ["اللياقة البدنية", "العمل الجماعي", "المهارات الكروية"] },
+    { name: 'كاراتيه', price6: 125, price12: 200, skills: ["الدفاع عن النفس", "الانضباط", "التركيز"] },
+    { name: 'سباحة', price6: 150, price12: 250, skills: ["مهارات السباحة", "اللياقة المائية", "الثقة في الماء"] },
   ],
   البنات: [
-    { name: 'جمباز', price6: 125, price12: 200 },
-    { name: 'كاراتيه', price6: 125, price12: 200 },
-    { name: 'سباحة', price6: 150, price12: 250 },
+    { name: 'جمباز', price6: 125, price12: 200, skills: ["المرونة", "التوازن", "التناسق الحركي"] },
+    { name: 'كاراتيه', price6: 125, price12: 200, skills: ["الدفاع عن النفس", "الانضباط", "التركيز"] },
+    { name: 'سباحة', price6: 150, price12: 250, skills: ["مهارات السباحة", "اللياقة المائية", "الثقة في الماء"] },
   ],
 };
 
@@ -84,24 +90,24 @@ export default function SummerCampPage() {
   const [sportsGalleryImages, setSportsGalleryImages] = useState<string[]>(IMAGE_GALLERY_DETAILS.sports.map(img => img.originalSrc));
 
   const filteredScientificPackages = scientificPackages.filter(pkg => !selectedStage || pkg.category === selectedStage);
-  const currentSkillPackages = selectedStage ? skillPackages[selectedStage] : undefined;
-  const availableSports = selectedGender ? sportsActivities[selectedGender] : [];
+  const currentSkillPackageDetails = selectedStage ? skillPackagesData[selectedStage] : undefined;
+  const availableSportsDetails = selectedGender ? sportsActivitiesData[selectedGender] : [];
+  
+  const selectedScientificPackageDetails = scientificPackages.find(p => p.id === selectedScientificPackageId);
+  const selectedSportDetails = availableSportsDetails.find(s => s.name === selectedSport);
+
 
   useEffect(() => {
     let currentTotal = 0;
-    const scientificPkg = scientificPackages.find(p => p.id === selectedScientificPackageId);
-    if (scientificPkg) {
-      currentTotal += scientificPkg.price;
+    if (selectedScientificPackageDetails) {
+      currentTotal += selectedScientificPackageDetails.price;
     }
 
-    if (includeSports && selectedSport && sportDuration) {
-      const sportPkg = availableSports.find(s => s.name === selectedSport);
-      if (sportPkg) {
-        currentTotal += sportDuration === '6' ? sportPkg.price6 : sportPkg.price12;
-      }
+    if (includeSports && selectedSportDetails && sportDuration) {
+      currentTotal += sportDuration === '6' ? selectedSportDetails.price6 : selectedSportDetails.price12;
     }
     setTotalPrice(currentTotal);
-  }, [selectedScientificPackageId, includeSports, selectedSport, sportDuration, availableSports]);
+  }, [selectedScientificPackageId, includeSports, selectedSport, sportDuration, availableSportsDetails, selectedScientificPackageDetails, selectedSportDetails]);
 
   useEffect(() => {
     let isMounted = true;
@@ -111,10 +117,13 @@ export default function SummerCampPage() {
         imageDetails.map(async (detail) => {
           try {
             const result = await generateImageFromHint({ hint: detail.hint });
-            return result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK ? detail.originalSrc : result.imageDataUri;
+            if (isMounted) {
+              return result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK ? detail.originalSrc : result.imageDataUri;
+            }
+            return detail.originalSrc; // return original if not mounted
           } catch (error) {
             console.warn(`Failed to load or generate image for hint "${detail.hint}":`, error);
-            return detail.originalSrc;
+            return detail.originalSrc; // return original on error
           }
         })
       );
@@ -147,7 +156,7 @@ export default function SummerCampPage() {
         <CardHeader>
           <CardTitle className="text-2xl font-headline text-center">اختر مسارك التدريبي</CardTitle>
           <CardDescription className="text-center">
-            المسار مكوّن من: حقيبة علمية رئيسية (١٢ يوم × ٩٠ دقيقة), حقيبتين مهاريتين مجانيتين (كل حقيبة ٦ أيام × ٤٥ دقيقة), ونشاط رياضي اختياري.
+            المسار مكوّن من: حقيبة علمية رئيسية، حقيبتين مهاريتين مجانيتين، ونشاط رياضي اختياري.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-8">
@@ -195,13 +204,13 @@ export default function SummerCampPage() {
           )}
           
           {/* Step 3: Skill Packages (Automatic) */}
-          {currentSkillPackages && selectedScientificPackageId && (
+          {currentSkillPackageDetails && selectedScientificPackageId && (
             <div className="border-b pb-6">
               <Label className="text-lg font-semibold mb-2 block"><Brain className="inline-block me-2 w-5 h-5 text-primary" />4. الحقيبتان المهاريتان (مجانية ومضافة تلقائيًا):</Label>
               <Card className="bg-green-50 border-green-200">
                 <CardContent className="pt-6">
-                  <p><strong>الحقيبة 1:</strong> {currentSkillPackages.bag1}</p>
-                  <p><strong>الحقيبة 2:</strong> {currentSkillPackages.bag2}</p>
+                  <p><strong>الحقيبة 1:</strong> {currentSkillPackageDetails.bag1.name}</p>
+                  <p><strong>الحقيبة 2:</strong> {currentSkillPackageDetails.bag2.name}</p>
                   <p className="text-sm text-muted-foreground mt-2">مدة كل حقيبة: 6 أيام × 45 دقيقة. تُضاف تلقائيًا بمجرد اختيار الحقيبة العلمية.</p>
                 </CardContent>
               </Card>
@@ -219,24 +228,24 @@ export default function SummerCampPage() {
                 <div className="space-y-4 p-4 border rounded-lg bg-muted/50">
                   <Label className="mb-2 block">اختر النشاط:</Label>
                   <RadioGroup value={selectedSport} onValueChange={setSelectedSport} className="grid md:grid-cols-3 gap-2">
-                    {availableSports.map(sport => (
+                    {availableSportsDetails.map(sport => (
                       <Label key={sport.name} htmlFor={sport.name} className="flex items-center p-3 border rounded-md hover:bg-background cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
                         <RadioGroupItem value={sport.name} id={sport.name} className="me-2" />
                         <span>{sport.name}</span>
                       </Label>
                     ))}
                   </RadioGroup>
-                  {selectedSport && (
+                  {selectedSportDetails && (
                     <div>
                       <Label className="mb-2 block mt-4">اختر المدة:</Label>
                       <RadioGroup value={sportDuration} onValueChange={(val: '6' | '12') => setSportDuration(val)} className="flex space-x-4 space-x-reverse">
                         <Label htmlFor="duration6" className="flex items-center p-3 border rounded-md hover:bg-background cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
                           <RadioGroupItem value="6" id="duration6" className="me-2" />
-                           6 أيام ({availableSports.find(s => s.name === selectedSport)?.price6} ريال)
+                           6 أيام ({selectedSportDetails.price6} ريال)
                         </Label>
                         <Label htmlFor="duration12" className="flex items-center p-3 border rounded-md hover:bg-background cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
                           <RadioGroupItem value="12" id="duration12" className="me-2" />
-                           12 يوم ({availableSports.find(s => s.name === selectedSport)?.price12} ريال)
+                           12 يوم ({selectedSportDetails.price12} ريال)
                         </Label>
                       </RadioGroup>
                     </div>
@@ -268,66 +277,128 @@ export default function SummerCampPage() {
             <TabsTrigger value="skill" className="text-lg"><Brain className="inline-block me-2 w-5 h-5" />الحقائب المهارية</TabsTrigger>
             <TabsTrigger value="sports" className="text-lg"><Dumbbell className="inline-block me-2 w-5 h-5" />النشاط الرياضي</TabsTrigger>
           </TabsList>
+          
           <TabsContent value="scientific">
             <Card>
               <CardHeader><CardTitle>طلابنا في الحقيبة العلمية</CardTitle></CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
                   {scientificGalleryImages.map((src, index) => (
-                    <div key={`sci-gal-${index}`} className="rounded-lg overflow-hidden shadow-md">
+                    <div key={`sci-gal-${index}`} className="rounded-lg overflow-hidden shadow-md aspect-video">
                       <Image 
                         src={src} 
                         alt={IMAGE_GALLERY_DETAILS.scientific[index]?.alt || 'صورة من الحقيبة العلمية'} 
                         width={250} 
                         height={180} 
-                        className="w-full h-auto object-cover aspect-[250/180]"
+                        className="w-full h-full object-cover"
                       />
                     </div>
                   ))}
                 </div>
-                 <p className="text-center text-muted-foreground mt-4">شاهد طلابنا وهم يكتشفون ويبتكرون في بيئة تعليمية محفزة!</p>
+                <div className="mt-6 pt-6 border-t">
+                  <h4 className="text-xl font-headline font-semibold text-foreground mb-3">ماذا سيتعلم الطالب في الحقيبة العلمية؟</h4>
+                  {selectedScientificPackageDetails ? (
+                    <>
+                      <p className="text-muted-foreground mb-2">
+                        في حقيبة <strong>{selectedScientificPackageDetails.name}</strong>، يركز الطالب على {selectedScientificPackageDetails.description.toLowerCase()}.
+                      </p>
+                      <div className="text-sm text-muted-foreground space-y-1 mb-3">
+                        <p><Clock className="inline-block me-2 w-4 h-4 text-primary" /> <strong>المدة:</strong> {selectedScientificPackageDetails.duration} (بمعدل {selectedScientificPackageDetails.dailyTime}).</p>
+                        <p><TargetIcon className="inline-block me-2 w-4 h-4 text-primary" /> <strong>أهم المهارات المستهدفة:</strong> {selectedScientificPackageDetails.skills.join('، ')}.</p>
+                      </div>
+                      <p className="text-muted-foreground">
+                        تهدف هذه الحقيبة إلى تزويد الطلاب بأساس قوي في المجالات العلمية المختارة، وتشجيعهم على الاستكشاف والابتكار من خلال أنشطة عملية وتفاعلية.
+                      </p>
+                    </>
+                  ) : (
+                    <p className="text-muted-foreground">يرجى اختيار حقيبة علمية أعلاه لعرض تفاصيلها.</p>
+                  )}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
+
           <TabsContent value="skill">
             <Card>
               <CardHeader><CardTitle>طلابنا في الحقائب المهارية</CardTitle></CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
                   {skillGalleryImages.map((src, index) => (
-                     <div key={`skill-gal-${index}`} className="rounded-lg overflow-hidden shadow-md">
+                     <div key={`skill-gal-${index}`} className="rounded-lg overflow-hidden shadow-md aspect-video">
                         <Image 
                             src={src} 
                             alt={IMAGE_GALLERY_DETAILS.skill[index]?.alt || 'صورة من الحقائب المهارية'} 
                             width={250} 
                             height={180} 
-                            className="w-full h-auto object-cover aspect-[250/180]"
+                            className="w-full h-full object-cover"
                         />
                     </div>
                   ))}
                 </div>
-                <p className="text-center text-muted-foreground mt-4">ننمي مهاراتهم القيادية والتعبيرية من خلال أنشطة تفاعلية وممتعة.</p>
+                <div className="mt-6 pt-6 border-t">
+                    <h4 className="text-xl font-headline font-semibold text-foreground mb-3">تنمية شاملة مع الحقائب المهارية</h4>
+                    {currentSkillPackageDetails ? (
+                        <>
+                            <p className="text-muted-foreground mb-2">
+                                يحصل كل طالب مسجل في حقيبة علمية على حقيبتين مهارتين مجانيتين لتنمية مهاراته الشخصية والقيادية:
+                            </p>
+                            <Card className="mb-3 bg-background">
+                                <CardHeader className="pb-2"><CardTitle className="text-lg">{currentSkillPackageDetails.bag1.name}</CardTitle></CardHeader>
+                                <CardContent><p className="text-sm text-muted-foreground"><strong>أهم المهارات:</strong> {currentSkillPackageDetails.bag1.skills.join('، ')}.</p></CardContent>
+                            </Card>
+                            <Card className="mb-3 bg-background">
+                                <CardHeader className="pb-2"><CardTitle className="text-lg">{currentSkillPackageDetails.bag2.name}</CardTitle></CardHeader>
+                                <CardContent><p className="text-sm text-muted-foreground"><strong>أهم المهارات:</strong> {currentSkillPackageDetails.bag2.skills.join('، ')}.</p></CardContent>
+                            </Card>
+                            <p className="text-sm text-muted-foreground"><Clock className="inline-block me-2 w-4 h-4 text-primary" /> <strong>مدة كل حقيبة مهارية:</strong> 6 أيام (بمعدل 45 دقيقة/يوم).</p>
+                            <p className="text-muted-foreground mt-2">
+                                تهدف هذه الحقائب إلى تعزيز الثقة بالنفس، مهارات التواصل، الإبداع، والقدرة على قيادة المواقف بفعالية.
+                            </p>
+                        </>
+                    ) : (
+                         <p className="text-muted-foreground">يرجى اختيار المرحلة الدراسية أولاً لعرض الحقائب المهارية المناسبة.</p>
+                    )}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
+
           <TabsContent value="sports">
             <Card>
               <CardHeader><CardTitle>طلابنا في النشاط الرياضي</CardTitle></CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
                   {sportsGalleryImages.map((src, index) => (
-                    <div key={`sport-gal-${index}`} className="rounded-lg overflow-hidden shadow-md">
+                    <div key={`sport-gal-${index}`} className="rounded-lg overflow-hidden shadow-md aspect-video">
                         <Image 
                             src={src} 
                             alt={IMAGE_GALLERY_DETAILS.sports[index]?.alt || 'صورة من النشاط الرياضي'} 
                             width={250} 
                             height={180} 
-                            className="w-full h-auto object-cover aspect-[250/180]"
+                            className="w-full h-full object-cover"
                         />
                     </div>
                   ))}
                 </div>
-                <p className="text-center text-muted-foreground mt-4">لياقة بدنية، روح رياضية، ومتعة لا تُنسى في أنشطتنا الرياضية المتنوعة.</p>
+                <div className="mt-6 pt-6 border-t">
+                    <h4 className="text-xl font-headline font-semibold text-foreground mb-3">طاقة وحيوية في النشاط الرياضي الاختياري</h4>
+                     {selectedGender ? (
+                        <>
+                        <p className="text-muted-foreground mb-2">
+                            النشاط الرياضي هو جزء اختياري من المعسكر، يهدف إلى تعزيز اللياقة البدنية وروح الفريق والمرح. يمكن للطلاب اختيار رياضتهم المفضلة من بين:
+                        </p>
+                        <ul className="list-disc ps-5 text-muted-foreground mb-3">
+                            {availableSportsDetails.map(sport => <li key={sport.name}>{sport.name} (المهارات المستهدفة: {sport.skills.join("، ")})</li>)}
+                        </ul>
+                        <p className="text-sm text-muted-foreground mb-1"><Clock className="inline-block me-2 w-4 h-4 text-primary" /> <strong>خيارات المدة:</strong> 6 أيام أو 12 يومًا.</p>
+                        <p className="text-muted-foreground">
+                            يتم التدريب بإشراف مدربين متخصصين لضمان سلامة الطلاب وتقديم تجربة رياضية ممتعة ومفيدة. الأسعار تختلف حسب النشاط والمدة المختارة (انظر قسم الاختيار أعلاه).
+                        </p>
+                        </>
+                     ) : (
+                        <p className="text-muted-foreground">يرجى اختيار جنس الطالب أولاً لعرض الأنشطة الرياضية المتاحة.</p>
+                     )}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
