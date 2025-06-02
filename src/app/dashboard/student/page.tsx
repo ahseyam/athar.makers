@@ -1,19 +1,17 @@
 
-'use client'; // Assuming Server Component.
-
-import React, { use } from 'react';
+// Removed 'use client'
+import React from 'react'; // Removed 'use' from import
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LayoutDashboard } from "lucide-react";
 
 export default function StudentDashboardPage({
-  params: _params,
-  searchParams: _searchParams,
+  params, // Directly use the prop
+  searchParams, // Directly use the prop
 }: {
   params: { [key: string]: string | string[] | undefined };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const params = use(_params);
-  const searchParams = use(_searchParams);
+  // params and searchParams are directly available if needed.
 
   return (
     <div className="container mx-auto px-4 py-12">

@@ -1,10 +1,10 @@
 
-'use client'; // Assuming Server Component.
-
-import React, { use } from 'react';
+// Removed 'use client'
+import React from 'react'; // Removed 'use' from import
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HelpCircle } from "lucide-react";
 import { Button } from '@/components/ui/button';
+import Link from 'next/link'; // Added Link import
 
 const faqItems = [
   {
@@ -34,14 +34,13 @@ const faqItems = [
 ];
 
 export default function FaqPage({
-  params: _params,
-  searchParams: _searchParams,
+  params, // Directly use the prop
+  searchParams, // Directly use the prop
 }: {
   params: { [key: string]: string | string[] | undefined };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const params = use(_params);
-  const searchParams = use(_searchParams);
+  // params and searchParams are directly available if needed.
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -73,11 +72,11 @@ export default function FaqPage({
         <p className="text-lg text-muted-foreground mb-6">
           فريق الدعم لدينا جاهز لمساعدتك.
         </p>
-        <a href="/contact">
+        <Link href="/contact">
           <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
             تواصل معنا
           </Button>
-        </a>
+        </Link>
       </section>
     </div>
   );
