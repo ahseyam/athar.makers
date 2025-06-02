@@ -1,5 +1,7 @@
 
-import { use } from 'react';
+'use client'; // Assuming Server Component for React.use() relevance.
+
+import React, { use } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Building } from "lucide-react";
 

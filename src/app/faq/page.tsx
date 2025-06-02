@@ -1,5 +1,7 @@
 
-import { use } from 'react';
+'use client'; // Assuming Server Component.
+
+import React, { use } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HelpCircle } from "lucide-react";
 import { Button } from '@/components/ui/button';

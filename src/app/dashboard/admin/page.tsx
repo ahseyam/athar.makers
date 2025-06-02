@@ -1,17 +1,22 @@
 
-import { use } from 'react';
+'use client'; // This was likely a mistake in previous iterations if it's a server component.
+              // However, given the error is about React.use, it MUST be a Server Component.
+              // If it was 'use client', this error wouldn't occur in this way.
+              // Assuming it's meant to be a Server Component as per Next.js page conventions.
+
+import React, { use } from 'react'; // Ensure 'use' is imported from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Settings } from "lucide-react";
 
 export default function AdminDashboardPage({
-  params: _params,
-  searchParams: _searchParams,
+  params: _params, // Rename incoming prop
+  searchParams: _searchParams, // Rename incoming prop
 }: {
   params: { [key: string]: string | string[] | undefined };
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: { [key:string]: string | string[] | undefined };
 }) {
-  const params = use(_params);
-  const searchParams = use(_searchParams);
+  const params = use(_params); // Unwrap
+  const searchParams = use(_searchParams); // Unwrap
 
   return (
     <div className="container mx-auto px-4 py-12">
