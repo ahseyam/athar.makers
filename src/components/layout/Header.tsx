@@ -14,7 +14,7 @@ import {ChevronDownIcon} from 'lucide-react';
 
 const mainNavLinks = [
   { href: '/', label: 'الرئيسية', icon: <HomeIcon className="me-1 h-4 w-4" /> },
-  { href: '/courses/summer-camps', label: 'المعسكرات الصيفية/ المسائية', icon: <LayoutGrid className="me-1 h-4 w-4" /> },
+  { href: '/courses/summer-camps', label: 'معسكر صُنّاع الموهبة', icon: <LayoutGrid className="me-1 h-4 w-4" /> },
 ];
 
 const dropdownNavLinks = [
