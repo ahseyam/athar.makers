@@ -85,7 +85,7 @@ export default function Header() {
           <Link href="/login">
             <Button 
               variant="outline" 
-              className="border-primary-foreground/70 text-black hover:bg-primary-foreground/20 hover:text-black px-4 py-2 bg-primary-foreground/10 shadow-md hover:shadow-lg transition-shadow"
+              className="border-primary-foreground/70 text-accent hover:bg-primary-foreground/20 hover:text-accent px-4 py-2 bg-primary-foreground/10 shadow-md hover:shadow-lg transition-shadow"
             >
               <LogIn className="me-2 h-4 w-4" />
               دخول
@@ -164,7 +164,7 @@ export default function Header() {
                     <Button variant="secondary" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">سجّل الآن</Button>
                     </Link>
                     <Link href="/login">
-                    <Button variant="outline" className="w-full border-primary-foreground/50 text-black hover:bg-primary-foreground/10 hover:text-black">
+                    <Button variant="outline" className="w-full border-primary-foreground/50 text-accent hover:bg-primary-foreground/10 hover:text-accent">
                         <LogIn className="me-2 h-4 w-4" />
                         دخول
                     </Button>
