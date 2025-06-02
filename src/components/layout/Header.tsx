@@ -17,7 +17,7 @@ const navLinks = [
   {
     label: 'البرامج',
     dropdown: [
-      { href: '/courses/summer-camps', label: 'المعسكرات' },
+      { href: '/courses/summer-camps', label: 'المعسكرات الصيفية/ المسائية' },
       { href: '/courses/qiyas-gat', label: 'دورات القدرات' },
       { href: '/courses/mawhiba', label: 'مقياس موهبة' },
       { href: '/courses/tahsili', label: 'دورات التحصيلي' },
