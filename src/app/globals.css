@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 220 60% 94%; /* Light Blue (#E6EBF5) */
+    --background: 220 60% 94%; /* Light Blue (#E6EBF5) - Acts as fallback */
     --foreground: 220 25% 25%; /* Dark, desaturated blue-grey */
 
     --card: 0 0% 100%; /* White */
@@ -53,7 +53,7 @@
   }
 
   .dark {
-    --background: 226 30% 10%; /* Dark Royal Blue/Navy */
+    --background: 226 30% 10%; /* Dark Royal Blue/Navy - Acts as fallback */
     --foreground: 220 40% 90%; /* Light grey-blue for text */
 
     --card: 226 25% 14%; /* Darker card background */
@@ -105,8 +105,10 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
-    @apply font-body; /* Apply body font by default */
+    @apply font-body text-foreground; /* Apply body font and default text color */
+    background-image: url('/images/background-pattern.png'); /* Path relative to public folder */
+    background-repeat: repeat; /* Tile the image */
+    background-color: hsl(var(--background)); /* Fallback color, or color visible through transparent parts of the image */
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-headline; /* Apply headline font to headings */
