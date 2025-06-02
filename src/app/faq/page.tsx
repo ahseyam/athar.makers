@@ -1,5 +1,8 @@
+
+import { use } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HelpCircle } from "lucide-react";
+import { Button } from '@/components/ui/button';
 
 const faqItems = [
   {
@@ -28,7 +31,16 @@ const faqItems = [
   }
 ];
 
-export default function FaqPage() {
+export default function FaqPage({
+  params,
+  searchParams,
+}: {
+  params: { [key: string]: string | string[] | undefined };
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const usedParams = use(params);
+  const usedSearchParams = use(searchParams);
+
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="text-center mb-16">

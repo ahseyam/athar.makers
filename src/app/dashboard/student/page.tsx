@@ -1,7 +1,18 @@
+
+import { use } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LayoutDashboard } from "lucide-react";
 
-export default function StudentDashboardPage() {
+export default function StudentDashboardPage({
+  params,
+  searchParams,
+}: {
+  params: { [key: string]: string | string[] | undefined };
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const usedParams = use(params);
+  const usedSearchParams = use(searchParams);
+
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="text-center mb-12">

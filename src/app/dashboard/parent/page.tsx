@@ -1,7 +1,18 @@
+
+import { use } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users } from "lucide-react";
 
-export default function ParentDashboardPage() {
+export default function ParentDashboardPage({
+  params,
+  searchParams,
+}: {
+  params: { [key: string]: string | string[] | undefined };
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const usedParams = use(params);
+  const usedSearchParams = use(searchParams);
+
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="text-center mb-12">
