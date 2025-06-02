@@ -2,7 +2,7 @@
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Menu, BookOpenText, ShoppingCart, Users, UserPlus, Info, Phone, School, Award, HomeIcon, LayoutGrid, BookMarked, Store, Briefcase, UserCheck, LogIn } from 'lucide-react';
+import { Menu, Info, Phone, HomeIcon, LayoutGrid, BookMarked, Store, Briefcase, UserCheck, LogIn } from 'lucide-react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import {
   DropdownMenu,
@@ -34,7 +34,7 @@ const secondaryNavLinks = [
 export default function Header() {
   return (
     <header className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-3 flex justify-end items-center relative"> {/* Modified: justify-end, relative */}
+      <div className="container mx-auto px-4 py-3 flex justify-end items-center relative">
         
         {/* Centered Site Title */}
         <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -100,7 +100,7 @@ export default function Header() {
                 <SheetHeader className="p-4 border-b border-primary-foreground/20 text-start">
                     <SheetTitle>
                     <Link href="/" className="text-xl font-headline font-bold text-primary-foreground">
-                        أكاديمية صٌنَّاع الأَثَر {/* Updated title here as well */}
+                        أكاديمية صٌنَّاع الأَثَر
                     </Link>
                     </SheetTitle>
                 </SheetHeader>

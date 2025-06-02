@@ -5,13 +5,25 @@ import Link from 'next/link';
 import { Facebook, Twitter, Instagram, Linkedin, Youtube } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-export default function Footer() {
-  const [currentYear, setCurrentYear] = useState<number | string>('');
+// New component to handle the dynamic year display correctly
+function CopyrightNotice() {
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setCurrentYear(new Date().getFullYear());
+    setIsMounted(true);
   }, []);
 
+  if (!isMounted) {
+    // This will be rendered on the server and on the initial client render
+    // It should not contain dynamic parts like new Date().getFullYear() directly if we want to avoid mismatch before mount
+    return <p>&copy; منصة صُنّاع الأثَر. جميع الحقوق محفوظة.</p>;
+  }
+
+  // This will be rendered on the client after hydration and useEffect
+  return <p>&copy; {new Date().getFullYear()} منصة صُنّاع الأثَر. جميع الحقوق محفوظة.</p>;
+}
+
+export default function Footer() {
   return (
     <footer className="bg-muted text-muted-foreground py-8">
       <div className="container mx-auto px-4">
@@ -47,11 +59,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-border text-center text-xs">
-          {currentYear ? (
-            <p>&copy; {currentYear} منصة صُنّاع الأثَر. جميع الحقوق محفوظة.</p>
-          ) : (
-            <p>&copy; منصة صُنّاع الأثَر. جميع الحقوق محفوظة.</p>
-          )}
+          <CopyrightNotice /> {/* Use the new component here */}
           <p>تصميم وتطوير بواسطة فريق العمل.</p>
         </div>
       </div>
