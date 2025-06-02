@@ -34,22 +34,28 @@ const generateImageFlow = ai.defineFlow(
   },
   async (input) => {
     try {
+      console.log(`[generateImageFlow] Attempting to generate image for hint: "${input.hint}"`);
       const { media } = await ai.generate({
         model: 'googleai/gemini-2.0-flash-exp', // IMPORTANT: Use the specified model for image generation
-        prompt: `Generate a high-quality, realistic and natural-looking photograph relevant to an educational platform. The image should depict: "${input.hint}". Ensure the style is modern, engaging, and suitable for the described content and potential age group. Avoid overly cartoonish or abstract styles.`,
+        // Slightly simplified prompt
+        prompt: `Generate a high-quality, realistic photograph for an educational platform. Depict: "${input.hint}". The style should be modern, engaging, and suitable for the content and age group. Avoid cartoonish or abstract styles.`,
         config: {
           responseModalities: ['TEXT', 'IMAGE'], // MUST provide both TEXT and IMAGE
         },
       });
 
       if (!media || !media.url) {
-        console.warn('Image generation returned no media URL for hint:', input.hint);
+        console.warn(`[generateImageFlow] Failed: No media URL returned for hint: "${input.hint}". Falling back.`);
         return { imageDataUri: IMAGE_GENERATION_FAILED_FALLBACK };
       }
+      console.log(`[generateImageFlow] Successfully generated image for hint: "${input.hint}"`);
       return { imageDataUri: media.url };
     } catch (error) {
-      console.warn(`Error during image generation for hint "${input.hint}":`, error);
+      // Log the error object itself for more details in the console
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error(`[generateImageFlow] Error during image generation for hint "${input.hint}": ${errorMessage}`, error);
       return { imageDataUri: IMAGE_GENERATION_FAILED_FALLBACK };
     }
   }
 );
+
