@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, Search, Filter, Heart, Star, FileText, Presentation, CheckSquare, Palette, Download } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Label } from "@/components/ui/label";
 
 interface Product {
   id: string;
