@@ -28,8 +28,8 @@ const navLinks = [
   { href: '/store', label: 'المتجر', icon: <ShoppingCart className="me-1 h-4 w-4" /> },
   { href: '/institutions/hosting-request', label: 'استضافة للمؤسسات', icon: <School className="me-1 h-4 w-4" /> },
   { href: '/trainers/apply', label: 'انضم كمدرب', icon: <UserPlus className="me-1 h-4 w-4" /> },
-  { href: '/about', label: 'من نحن', icon: <Info className="me-1 h-4 w-4" /> },
-  { href: '/contact', label: 'اتصل بنا', icon: <Phone className="me-1 h-4 w-4" /> },
+  // { href: '/about', label: 'من نحن', icon: <Info className="me-1 h-4 w-4" /> },
+  // { href: '/contact', label: 'اتصل بنا', icon: <Phone className="me-1 h-4 w-4" /> },
 ];
 
 export default function Header() {
@@ -125,6 +125,15 @@ export default function Header() {
                     </Link>
                   )
                 )}
+                 {/* Add About Us and Contact Us for mobile menu as they are common there */}
+                <Link href="/about" className="hover:bg-primary/80 transition-colors px-3 py-2 rounded-md text-sm font-medium flex items-center">
+                  <Info className="me-1 h-4 w-4" />
+                  من نحن
+                </Link>
+                <Link href="/contact" className="hover:bg-primary/80 transition-colors px-3 py-2 rounded-md text-sm font-medium flex items-center">
+                  <Phone className="me-1 h-4 w-4" />
+                  اتصل بنا
+                </Link>
                 <div className="pt-4 space-y-2">
                     <Link href="/register">
                     <Button variant="secondary" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">سجّل الآن</Button>
