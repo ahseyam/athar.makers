@@ -295,7 +295,7 @@ export default function SummerCampPage() {
                     </div>
                   ))}
                 </div>
-                <div className="mt-6 pt-6 border-t">
+                <div className="mt-6 pt-6 border-t text-center">
                   <h4 className="text-xl font-headline font-semibold text-foreground mb-3">ماذا سيتعلم الطالب في الحقيبة العلمية؟</h4>
                   {selectedScientificPackageDetails ? (
                     <>
@@ -335,18 +335,18 @@ export default function SummerCampPage() {
                     </div>
                   ))}
                 </div>
-                <div className="mt-6 pt-6 border-t">
+                <div className="mt-6 pt-6 border-t text-center">
                     <h4 className="text-xl font-headline font-semibold text-foreground mb-3">تنمية شاملة مع الحقائب المهارية</h4>
                     {currentSkillPackageDetails ? (
                         <>
                             <p className="text-muted-foreground mb-2">
                                 يحصل كل طالب مسجل في حقيبة علمية على حقيبتين مهارتين مجانيتين لتنمية مهاراته الشخصية والقيادية:
                             </p>
-                            <Card className="mb-3 bg-background">
+                            <Card className="mb-3 bg-background max-w-md mx-auto">
                                 <CardHeader className="pb-2"><CardTitle className="text-lg">{currentSkillPackageDetails.bag1.name}</CardTitle></CardHeader>
                                 <CardContent><p className="text-sm text-muted-foreground"><strong>أهم المهارات:</strong> {currentSkillPackageDetails.bag1.skills.join('، ')}.</p></CardContent>
                             </Card>
-                            <Card className="mb-3 bg-background">
+                            <Card className="mb-3 bg-background max-w-md mx-auto">
                                 <CardHeader className="pb-2"><CardTitle className="text-lg">{currentSkillPackageDetails.bag2.name}</CardTitle></CardHeader>
                                 <CardContent><p className="text-sm text-muted-foreground"><strong>أهم المهارات:</strong> {currentSkillPackageDetails.bag2.skills.join('، ')}.</p></CardContent>
                             </Card>
@@ -380,17 +380,17 @@ export default function SummerCampPage() {
                     </div>
                   ))}
                 </div>
-                <div className="mt-6 pt-6 border-t">
+                <div className="mt-6 pt-6 border-t text-center">
                     <h4 className="text-xl font-headline font-semibold text-foreground mb-3">طاقة وحيوية في النشاط الرياضي الاختياري</h4>
                      {selectedGender ? (
                         <>
                         <p className="text-muted-foreground mb-2">
                             النشاط الرياضي هو جزء اختياري من المعسكر، يهدف إلى تعزيز اللياقة البدنية وروح الفريق والمرح. يمكن للطلاب اختيار رياضتهم المفضلة من بين:
                         </p>
-                        <ul className="list-disc ps-5 text-muted-foreground mb-3">
+                        <ul className="list-disc ps-5 text-muted-foreground mb-3 inline-block text-right">
                             {availableSportsDetails.map(sport => <li key={sport.name}>{sport.name} (المهارات المستهدفة: {sport.skills.join("، ")})</li>)}
                         </ul>
-                        <p className="text-sm text-muted-foreground mb-1"><Clock className="inline-block me-2 w-4 h-4 text-primary" /> <strong>خيارات المدة:</strong> 6 أيام أو 12 يومًا.</p>
+                        <p className="text-sm text-muted-foreground mb-1 clear-both"><Clock className="inline-block me-2 w-4 h-4 text-primary" /> <strong>خيارات المدة:</strong> 6 أيام أو 12 يومًا.</p>
                         <p className="text-muted-foreground">
                             يتم التدريب بإشراف مدربين متخصصين لضمان سلامة الطلاب وتقديم تجربة رياضية ممتعة ومفيدة. الأسعار تختلف حسب النشاط والمدة المختارة (انظر قسم الاختيار أعلاه).
                         </p>
