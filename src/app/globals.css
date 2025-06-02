@@ -4,91 +4,91 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%; /* Almost white, very light cool gray */
-    --foreground: 220 13% 20%; /* Slightly softer dark gray for text */
+    --background: 220 20% 97%; /* Very Light Cool Gray */
+    --foreground: 240 10% 15%; /* Dark Indigo */
 
     --card: 0 0% 100%; /* White */
-    --card-foreground: 220 13% 20%; /* Match foreground */
+    --card-foreground: 240 10% 15%; /* Dark Indigo */
 
     --popover: 0 0% 100%; /* White */
-    --popover-foreground: 220 13% 20%; /* Match foreground */
+    --popover-foreground: 240 10% 15%; /* Dark Indigo */
 
-    --primary: 170 60% 40%; /* Teal */
+    --primary: 240 50% 55%; /* Indigo */
     --primary-foreground: 0 0% 100%; /* White */
 
-    --secondary: 170 50% 90%; /* Very light teal */
-    --secondary-foreground: 170 60% 25%; /* Dark teal for text on secondary */
+    --secondary: 80 60% 90%; /* Light Lime Green */
+    --secondary-foreground: 80 60% 25%; /* Dark Lime Green */
 
-    --muted: 210 30% 94%; /* Light cool gray */
-    --muted-foreground: 210 15% 45%; /* Desaturated blue-gray */
+    --muted: 220 20% 94%; /* Light Cool Gray */
+    --muted-foreground: 220 15% 45%; /* Desaturated Blue-Gray */
 
-    --accent: 20 90% 60%; /* Coral/Orange */
-    --accent-foreground: 0 0% 100%; /* White for text on accent */
+    --accent: 330 80% 60%; /* Vibrant Pink */
+    --accent-foreground: 0 0% 100%; /* White */
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 210 20% 88%; /* Softer light gray border */
-    --input: 210 35% 95%; /* Light gray for input */
-    --ring: 170 60% 40%; /* Teal for rings */
+    --border: 220 20% 88%; /* Softer Light Gray Border */
+    --input: 220 25% 95%; /* Light Gray for Input */
+    --ring: 240 50% 55%; /* Indigo for Rings */
 
     --radius: 0.5rem;
 
     /* Sidebar specific colors */
-    --sidebar-background: 210 50% 97%; /* Very light cool gray, slightly bluer */
-    --sidebar-foreground: 220 13% 25%; /* Slightly darker text for sidebar */
-    --sidebar-primary: 170 60% 40%; /* Main primary - Teal */
+    --sidebar-background: 240 25% 98%; /* Very Light Indigo */
+    --sidebar-foreground: 240 10% 20%; /* Darker Indigo for Sidebar */
+    --sidebar-primary: 240 50% 55%; /* Main primary - Indigo */
     --sidebar-primary-foreground: 0 0% 100%; /* White */
-    --sidebar-accent: 170 50% 90%; /* Very light teal */
-    --sidebar-accent-foreground: 170 60% 25%; /* Dark teal */
-    --sidebar-border: 210 20% 88%; /* Main border */
-    --sidebar-ring: 170 60% 40%; /* Main primary - Teal */
+    --sidebar-accent: 330 70% 92%; /* Light Pink */
+    --sidebar-accent-foreground: 330 80% 30%; /* Dark Pink */
+    --sidebar-border: 220 20% 88%; /* Main border */
+    --sidebar-ring: 240 50% 55%; /* Main primary - Indigo */
 
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    --chart-1: 240 60% 60%; /* Indigo */
+    --chart-2: 330 70% 65%; /* Pink */
+    --chart-3: 80 50% 55%;  /* Lime Green */
+    --chart-4: 40 90% 60%;  /* Yellow/Orange */
+    --chart-5: 200 70% 50%; /* Cyan */
   }
 
   .dark {
-    --background: 220 15% 12%; /* Very dark desaturated blue */
-    --foreground: 210 30% 90%; /* Light cool gray for text */
+    --background: 240 10% 10%; /* Very Dark Indigo */
+    --foreground: 220 15% 85%; /* Light Cool Gray for Text */
 
-    --card: 220 15% 15%; /* Slightly darker than main bg for cards */
-    --card-foreground: 210 30% 90%; /* Match foreground */
+    --card: 240 10% 13%; /* Slightly Darker Indigo for Cards */
+    --card-foreground: 220 15% 85%; /* Match Foreground */
 
-    --popover: 220 15% 15%; /* Match card */
-    --popover-foreground: 210 30% 90%; /* Match foreground */
+    --popover: 240 10% 13%; /* Match Card */
+    --popover-foreground: 220 15% 85%; /* Match Foreground */
 
-    --primary: 170 60% 55%; /* Brighter Teal for dark mode */
-    --primary-foreground: 170 60% 10%; /* Very dark teal for text on primary */
+    --primary: 240 60% 65%; /* Brighter Indigo for Dark Mode */
+    --primary-foreground: 240 60% 10%; /* Very Dark Indigo for Text on Primary */
 
-    --secondary: 170 40% 25%; /* Dark muted teal */
-    --secondary-foreground: 170 30% 80%; /* Light teal-gray */
+    --secondary: 80 50% 30%; /* Dark Muted Lime Green */
+    --secondary-foreground: 80 40% 75%; /* Light Lime-Gray */
 
-    --muted: 220 10% 22%; /* Darker gray */
-    --muted-foreground: 210 15% 65%; /* Lighter gray for muted text */
+    --muted: 240 8% 20%; /* Darker Indigo-Gray */
+    --muted-foreground: 220 10% 60%; /* Lighter Gray for Muted Text */
 
-    --accent: 20 90% 65%; /* Brighter Coral/Orange for dark mode */
-    --accent-foreground: 20 90% 15%; /* Very dark orange for text on accent */
+    --accent: 330 80% 70%; /* Brighter Pink for Dark Mode */
+    --accent-foreground: 330 80% 15%; /* Very Dark Pink for Text on Accent */
 
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 220 10% 30%; /* Slightly lighter border for dark mode */
-    --input: 220 12% 18%; /* Dark input background */
-    --ring: 170 60% 55%; /* Brighter Teal for rings */
+    --border: 240 8% 25%; /* Slightly Lighter Border for Dark Mode */
+    --input: 240 9% 16%; /* Dark Input Background */
+    --ring: 240 60% 65%; /* Brighter Indigo for Rings */
 
     /* Sidebar specific colors for dark mode */
-    --sidebar-background: 220 15% 10%; /* Slightly darker than main dark bg */
-    --sidebar-foreground: 210 30% 92%; /* Slightly brighter text */
-    --sidebar-primary: 170 60% 55%; /* Main dark primary - Brighter Teal */
-    --sidebar-primary-foreground: 170 60% 10%; /* Very dark teal */
-    --sidebar-accent: 170 40% 22%; /* Darker muted teal */
-    --sidebar-accent-foreground: 170 30% 85%; /* Lighter teal-gray */
-    --sidebar-border: 220 10% 25%; /* Main dark border */
-    --sidebar-ring: 170 60% 55%; /* Main dark primary - Brighter Teal */
+    --sidebar-background: 240 10% 8%; /* Even Darker Indigo for Sidebar */
+    --sidebar-foreground: 220 15% 90%; /* Slightly Brighter Text */
+    --sidebar-primary: 240 60% 65%; /* Main dark primary - Brighter Indigo */
+    --sidebar-primary-foreground: 240 60% 10%; /* Very dark Indigo */
+    --sidebar-accent: 330 60% 28%; /* Darker Muted Pink */
+    --sidebar-accent-foreground: 330 50% 80%; /* Lighter Pink-Gray */
+    --sidebar-border: 240 8% 22%; /* Main dark border */
+    --sidebar-ring: 240 60% 65%; /* Main dark primary - Brighter Indigo */
   }
 }
 
