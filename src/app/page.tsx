@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle, BookOpen, Users, Target, Lightbulb, BarChart } from 'lucide-react';
+import { CheckCircle, BookOpen, Target, Lightbulb, BarChart, Sparkles } from 'lucide-react'; // Changed Users to Sparkles
 import { useState, useEffect } from 'react';
 import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
 import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
@@ -15,10 +15,10 @@ const initialProgramTracksRaw = [
     id: 'summerCamps',
     title: 'المعسكرات الصيفية والمسائية',
     description: 'برامج مكثفة تجمع بين العلم والمهارة والمرح لصناعة جيل مبدع.',
-    icon: <Users className="w-12 h-12 text-primary mb-4" />,
+    icon: <Sparkles className="w-12 h-12 text-primary mb-4" />, // Changed from Users
     link: '/courses/summer-camps',
     originalImage: 'https://placehold.co/600x400.png',
-    imageHint: 'group of diverse children happily engaged in a fun and educational summer camp activity, outdoors or in a bright classroom'
+    imageHint: 'group of diverse children happily engaged in a fun and educational summer camp activity, outdoors or in a bright classroom, focus on creativity and exploration'
   },
   {
     id: 'qiyasGat',
@@ -27,7 +27,7 @@ const initialProgramTracksRaw = [
     icon: <BarChart className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/qiyas-gat',
     originalImage: 'https://placehold.co/600x400.png',
-    imageHint: 'focused high school students studying diligently for the Qiyas (GAT) standardized test, perhaps in a modern library setting'
+    imageHint: 'focused high school students studying diligently for the Qiyas (GAT) standardized test, perhaps in a modern library setting, conveying seriousness and preparation'
   },
   {
     id: 'mawhiba',
@@ -36,7 +36,7 @@ const initialProgramTracksRaw = [
     icon: <Lightbulb className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/mawhiba',
     originalImage: 'https://placehold.co/600x400.png',
-    imageHint: 'young, bright student solving a complex puzzle or engaging in a creative thinking exercise, related to the Mawhiba giftedness test'
+    imageHint: 'young, bright student solving a complex puzzle or engaging in a creative thinking exercise, related to the Mawhiba giftedness test, conveying intelligence and innovation'
   },
   {
     id: 'tahsili',
@@ -45,7 +45,7 @@ const initialProgramTracksRaw = [
     icon: <BookOpen className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/tahsili',
     originalImage: 'https://placehold.co/600x400.png',
-    imageHint: 'Saudi Arabian high school students intensely focused on studying science subjects for the Tahsili achievement test'
+    imageHint: 'Saudi Arabian high school students intensely focused on studying science subjects (physics, chemistry, biology, math) for the Tahsili achievement test, conveying academic rigor'
   },
 ];
 
@@ -54,13 +54,13 @@ const visionMissionImages = {
     id: 'visionImage',
     originalSrc: "https://placehold.co/600x400.png",
     alt: "رؤيتنا",
-    hint: "futuristic and inspiring educational landscape, symbolizing a leading educational platform in the Arab world, with diverse learners achieving excellence",
+    hint: "futuristic and inspiring educational landscape, symbolizing a leading educational platform in the Arab world, with diverse learners achieving excellence, bright and optimistic",
   },
   mission: {
     id: 'missionImage',
     originalSrc: "https://placehold.co/600x400.png",
     alt: "رسالتنا",
-    hint: "interactive learning environment where students are engaged in hands-on activities and collaborative projects, guided by an inspiring educator, embodying deep understanding and practical application",
+    hint: "interactive learning environment where students are engaged in hands-on activities and collaborative projects, guided by an inspiring educator, embodying deep understanding and practical application, dynamic and engaging",
   }
 };
 
@@ -148,7 +148,10 @@ export default function HomePage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {programTracks.map((track) => (
-              <Card key={track.title} className="shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+              <Card 
+                key={track.title} 
+                className="shadow-lg flex flex-col transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1"
+              >
                 <CardHeader className="items-center text-center">
                   <div className="relative w-full h-48 mb-4 rounded-t-lg overflow-hidden">
                     <Image src={track.currentImage} alt={track.title} layout="fill" objectFit="cover" />
