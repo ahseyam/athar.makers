@@ -1,8 +1,7 @@
-
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Menu, Info, Phone, HomeIcon, LayoutGrid, BookMarked, Store, Briefcase, UserCheck, LogIn } from 'lucide-react';
+import { Menu, Info, Phone, HomeIcon, LayoutGrid, BookMarked, Store, Briefcase, UserCheck, LogIn, ChevronDownIcon } from 'lucide-react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import {
   DropdownMenu,
@@ -10,7 +9,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {ChevronDownIcon} from 'lucide-react';
 
 const mainNavLinks = [
   { href: '/', label: 'الرئيسية', icon: <HomeIcon className="me-1 h-4 w-4" /> },
@@ -34,16 +32,15 @@ const secondaryNavLinks = [
 export default function Header() {
   return (
     <header className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-3 flex justify-end items-center relative">
+      {/* MODIFIED: justify-between, removed relative from main container */}
+      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         
-        {/* Centered Site Title */}
-        <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <Link href="/" className="text-2xl font-headline font-bold whitespace-nowrap">
-            أكاديمية صٌنَّاع الأَثَر
-          </Link>
-        </div>
+        {/* Site Title - Now part of the main flow, on the right (RTL start) */}
+        <Link href="/" className="text-2xl font-headline font-bold whitespace-nowrap">
+          أكاديمية صٌنَّاع الأَثَر
+        </Link>
         
-        {/* Navigation elements grouped to be pushed to the left by justify-end */}
+        {/* Navigation elements grouped to the left */}
         <div className="flex items-center">
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-1 space-x-reverse">
