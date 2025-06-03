@@ -76,8 +76,8 @@ const IMAGE_GALLERY_DETAILS = {
 const EXPLORERS_BANNER_IMAGE_DETAIL = {
   id: "summer_camp_explorers_banner",
   originalSrc: imageManifest.summerCampsPage.explorersBanner_image,
-  hint: "green field",
-  alt: "حقل عشبي أخضر واسع تحت السماء",
+  hint: "vibrant abstract background",
+  alt: "خلفية مجردة ملونة لمعسكر المستكشفين الصيفي",
 };
 
 const PIONEERS_BANNER_IMAGE_DETAIL = {
@@ -204,7 +204,7 @@ export default function SummerCampPage() {
                   style={{objectFit: 'cover'}}
                   className="rounded-lg shadow-md"
                   data-ai-hint={selectedStage === 'المستكشفين' ? EXPLORERS_BANNER_IMAGE_DETAIL.hint : PIONEERS_BANNER_IMAGE_DETAIL.hint}
-                  
+                  key={selectedStage} 
                 />
               </div>
               <div className="border-b pb-6">
