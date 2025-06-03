@@ -96,14 +96,14 @@ export default function Header() {
           {mainNavLinks.map((link) => (
             <Link key={link.href} href={link.href} className="hover:bg-primary/80 hover:text-primary-foreground/90 transition-colors px-2.5 py-2 rounded-md text-sm font-medium flex items-center">
               {link.icon}
-              {link.label}
+              <span className="whitespace-nowrap">{link.label}</span>
             </Link>
           ))}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="text-primary-foreground hover:bg-primary/80 hover:text-primary-foreground/90 transition-colors px-2.5 py-2 rounded-md text-sm font-medium flex items-center">
                 <BookMarked className="me-1 h-4 w-4" />
-                البرامج التدريبية
+                <span className="whitespace-nowrap">البرامج التدريبية</span>
                 <ChevronDownIcon className="ms-1 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -120,7 +120,7 @@ export default function Header() {
           {secondaryNavLinks.map((link) => (
             <Link key={link.href} href={link.href} className="hover:bg-primary/80 hover:text-primary-foreground/90 transition-colors px-2.5 py-2 rounded-md text-sm font-medium flex items-center">
               {link.icon}
-              {link.label}
+              <span className="whitespace-nowrap">{link.label}</span>
             </Link>
           ))}
         </nav>
@@ -133,16 +133,16 @@ export default function Header() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center gap-2 p-1 rounded-full hover:bg-primary/80">
                   <UserAvatar />
-                  <span className="text-sm font-medium hidden lg:inline">{user.fullName || user.email}</span>
+                  <span className="text-sm font-medium hidden lg:inline whitespace-nowrap">{user.fullName || user.email}</span>
                   <ChevronDownIcon className="h-4 w-4 text-primary-foreground/70" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 bg-card text-card-foreground">
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{user.fullName}</p>
-                    <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
-                    <p className="text-xs leading-none text-muted-foreground">الدور: {user.role || 'مستخدم'}</p>
+                    <p className="text-sm font-medium leading-none whitespace-nowrap">{user.fullName}</p>
+                    <p className="text-xs leading-none text-muted-foreground whitespace-nowrap">{user.email}</p>
+                    <p className="text-xs leading-none text-muted-foreground whitespace-nowrap">الدور: {user.role || 'مستخدم'}</p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
@@ -165,7 +165,7 @@ export default function Header() {
                   variant="secondary"
                   className="bg-accent text-accent-foreground hover:bg-accent/90 px-4 py-2 shadow-md hover:shadow-lg transition-shadow"
                 >
-                  سجّل الآن
+                  <span className="whitespace-nowrap">سجّل الآن</span>
                 </Button>
               </Link>
               <Link href="/login">
@@ -174,7 +174,7 @@ export default function Header() {
                   className="border-secondary/70 text-secondary hover:bg-secondary/20 hover:text-secondary/90 px-4 py-2 bg-background/20 shadow-md hover:shadow-lg transition-shadow"
                 >
                   <LogIn className="me-2 h-4 w-4" />
-                  دخول
+                  <span className="whitespace-nowrap">دخول</span>
                 </Button>
               </Link>
             </>
@@ -203,15 +203,15 @@ export default function Header() {
                     className="hover:bg-primary/80 transition-colors px-3 py-2 rounded-md text-sm font-medium flex items-center"
                     >
                     {link.icon}
-                    {link.label}
+                    <span className="whitespace-nowrap">{link.label}</span>
                     </Link>
                 )
                 )}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="justify-start w-full text-primary-foreground hover:bg-primary/80 hover:text-primary-foreground px-3 py-2 text-sm font-medium">
+                    <Button variant="ghost" className="justify-start w-full text-primary-foreground hover:bg-primary/80 hover:text-primary-foreground px-3 py-2 text-sm font-medium flex items-center">
                         <BookMarked className="me-1 h-4 w-4" />
-                        البرامج التدريبية
+                        <span className="whitespace-nowrap">البرامج التدريبية</span>
                         <ChevronDownIcon className="ms-auto h-4 w-4" />
                     </Button>
                     </DropdownMenuTrigger>
@@ -219,7 +219,7 @@ export default function Header() {
                     {dropdownNavLinks.map((item) => (
                         <DropdownMenuItem key={'mobile-dd-' + item.href} asChild>
                         <Link href={item.href} className="block px-3 py-2 text-sm hover:bg-accent/10 focus:bg-accent/10">
-                            {item.label}
+                           <span className="whitespace-nowrap">{item.label}</span>
                         </Link>
                         </DropdownMenuItem>
                     ))}
@@ -232,17 +232,17 @@ export default function Header() {
                     className="hover:bg-primary/80 transition-colors px-3 py-2 rounded-md text-sm font-medium flex items-center"
                     >
                     {link.icon}
-                    {link.label}
+                    <span className="whitespace-nowrap">{link.label}</span>
                     </Link>
                 )
                 )}
                 <Link href="/about" className="hover:bg-primary/80 transition-colors px-3 py-2 rounded-md text-sm font-medium flex items-center">
                 <Info className="me-1 h-4 w-4" />
-                من نحن
+                <span className="whitespace-nowrap">من نحن</span>
                 </Link>
                 <Link href="/contact" className="hover:bg-primary/80 transition-colors px-3 py-2 rounded-md text-sm font-medium flex items-center">
                 <Phone className="me-1 h-4 w-4" />
-                اتصل بنا
+                <span className="whitespace-nowrap">اتصل بنا</span>
                 </Link>
                 <div className="pt-4 space-y-2">
                   {loading && !initialLoadComplete ? (
@@ -250,22 +250,26 @@ export default function Header() {
                   ) : user ? (
                     <>
                       <Link href={dashboardPath}>
-                        <Button variant="secondary" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">لوحة التحكم</Button>
+                        <Button variant="secondary" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+                          <span className="whitespace-nowrap">لوحة التحكم</span>
+                        </Button>
                       </Link>
                       <Button onClick={handleLogout} variant="outline" className="w-full border-secondary/70 text-secondary hover:bg-secondary/20 hover:text-secondary/90 bg-background/20">
                         <LogOut className="me-2 h-4 w-4" />
-                        تسجيل الخروج
+                        <span className="whitespace-nowrap">تسجيل الخروج</span>
                       </Button>
                     </>
                   ) : (
                     <>
                       <Link href="/register">
-                        <Button variant="secondary" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">سجّل الآن</Button>
+                        <Button variant="secondary" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+                          <span className="whitespace-nowrap">سجّل الآن</span>
+                        </Button>
                       </Link>
                       <Link href="/login">
                         <Button variant="outline" className="w-full border-secondary/70 text-secondary hover:bg-secondary/20 hover:text-secondary/90 bg-background/20">
                             <LogIn className="me-2 h-4 w-4" />
-                            دخول
+                            <span className="whitespace-nowrap">دخول</span>
                         </Button>
                       </Link>
                     </>
