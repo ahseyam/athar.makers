@@ -16,7 +16,7 @@ const programTracksData = [
     icon: <Sparkles className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/summer-camps',
     originalImage: 'https://i.imgur.com/COFjO3A.png',
-    imageHint: 'diverse children summer camp activity',
+    imageHint: 'children summer camp',
     alt: 'المعسكرات الصيفية والمسائية'
   },
   {
@@ -25,8 +25,8 @@ const programTracksData = [
     description: 'تأهيل شامل لاختبار القدرات العامة، من التأسيس وحتى الاحتراف.',
     icon: <BarChart className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/qiyas-gat',
-    originalImage: "https://i.imgur.com/HmqgSCf.png",
-    imageHint: 'Qiyas GAT test preparation student focused studying',
+    originalImage: "https://i.imgur.com/8ZsHWir.png",
+    imageHint: 'student exam preparation',
     alt: 'دورات القدرات'
   },
   {
@@ -45,8 +45,8 @@ const programTracksData = [
     description: 'مراجعة مركزة للمواد العلمية لضمان التفوق في اختبار التحصيلي.',
     icon: <BookOpen className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/tahsili',
-    originalImage: "https://images.unsplash.com/photo-1748941715828-60b74ee39b03?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    imageHint: 'طلاب يدرسون مواد علمية لتحقيق التفوق الأكاديمي',
+    originalImage: "https://i.imgur.com/8ZsHWir.png",
+    imageHint: 'student studying science',
     alt: 'دورات التحصيلي'
   },
 ];
