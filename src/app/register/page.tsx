@@ -85,6 +85,7 @@ export default function RegisterPage() {
         email: data.email,
         role: data.userType,
         createdAt: serverTimestamp(),
+        avatarUrl: `https://avatar.iran.liara.run/public/boy?username=${user.uid}` // Add default avatar on creation
       });
 
       toast({
@@ -97,12 +98,14 @@ export default function RegisterPage() {
 
     } catch (error) {
       const authError = error as AuthError;
-      console.error("Registration error:", authError);
+      console.error("Registration error:", authError.code, authError.message);
       let errorMessage = "فشل إنشاء الحساب. يرجى المحاولة مرة أخرى.";
       if (authError.code === "auth/email-already-in-use") {
-        errorMessage = "هذا البريد الإلكتروني مستخدم بالفعل.";
+        errorMessage = "هذا البريد الإلكتروني مسجل بالفعل. يرجى استخدام بريد آخر أو تسجيل الدخول.";
       } else if (authError.code === "auth/weak-password") {
         errorMessage = "كلمة المرور ضعيفة جداً. يجب أن تتكون من 6 أحرف على الأقل.";
+      } else if (authError.code === "auth/invalid-email") {
+        errorMessage = "صيغة البريد الإلكتروني غير صحيحة.";
       }
       toast({
         title: "خطأ في التسجيل",
