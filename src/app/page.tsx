@@ -69,8 +69,8 @@ const visionMissionImages = {
 const heroImageDetails = {
   id: 'heroImage',
   originalSrc: imageManifest.homePage.heroImage,
-  alt: "خلفية ترويسة أكاديمية صناع الأثر", // Updated alt text
-  hint: "platform identity abstract background", // Updated hint
+  alt: "خلفية ترويسة أكاديمية صناع الأثر",
+  hint: "platform identity abstract background",
 };
 
 
@@ -165,7 +165,7 @@ export default function HomePage() {
               <Target className="w-16 h-16 text-primary mb-4" />
               <h3 className="text-3xl font-headline font-bold text-foreground mb-4">رؤيتنا</h3>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                أن تكون منصة "صُنّاع الأثَر" منصة ريادة في الوطن العربي لتدريب الطلاب والمؤسسات نحو التميز والمنافسة محليًا وعالميًا.
+                أن تكون أكاديمية "صُنّاع الأثَر" أكاديمية ريادة في الوطن العربي لتدريب الطلاب والمؤسسات نحو التميز والمنافسة محليًا وعالميًا.
               </p>
             </div>
             <div>
