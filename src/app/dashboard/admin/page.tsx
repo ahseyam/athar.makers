@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Settings } from "lucide-react";
 
 // Ensure the function takes no props if params/searchParams are not used
-export default function AdminDashboardPage({ params }: { params: { [key: string]: string | string[] } }) {
+export default function AdminDashboardPage({}: {}) {
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="text-center mb-12">

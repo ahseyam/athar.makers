@@ -4,7 +4,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Building } from "lucide-react";
 
-export default function InstitutionDashboardPage({ params }: { params: { [key: string]: string | string[] } }) {
+export default function InstitutionDashboardPage({}: {}) {
   // params and searchParams are no longer received as props
 
   return (
