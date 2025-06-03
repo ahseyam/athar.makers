@@ -55,14 +55,14 @@ const visionMissionImages = {
   vision: {
     id: 'visionImage',
     originalSrc: imageManifest.homePage.vision_image,
-    alt: "رؤيتنا",
-    hint: "futuristic and inspiring educational landscape, symbolizing a leading educational platform in the Arab world, with diverse learners achieving excellence, bright and optimistic",
+    alt: "رؤيتنا - تصميم معماري حديث يرمز للمستقبل",
+    hint: "modern architecture",
   },
   mission: {
     id: 'missionImage',
     originalSrc: imageManifest.homePage.mission_image,
     alt: "رسالتنا - حقل أخضر يرمز للنمو",
-    hint: "green field summer",
+    hint: "green field",
   }
 };
 
