@@ -69,9 +69,9 @@ const visionMissionImages = {
 const heroImageDetails = {
   id: 'heroImage',
   originalSrc: imageManifest.homePage.heroImage,
-  alt: "صورة تعريفية لمنصة صناع الأثر",
-  hint: "platform identity",
-}
+  alt: "خلفية ترويسة أكاديمية صناع الأثر", // Updated alt text
+  hint: "platform identity abstract background", // Updated hint
+};
 
 
 export default function HomePage() {
@@ -82,28 +82,27 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col items-center">
-      <section className="w-full bg-gradient-to-b from-primary/10 via-background to-background py-20 md:py-32 text-center">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary mb-6">
+      <section className="relative w-full py-20 md:py-32 text-center overflow-hidden min-h-[60vh] md:min-h-[70vh] flex items-center justify-center">
+        <Image
+          src={heroImageUrl}
+          alt={heroImageDetails.alt}
+          layout="fill"
+          objectFit="cover"
+          className="absolute inset-0 z-0"
+          data-ai-hint={heroImageDetails.hint}
+          priority
+        />
+        <div className="absolute inset-0 bg-black/50 z-10"></div> {/* Overlay for readability */}
+        <div className="relative z-20 container mx-auto px-4">
+          <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary-foreground mb-6">
             أكاديمية صُنَّاع الأثَر
           </h1>
-          <p className="text-xl md:text-2xl text-foreground font-medium mb-8">
+          <p className="text-xl md:text-2xl text-primary-foreground/90 font-medium mb-8">
             التعليم يبدأ من الأثر.. وينتهي إلى التميّز.
           </p>
-          <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-10">
+          <p className="max-w-3xl mx-auto text-lg text-primary-foreground/80 mb-10">
             منصة سعودية تعليمية رقمية شاملة، تقدم برامج تدريبية مخصصة ومتكاملة في المهارات العلمية، الشخصية والقيادية، الاختبارات الوطنية، والاعتماد المؤسسي للمدارس.
           </p>
-          <div className="mb-10">
-            <Image
-              src={heroImageUrl}
-              alt={heroImageDetails.alt}
-              width={700}
-              height={350}
-              className="rounded-lg shadow-xl mx-auto object-cover"
-              data-ai-hint={heroImageDetails.hint}
-              priority
-            />
-          </div>
           <div className="space-x-4 space-x-reverse">
             <Link href="/courses/summer-camps">
               <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
@@ -111,7 +110,7 @@ export default function HomePage() {
               </Button>
             </Link>
             <Link href="/register">
-              <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/5">
+              <Button size="lg" variant="outline" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10">
                 سجّل الآن
               </Button>
             </Link>
@@ -220,3 +219,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+    
