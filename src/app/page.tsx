@@ -61,8 +61,8 @@ const visionMissionImages = {
   mission: {
     id: 'missionImage',
     originalSrc: imageManifest.homePage.mission_image,
-    alt: "رسالتنا - حقل أخضر يرمز للنمو",
-    hint: "green field",
+    alt: "رسالتنا - منظر طبيعي مع طريق جبلي يرمز إلى رحلتنا وأهدافنا",
+    hint: "mountain path",
   }
 };
 
