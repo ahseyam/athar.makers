@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { UserPlus, LogIn, Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -33,6 +33,24 @@ const registrationSchema = z.object({
 
 type RegistrationFormValues = z.infer<typeof registrationSchema>;
 
+const getDashboardPathForRole = (role: string): string => {
+  switch (role) {
+    case "طالب":
+      return "/dashboard/student";
+    case "ولي أمر":
+      return "/dashboard/parent";
+    case "معلم":
+      return "/dashboard/trainer";
+    case "جهة تعليمية":
+      return "/dashboard/institution";
+    // Add cases for admin or other roles if they become self-registerable
+    // case "مدير منصة":
+    //   return "/dashboard/admin";
+    default:
+      return "/dashboard/student"; // Fallback
+  }
+};
+
 export default function RegisterPage() {
   const { toast } = useToast();
   const router = useRouter();
@@ -57,20 +75,22 @@ export default function RegisterPage() {
       const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
       const user = userCredential.user;
 
-      // Store additional user info in Firestore
       await setDoc(doc(db, "users", user.uid), {
         authUid: user.uid,
         fullName: data.fullName,
         email: data.email,
         role: data.userType,
-        createdAt: serverTimestamp(), // Use server timestamp for consistency
+        createdAt: serverTimestamp(),
       });
 
       toast({
         title: "تم التسجيل بنجاح!",
         description: "مرحباً بك! سيتم توجيهك إلى لوحة التحكم.",
       });
-      router.push("/dashboard/student"); // Redirect to dashboard
+      
+      const dashboardPath = getDashboardPathForRole(data.userType);
+      router.push(dashboardPath);
+
     } catch (error) {
       const authError = error as AuthError;
       console.error("Registration error:", authError);

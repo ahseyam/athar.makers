@@ -36,6 +36,24 @@ const secondaryNavLinks = [
   { href: '/trainers/apply', label: 'انضم كمدرب', icon: <UserCheck className="me-1 h-4 w-4" /> },
 ];
 
+const getDashboardPathForRole = (role: string | undefined): string => {
+  if (!role) return "/dashboard/student"; // Default if role is undefined
+  switch (role) {
+    case "طالب":
+      return "/dashboard/student";
+    case "ولي أمر":
+      return "/dashboard/parent";
+    case "معلم":
+      return "/dashboard/trainer";
+    case "جهة تعليمية":
+      return "/dashboard/institution";
+    case "مدير منصة": // This role needs to be assignable
+      return "/dashboard/admin";
+    default:
+      return "/dashboard/student";
+  }
+};
+
 
 export default function Header() {
   const { user, loading, initialLoadComplete } = useAuth();
@@ -44,10 +62,9 @@ export default function Header() {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      router.push('/'); // Redirect to homepage after logout
+      router.push('/'); 
     } catch (error) {
       console.error("Logout error:", error);
-      // Handle logout error, maybe show a toast
     }
   };
   
@@ -61,6 +78,8 @@ export default function Header() {
       </Avatar>
     );
   };
+
+  const dashboardPath = user ? getDashboardPathForRole(user.role) : '/login';
 
 
   return (
@@ -124,7 +143,7 @@ export default function Header() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link href="/dashboard/student">
+                  <Link href={dashboardPath}>
                     <LayoutGrid className="me-2 h-4 w-4" />
                     لوحة التحكم
                   </Link>
@@ -226,7 +245,7 @@ export default function Header() {
                      <Button variant="outline" className="w-full" disabled><Loader2 className="animate-spin" /> جاري التحميل...</Button>
                   ) : user ? (
                     <>
-                      <Link href="/dashboard/student">
+                      <Link href={dashboardPath}>
                         <Button variant="secondary" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">لوحة التحكم</Button>
                       </Link>
                       <Button onClick={handleLogout} variant="outline" className="w-full border-secondary/70 text-secondary hover:bg-secondary/20 hover:text-secondary/90 bg-background/20">

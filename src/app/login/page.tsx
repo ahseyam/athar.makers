@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LogIn, Mail, Lock, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -15,7 +15,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { signInWithEmailAndPassword, type AuthError } from "firebase/auth";
-import { auth } from "@/lib/firebase/config";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "@/lib/firebase/config";
 import imageManifest from '@/config/image-manifest.json';
 
 const loginSchema = z.object({
@@ -24,6 +25,24 @@ const loginSchema = z.object({
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
+
+const getDashboardPathForRole = (role: string | undefined): string => {
+  if (!role) return "/dashboard/student"; // Default if role is undefined
+  switch (role) {
+    case "طالب":
+      return "/dashboard/student";
+    case "ولي أمر":
+      return "/dashboard/parent";
+    case "معلم":
+      return "/dashboard/trainer";
+    case "جهة تعليمية":
+      return "/dashboard/institution";
+    case "مدير منصة": // Assuming admin role might exist
+      return "/dashboard/admin";
+    default:
+      return "/dashboard/student";
+  }
+};
 
 export default function LoginPage() {
   const { toast } = useToast();
@@ -43,12 +62,26 @@ export default function LoginPage() {
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     setIsLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, data.email, data.password);
+      const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
+      const firebaseUser = userCredential.user;
+
+      let userRoleFromFirestore = 'طالب'; // Default role
+      if (firebaseUser) {
+        const userDocRef = doc(db, 'users', firebaseUser.uid);
+        const userDocSnap = await getDoc(userDocRef);
+        if (userDocSnap.exists()) {
+          userRoleFromFirestore = userDocSnap.data()?.role || 'طالب';
+        }
+      }
+      
       toast({
         title: "تم تسجيل الدخول بنجاح!",
         description: "مرحباً بعودتك. سيتم توجيهك إلى لوحة التحكم.",
       });
-      router.push("/dashboard/student"); // Redirect to dashboard
+
+      const dashboardPath = getDashboardPathForRole(userRoleFromFirestore);
+      router.push(dashboardPath);
+
     } catch (error) {
       const authError = error as AuthError;
       console.error("Login error:", authError);
