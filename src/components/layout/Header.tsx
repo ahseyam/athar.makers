@@ -37,7 +37,7 @@ const secondaryNavLinks = [
 ];
 
 const getDashboardPathForRole = (role: string | undefined): string => {
-  if (!role) return "/dashboard/student"; // Default if role is undefined
+  if (!role) return "/dashboard/student"; 
   switch (role) {
     case "طالب":
       return "/dashboard/student";
@@ -47,8 +47,12 @@ const getDashboardPathForRole = (role: string | undefined): string => {
       return "/dashboard/trainer";
     case "جهة تعليمية":
       return "/dashboard/institution";
-    case "مدير منصة": // This role needs to be assignable
+    case "مدير منصة":
       return "/dashboard/admin";
+    case "المشرف الأكاديمي":
+      return "/dashboard/admin"; 
+    case "المحاسب":
+      return "/dashboard/admin"; 
     default:
       return "/dashboard/student";
   }

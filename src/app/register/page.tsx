@@ -33,7 +33,8 @@ const registrationSchema = z.object({
 
 type RegistrationFormValues = z.infer<typeof registrationSchema>;
 
-const getDashboardPathForRole = (role: string): string => {
+const getDashboardPathForRole = (role: string | undefined): string => {
+  if (!role) return "/dashboard/student"; 
   switch (role) {
     case "طالب":
       return "/dashboard/student";
@@ -43,11 +44,14 @@ const getDashboardPathForRole = (role: string): string => {
       return "/dashboard/trainer";
     case "جهة تعليمية":
       return "/dashboard/institution";
-    // Add cases for admin or other roles if they become self-registerable
-    // case "مدير منصة":
-    //   return "/dashboard/admin";
+    case "مدير منصة":
+      return "/dashboard/admin";
+    case "المشرف الأكاديمي":
+      return "/dashboard/admin"; 
+    case "المحاسب":
+      return "/dashboard/admin"; 
     default:
-      return "/dashboard/student"; // Fallback
+      return "/dashboard/student";
   }
 };
 

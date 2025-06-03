@@ -37,8 +37,12 @@ const getDashboardPathForRole = (role: string | undefined): string => {
       return "/dashboard/trainer";
     case "جهة تعليمية":
       return "/dashboard/institution";
-    case "مدير منصة": // Assuming admin role might exist
+    case "مدير منصة":
       return "/dashboard/admin";
+    case "المشرف الأكاديمي": // New Role
+      return "/dashboard/admin"; // Temporary: Map to admin dashboard
+    case "المحاسب": // New Role
+      return "/dashboard/admin"; // Temporary: Map to admin dashboard
     default:
       return "/dashboard/student";
   }
