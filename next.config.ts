@@ -1,3 +1,4 @@
+
 // Removed: import type { NextConfig } from 'next';
 
 const nextConfig = {
@@ -12,7 +13,7 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'placehold.co',
-        pathname: '/**', // port removed as it's often optional
+        pathname: '/**', // port removed
       },
       {
         protocol: 'https',
