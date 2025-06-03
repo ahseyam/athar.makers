@@ -35,7 +35,7 @@ const programTracksData = [
     description: 'اكتشف قدراتك العقلية المتعددة واستعد بثقة لاختبار موهبة.',
     icon: <Lightbulb className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/mawhiba',
-    originalImage: imageManifest.homePage.programTracks_mawhiba_image,
+    originalImage: "https://images.unsplash.com/photo-1748941709930-3b2feeef718d?q=80&w=2589&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     imageHint: 'student critical thinking puzzle',
     alt: 'مقياس موهبة'
   },
@@ -45,7 +45,7 @@ const programTracksData = [
     description: 'مراجعة مركزة للمواد العلمية لضمان التفوق في اختبار التحصيلي.',
     icon: <BookOpen className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/tahsili',
-    originalImage: imageManifest.homePage.programTracks_tahsili_image,
+    originalImage: "https://images.unsplash.com/photo-1748941715828-60b74ee39b03?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     imageHint: 'students studying science academic achievement',
     alt: 'دورات التحصيلي'
   },
@@ -66,42 +66,32 @@ const visionMissionImages = {
   }
 };
 
+// Hero image is no longer used as a background, its details are less critical here
+// but kept for potential future use if a banner-style image is re-introduced.
 const heroImageDetails = {
   id: 'heroImage',
-  originalSrc: imageManifest.homePage.heroImage,
-  alt: "خلفية مجردة عصرية لأكاديمية صناع الأثر",
-  hint: "abstract background design",
+  originalSrc: imageManifest.homePage.heroImage, // This will point to the imgur link or placeholder
+  alt: "الخلفية الرئيسية لأكاديمية صناع الأثر",
+  hint: "abstract background design", // Or a more generic hint if it's just a placeholder
 };
 
 
 export default function HomePage() {
   const visionImageUrl = visionMissionImages.vision.originalSrc;
   const missionImageUrl = visionMissionImages.mission.originalSrc;
-  const heroImageUrl = heroImageDetails.originalSrc;
-
+  // const heroImageUrl = heroImageDetails.originalSrc; // No longer directly used for a separate image element or background
 
   return (
     <div className="flex flex-col items-center">
-      <section className="relative w-full py-20 md:py-28 flex items-center justify-center text-center min-h-[70vh] md:min-h-[80vh] overflow-hidden">
-        <Image
-          src={heroImageUrl}
-          alt={heroImageDetails.alt}
-          layout="fill"
-          objectFit="cover"
-          className="absolute inset-0 z-0"
-          data-ai-hint={heroImageDetails.hint}
-          priority
-        />
-        <div className="absolute inset-0 bg-primary/70 z-10"></div> {/* Overlay */}
-        
-        <div className="relative z-20 container mx-auto px-4 flex flex-col items-center">
-          <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary-foreground mb-6">
+      <section className="w-full py-20 md:py-28 flex items-center justify-center text-center min-h-[auto] md:min-h-[auto] bg-background"> {/* Removed min-heights related to background image, adjusted background */}
+        <div className="container mx-auto px-4 flex flex-col items-center">
+          <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary mb-6"> {/* Changed text color */}
             أكاديمية صُنَّاع الأثَر
           </h1>
-          <p className="text-xl md:text-2xl text-primary-foreground/90 font-medium mb-8 max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl text-foreground font-medium mb-8 max-w-3xl mx-auto"> {/* Changed text color */}
             التعليم يبدأ من الأثر.. وينتهي إلى التميّز.
           </p>
-          <p className="max-w-3xl mx-auto text-lg text-primary-foreground/80 mb-10">
+          <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-10"> {/* Changed text color */}
             أكاديمية سعودية تعليمية رقمية شاملة، تقدم برامج تدريبية مخصصة ومتكاملة في المهارات العلمية، الشخصية والقيادية، الاختبارات الوطنية، والاعتماد المؤسسي للمدارس.
           </p>
           <div className="space-x-4 space-x-reverse">
@@ -111,7 +101,7 @@ export default function HomePage() {
               </Button>
             </Link>
             <Link href="/register">
-              <Button size="lg" variant="outline" className="border-primary-foreground/50 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground">
+              <Button size="lg" variant="outline"> {/* Reverted to default outline */}
                 سجّل الآن
               </Button>
             </Link>
