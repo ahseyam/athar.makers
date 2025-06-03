@@ -61,8 +61,8 @@ const visionMissionImages = {
   mission: {
     id: 'missionImage',
     originalSrc: imageManifest.homePage.mission_image,
-    alt: "رسالتنا",
-    hint: "interactive learning environment where students are engaged in hands-on activities and collaborative projects, guided by an inspiring educator, embodying deep understanding and practical application, dynamic and engaging",
+    alt: "رسالتنا - حقل أخضر يرمز للنمو",
+    hint: "green field summer",
   }
 };
 
