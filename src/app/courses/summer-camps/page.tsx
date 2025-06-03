@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { AlertCircle, Check, Sparkles, Brain, Rocket, Dumbbell, Info, ShoppingCart, Clock, TargetIcon, Users } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-// import { generateImageFromHint } from '@/ai/flows/image-generator-flow'; // Commented out as we'll use placeholders for gallery
+// import { generateImageFromHint } from '@/ai/flows/image-generator-flow'; // Commented out
 // import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants'; // Commented out
 
 const scientificPackages = [
@@ -74,6 +74,20 @@ const IMAGE_GALLERY_DETAILS = {
   ],
 };
 
+const EXPLORERS_BANNER_IMAGE_DETAIL = {
+  id: "summer_camp_explorers_banner",
+  originalSrc: "https://placehold.co/1200x400.png",
+  hint: "children exploring",
+  alt: "طلاب المستكشفين في معسكر صيفي",
+};
+
+const PIONEERS_BANNER_IMAGE_DETAIL = {
+  id: "summer_camp_pioneers_banner",
+  originalSrc: "https://placehold.co/1200x400.png",
+  hint: "teenagers robotics",
+  alt: "طلاب الرواد في معسكر صيفي تكنولوجي",
+};
+
 
 export default function SummerCampPage() {
   const [selectedGender, setSelectedGender] = useState<Gender | undefined>(undefined);
@@ -82,11 +96,6 @@ export default function SummerCampPage() {
   const [selectedSport, setSelectedSport] = useState<string | undefined>(undefined);
   const [sportDuration, setSportDuration] = useState<'6' | '12' | undefined>(undefined);
   const [totalPrice, setTotalPrice] = useState(0);
-
-  // Removed state for dynamic gallery images; will use originalSrc directly
-  // const [scientificGalleryImages, setScientificGalleryImages] = useState<string[]>(IMAGE_GALLERY_DETAILS.scientific.map(img => img.originalSrc));
-  // const [skillGalleryImages, setSkillGalleryImages] = useState<string[]>(IMAGE_GALLERY_DETAILS.skill.map(img => img.originalSrc));
-  // const [sportsGalleryImages, setSportsGalleryImages] = useState<string[]>(IMAGE_GALLERY_DETAILS.sports.map(img => img.originalSrc));
 
   const filteredScientificPackages = scientificPackages.filter(pkg => !selectedStage || pkg.category === selectedStage);
   const currentSkillPackageDetails = selectedStage ? skillPackagesData[selectedStage] : undefined;
@@ -107,11 +116,6 @@ export default function SummerCampPage() {
     }
     setTotalPrice(currentTotal);
   }, [selectedScientificPackageId, selectedSport, sportDuration, selectedScientificPackageDetails, selectedSportDetails]); 
-
-  // Removed useEffect for loading gallery images dynamically
-  // useEffect(() => {
-  //   // ... dynamic loading logic was here ...
-  // }, []);
 
 
   return (
@@ -158,21 +162,49 @@ export default function SummerCampPage() {
 
           
           {selectedStage && (
-            <div className="border-b pb-6">
-              <Label className="text-lg font-semibold mb-4 block"><Rocket className="inline-block me-2 w-5 h-5 text-primary" />3. اختر الحقيبة العلمية:</Label>
-              <RadioGroup value={selectedScientificPackageId} onValueChange={setSelectedScientificPackageId} className="space-y-2">
-                {filteredScientificPackages.map(pkg => (
-                  <Label key={pkg.id} htmlFor={pkg.id} className="flex items-center p-4 border rounded-lg hover:bg-muted cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
-                    <RadioGroupItem value={pkg.id} id={pkg.id} className="me-3" />
-                    <div className="flex-grow">
-                      <span className="font-semibold block">{pkg.name}</span>
-                      <span className="text-sm text-muted-foreground">{pkg.description}</span>
-                    </div>
-                    <Badge variant="secondary" className="ms-auto">{pkg.price} ريال</Badge>
-                  </Label>
-                ))}
-              </RadioGroup>
-            </div>
+            <>
+              {selectedStage === 'المستكشفين' && (
+                <div className="mb-8">
+                  <Image
+                    src={EXPLORERS_BANNER_IMAGE_DETAIL.originalSrc}
+                    alt={EXPLORERS_BANNER_IMAGE_DETAIL.alt}
+                    width={1200}
+                    height={400}
+                    className="rounded-lg shadow-md w-full object-cover"
+                    data-ai-hint={EXPLORERS_BANNER_IMAGE_DETAIL.hint}
+                    priority
+                  />
+                </div>
+              )}
+              {selectedStage === 'الروّاد' && (
+                <div className="mb-8">
+                  <Image
+                    src={PIONEERS_BANNER_IMAGE_DETAIL.originalSrc}
+                    alt={PIONEERS_BANNER_IMAGE_DETAIL.alt}
+                    width={1200}
+                    height={400}
+                    className="rounded-lg shadow-md w-full object-cover"
+                    data-ai-hint={PIONEERS_BANNER_IMAGE_DETAIL.hint}
+                    priority
+                  />
+                </div>
+              )}
+              <div className="border-b pb-6">
+                <Label className="text-lg font-semibold mb-4 block"><Rocket className="inline-block me-2 w-5 h-5 text-primary" />3. اختر الحقيبة العلمية:</Label>
+                <RadioGroup value={selectedScientificPackageId} onValueChange={setSelectedScientificPackageId} className="space-y-2">
+                  {filteredScientificPackages.map(pkg => (
+                    <Label key={pkg.id} htmlFor={pkg.id} className="flex items-center p-4 border rounded-lg hover:bg-muted cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
+                      <RadioGroupItem value={pkg.id} id={pkg.id} className="me-3" />
+                      <div className="flex-grow">
+                        <span className="font-semibold block">{pkg.name}</span>
+                        <span className="text-sm text-muted-foreground">{pkg.description}</span>
+                      </div>
+                      <Badge variant="secondary" className="ms-auto">{pkg.price} ريال</Badge>
+                    </Label>
+                  ))}
+                </RadioGroup>
+              </div>
+            </>
           )}
           
           
@@ -395,3 +427,4 @@ export default function SummerCampPage() {
     </div>
   );
 }
+
