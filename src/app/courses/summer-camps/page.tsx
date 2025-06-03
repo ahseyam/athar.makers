@@ -74,14 +74,14 @@ const IMAGE_GALLERY_DETAILS = {
 
 const EXPLORERS_BANNER_IMAGE_DETAIL = {
   id: "summer_camp_explorers_banner",
-  originalSrc: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxjaGlsZHJlbiUyMGV4cGxvcmluZyUyMG5hdHVyZSUyMHNjaWVuY2UlMjBzdW1tZXIlMjBjYW1wfGVufDB8fHx8MTc0ODkzOTEyOXww&ixlib=rb-4.1.0&q=80&w=1080",
-  hint: "children exploring nature science summer camp",
-  alt: "طلاب المستكشفين في معسكر صيفي",
+  originalSrc: "https://images.unsplash.com/photo-1503785640985-22b8febf3957",
+  hint: "children grass circle summer camp",
+  alt: "طلاب المستكشفين يجلسون في حلقة على العشب خلال نشاط في المعسكر الصيفي",
 };
 
 const PIONEERS_BANNER_IMAGE_DETAIL = {
   id: "summer_camp_pioneers_banner",
-  originalSrc: "https://placehold.co/1200x400.png", // This one was not requested to be changed
+  originalSrc: "https://placehold.co/1200x400.png",
   hint: "teenagers robotics coding technology camp",
   alt: "طلاب الرواد في معسكر صيفي تكنولوجي",
 };
@@ -146,7 +146,7 @@ export default function SummerCampPage() {
             src={HEADER_BACKGROUND_IMAGE_DETAIL.originalSrc}
             alt={HEADER_BACKGROUND_IMAGE_DETAIL.alt}
             layout="fill"
-            objectFit="cover"
+            style={{objectFit: 'cover'}}
             className="z-0"
             data-ai-hint={HEADER_BACKGROUND_IMAGE_DETAIL.hint}
             priority
@@ -200,7 +200,7 @@ export default function SummerCampPage() {
                   src={selectedStage === 'المستكشفين' ? EXPLORERS_BANNER_IMAGE_DETAIL.originalSrc : PIONEERS_BANNER_IMAGE_DETAIL.originalSrc}
                   alt={selectedStage === 'المستكشفين' ? EXPLORERS_BANNER_IMAGE_DETAIL.alt : PIONEERS_BANNER_IMAGE_DETAIL.alt}
                   layout="fill"
-                  objectFit="cover"
+                  style={{objectFit: 'cover'}}
                   className="rounded-lg shadow-md"
                   data-ai-hint={selectedStage === 'المستكشفين' ? EXPLORERS_BANNER_IMAGE_DETAIL.hint : PIONEERS_BANNER_IMAGE_DETAIL.hint}
                   priority
@@ -308,7 +308,8 @@ export default function SummerCampPage() {
                         alt={imgDetail.alt}
                         width={250}
                         height={180}
-                        className="w-full h-full object-cover"
+                        style={{objectFit: 'cover'}}
+                        className="w-full h-full"
                         data-ai-hint={imgDetail.hint}
                       />
                     </div>
@@ -349,7 +350,8 @@ export default function SummerCampPage() {
                             alt={imgDetail.alt}
                             width={250}
                             height={180}
-                            className="w-full h-full object-cover"
+                            style={{objectFit: 'cover'}}
+                            className="w-full h-full"
                             data-ai-hint={imgDetail.hint}
                         />
                     </div>
@@ -395,7 +397,8 @@ export default function SummerCampPage() {
                             alt={imgDetail.alt}
                             width={250}
                             height={180}
-                            className="w-full h-full object-cover"
+                            style={{objectFit: 'cover'}}
+                            className="w-full h-full"
                             data-ai-hint={imgDetail.hint}
                         />
                     </div>
