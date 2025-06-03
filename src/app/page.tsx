@@ -69,8 +69,8 @@ const visionMissionImages = {
 const heroImageDetails = {
   id: 'heroImage',
   originalSrc: imageManifest.homePage.heroImage,
-  alt: "خلفية ترويسة أكاديمية صناع الأثر",
-  hint: "platform identity abstract background",
+  alt: "صورة تعريفية بأكاديمية صناع الأثر",
+  hint: "platform identity educational elements",
 };
 
 
@@ -82,27 +82,28 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col items-center">
-      <section className="relative w-full py-20 md:py-32 text-center overflow-hidden min-h-[60vh] md:min-h-[70vh] flex items-center justify-center">
-        <Image
-          src={heroImageUrl}
-          alt={heroImageDetails.alt}
-          layout="fill"
-          objectFit="cover"
-          className="absolute inset-0 z-0"
-          data-ai-hint={heroImageDetails.hint}
-          priority
-        />
-        <div className="absolute inset-0 bg-black/50 z-10"></div> {/* Overlay for readability */}
-        <div className="relative z-20 container mx-auto px-4">
-          <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary-foreground mb-6">
+      <section className="w-full py-20 md:py-28 text-center bg-background">
+        <div className="container mx-auto px-4">
+          <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary mb-6">
             أكاديمية صُنَّاع الأثَر
           </h1>
-          <p className="text-xl md:text-2xl text-primary-foreground/90 font-medium mb-8">
+          <p className="text-xl md:text-2xl text-foreground font-medium mb-8">
             التعليم يبدأ من الأثر.. وينتهي إلى التميّز.
           </p>
-          <p className="max-w-3xl mx-auto text-lg text-primary-foreground/80 mb-10">
+          <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-10">
             منصة سعودية تعليمية رقمية شاملة، تقدم برامج تدريبية مخصصة ومتكاملة في المهارات العلمية، الشخصية والقيادية، الاختبارات الوطنية، والاعتماد المؤسسي للمدارس.
           </p>
+          <div className="my-8 md:my-12 flex justify-center">
+            <Image
+              src={heroImageUrl}
+              alt={heroImageDetails.alt}
+              width={1200}
+              height={500}
+              className="rounded-lg shadow-xl object-contain max-w-full h-auto"
+              data-ai-hint={heroImageDetails.hint}
+              priority
+            />
+          </div>
           <div className="space-x-4 space-x-reverse">
             <Link href="/courses/summer-camps">
               <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
@@ -110,7 +111,7 @@ export default function HomePage() {
               </Button>
             </Link>
             <Link href="/register">
-              <Button size="lg" variant="outline" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10">
+              <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/5">
                 سجّل الآن
               </Button>
             </Link>
@@ -118,7 +119,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-16 w-full bg-background">
+      <section className="py-16 w-full bg-muted">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-headline font-bold text-center text-foreground mb-12">
             مساراتنا التدريبية
@@ -127,7 +128,7 @@ export default function HomePage() {
             {programTracksData.map((track) => (
               <Card 
                 key={track.id} 
-                className="shadow-lg flex flex-col transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1"
+                className="shadow-lg flex flex-col transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 bg-card"
               >
                 <CardHeader className="items-center text-center">
                   <div className="relative w-full h-48 mb-4 rounded-t-lg overflow-hidden">
@@ -140,7 +141,7 @@ export default function HomePage() {
                     />
                   </div>
                   {track.icon}
-                  <CardTitle className="font-headline text-xl">{track.title}</CardTitle>
+                  <CardTitle className="font-headline text-xl text-card-foreground">{track.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="flex-grow text-center">
                   <CardDescription className="text-muted-foreground mb-4">{track.description}</CardDescription>
@@ -158,7 +159,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-16 bg-muted w-full">
+      <section className="py-16 bg-background w-full">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
@@ -201,7 +202,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-20 bg-background w-full text-center">
+      <section className="py-20 bg-muted w-full text-center">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-headline font-bold text-foreground mb-6">
             مستعد لتبدأ رحلة الأثر والتميز؟
