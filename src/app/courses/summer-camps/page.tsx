@@ -12,8 +12,6 @@ import { Badge } from '@/components/ui/badge';
 import { AlertCircle, Check, Sparkles, Brain, Rocket, Dumbbell, Info, ShoppingCart, Clock, TargetIcon, Users } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-// import { generateImageFromHint } from '@/ai/flows/image-generator-flow'; // Commented out
-// import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants'; // Commented out
 
 const scientificPackages = [
   { id: 'inventor', name: 'كُن مخترعًا', category: 'المستكشفين', description: 'تجارب وابتكارات مبنية على أدوات من البيئة', price: 750, duration: "12 يومًا", dailyTime: "90 دقيقة/يوم", skills: ["التفكير الإبداعي", "حل المشكلات", "الاستكشاف العلمي", "استخدام الأدوات البسيطة"] },
@@ -23,11 +21,11 @@ const scientificPackages = [
 ];
 
 const skillPackagesData = {
-  المستكشفين: { 
+  المستكشفين: {
     bag1: { name: 'قوة التأثير – صانع الأثر', skills: ["الثقة بالنفس", "التعبير عن الذات", "مهارات التواصل الأساسية"] },
-    bag2: { name: 'ألوان الحكاية – 1', skills: ["أساسيات القصة", "تنمية الخيال", "التعبير اللفظي والإبداعي"] } 
+    bag2: { name: 'ألوان الحكاية – 1', skills: ["أساسيات القصة", "تنمية الخيال", "التعبير اللفظي والإبداعي"] }
   },
-  الروّاد: { 
+  الروّاد: {
     bag1: { name: 'روّاد التأثير – قيادة المواقف', skills: ["مهارات القيادة", "اتخاذ القرار", "التأثير الإيجابي في الآخرين"] },
     bag2: { name: 'ألوان الحكاية – 2', skills: ["كتابة القصة المتقدمة", "بناء الشخصيات", "السرد القصصي الجذاب"] }
   },
@@ -58,33 +56,33 @@ interface GalleryImageDetail {
 
 const IMAGE_GALLERY_DETAILS = {
   scientific: [
-    { id: 'sci_img1', originalSrc: 'https://placehold.co/250x180.png', hint: 'diverse group of elementary students excitedly conducting a colorful chemistry experiment in a bright classroom', alt: 'طلاب يقومون بتجربة علمية' },
-    { id: 'sci_img2', originalSrc: 'https://placehold.co/250x180.png', hint: 'middle school students collaboratively building and programming a small robot with a kit', alt: 'طلاب يبنون روبوت' },
-    { id: 'sci_img3', originalSrc: 'https://placehold.co/250x180.png', hint: 'children looking through microscopes with focused expressions in a science lab setting', alt: 'طلاب يستخدمون المجهر' },
+    { id: 'sci_img1', originalSrc: 'https://placehold.co/250x180.png', hint: 'diverse group elementary students excitedly conducting colorful chemistry experiment bright classroom', alt: 'طلاب يقومون بتجربة علمية' },
+    { id: 'sci_img2', originalSrc: 'https://placehold.co/250x180.png', hint: 'middle school students collaboratively building programming small robot kit', alt: 'طلاب يبنون روبوت' },
+    { id: 'sci_img3', originalSrc: 'https://placehold.co/250x180.png', hint: 'children looking through microscopes focused expressions science lab setting', alt: 'طلاب يستخدمون المجهر' },
   ],
   skill: [
-    { id: 'skill_img1', originalSrc: 'https://placehold.co/250x180.png', hint: 'young student confidently giving a presentation to peers in a supportive classroom environment', alt: 'طالب يلقي عرضًا تقديميًا' },
-    { id: 'skill_img2', originalSrc: 'https://placehold.co/250x180.png', hint: 'group of students engaged in a creative storytelling or drama workshop, expressing themselves', alt: 'طلاب في ورشة عمل مهارية' },
-    { id: 'skill_img3', originalSrc: 'https://placehold.co/250x180.png', hint: 'children participating in a team-building activity, showing collaboration and problem-solving', alt: 'طلاب في نشاط جماعي مهاري' },
+    { id: 'skill_img1', originalSrc: 'https://placehold.co/250x180.png', hint: 'young student confidently giving presentation peers supportive classroom environment', alt: 'طالب يلقي عرضًا تقديميًا' },
+    { id: 'skill_img2', originalSrc: 'https://placehold.co/250x180.png', hint: 'group students engaged creative storytelling drama workshop expressing themselves', alt: 'طلاب في ورشة عمل مهارية' },
+    { id: 'skill_img3', originalSrc: 'https://placehold.co/250x180.png', hint: 'children participating team-building activity showing collaboration problem-solving', alt: 'طلاب في نشاط جماعي مهاري' },
   ],
   sports: [
-    { id: 'sport_img1', originalSrc: 'https://placehold.co/250x180.png', hint: 'boys joyfully playing a soccer match on a green field during a summer camp', alt: 'أولاد يلعبون كرة القدم' },
-    { id: 'sport_img2', originalSrc: 'https://placehold.co/250x180.png', hint: 'girls practicing gymnastics routines in a well-equipped gymnasium with instructor guidance', alt: 'بنات يمارسن الجمباز' },
-    { id: 'sport_img3', originalSrc: 'https://placehold.co/250x180.png', hint: 'children learning to swim in a pool with a swimming instructor during a sports activity', alt: 'أطفال يتعلمون السباحة' },
+    { id: 'sport_img1', originalSrc: 'https://placehold.co/250x180.png', hint: 'boys joyfully playing soccer match green field summer camp', alt: 'أولاد يلعبون كرة القدم' },
+    { id: 'sport_img2', originalSrc: 'https://placehold.co/250x180.png', hint: 'girls practicing gymnastics routines well-equipped gymnasium instructor guidance', alt: 'بنات يمارسن الجمباز' },
+    { id: 'sport_img3', originalSrc: 'https://placehold.co/250x180.png', hint: 'children learning swim pool swimming instructor sports activity', alt: 'أطفال يتعلمون السباحة' },
   ],
 };
 
 const EXPLORERS_BANNER_IMAGE_DETAIL = {
   id: "summer_camp_explorers_banner",
   originalSrc: "https://placehold.co/1200x400.png",
-  hint: "children exploring",
+  hint: "children exploring nature science summer camp",
   alt: "طلاب المستكشفين في معسكر صيفي",
 };
 
 const PIONEERS_BANNER_IMAGE_DETAIL = {
   id: "summer_camp_pioneers_banner",
   originalSrc: "https://placehold.co/1200x400.png",
-  hint: "teenagers robotics",
+  hint: "teenagers robotics coding technology camp",
   alt: "طلاب الرواد في معسكر صيفي تكنولوجي",
 };
 
@@ -100,7 +98,7 @@ export default function SummerCampPage() {
   const filteredScientificPackages = scientificPackages.filter(pkg => !selectedStage || pkg.category === selectedStage);
   const currentSkillPackageDetails = selectedStage ? skillPackagesData[selectedStage] : undefined;
   const availableSportsDetails = selectedGender ? sportsActivitiesData[selectedGender] : [];
-  
+
   const selectedScientificPackageDetails = scientificPackages.find(p => p.id === selectedScientificPackageId);
   const selectedSportDetails = availableSportsDetails.find(s => s.name === selectedSport);
 
@@ -115,7 +113,26 @@ export default function SummerCampPage() {
       currentTotal += sportDuration === '6' ? selectedSportDetails.price6 : selectedSportDetails.price12;
     }
     setTotalPrice(currentTotal);
-  }, [selectedScientificPackageId, selectedSport, sportDuration, selectedScientificPackageDetails, selectedSportDetails]); 
+  }, [selectedScientificPackageId, selectedSport, sportDuration, selectedScientificPackageDetails, selectedSportDetails]);
+
+  const getRegistrationLink = () => {
+    if (!selectedScientificPackageDetails || !selectedSportDetails || !sportDuration) {
+      return "#"; // Or some other handling for disabled state
+    }
+
+    const queryParams = new URLSearchParams();
+    queryParams.append('sciPackageName', selectedScientificPackageDetails.name);
+    queryParams.append('sciPackagePrice', selectedScientificPackageDetails.price.toString());
+    queryParams.append('sportName', selectedSportDetails.name);
+    const sportPrice = sportDuration === '6' ? selectedSportDetails.price6 : selectedSportDetails.price12;
+    queryParams.append('sportPrice', sportPrice.toString());
+    queryParams.append('totalPrice', totalPrice.toString());
+    // You might want to pass IDs as well if needed on the next page
+    // queryParams.append('sciPackageId', selectedScientificPackageDetails.id);
+
+
+    return `/courses/summer-camps/student-details?${queryParams.toString()}`;
+  };
 
 
   return (
@@ -136,7 +153,7 @@ export default function SummerCampPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-8">
-          
+
           <div className="grid md:grid-cols-2 gap-6 border-b pb-6">
             <div>
               <Label className="text-lg font-semibold mb-2 block">1. اختر الجنس:</Label>
@@ -160,35 +177,20 @@ export default function SummerCampPage() {
             </div>
           </div>
 
-          
+
           {selectedStage && (
             <>
-              {selectedStage === 'المستكشفين' && (
-                <div className="mb-8">
-                  <Image
-                    src={EXPLORERS_BANNER_IMAGE_DETAIL.originalSrc}
-                    alt={EXPLORERS_BANNER_IMAGE_DETAIL.alt}
-                    width={1200}
-                    height={400}
-                    className="rounded-lg shadow-md w-full object-cover"
-                    data-ai-hint={EXPLORERS_BANNER_IMAGE_DETAIL.hint}
-                    priority
-                  />
-                </div>
-              )}
-              {selectedStage === 'الروّاد' && (
-                <div className="mb-8">
-                  <Image
-                    src={PIONEERS_BANNER_IMAGE_DETAIL.originalSrc}
-                    alt={PIONEERS_BANNER_IMAGE_DETAIL.alt}
-                    width={1200}
-                    height={400}
-                    className="rounded-lg shadow-md w-full object-cover"
-                    data-ai-hint={PIONEERS_BANNER_IMAGE_DETAIL.hint}
-                    priority
-                  />
-                </div>
-              )}
+              <div className="mb-2 relative aspect-[3/1] w-full"> {/* aspect-video is 16/9, for 1200x400 this is 3/1 */}
+                <Image
+                  src={selectedStage === 'المستكشفين' ? EXPLORERS_BANNER_IMAGE_DETAIL.originalSrc : PIONEERS_BANNER_IMAGE_DETAIL.originalSrc}
+                  alt={selectedStage === 'المستكشفين' ? EXPLORERS_BANNER_IMAGE_DETAIL.alt : PIONEERS_BANNER_IMAGE_DETAIL.alt}
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-lg shadow-md"
+                  data-ai-hint={selectedStage === 'المستكشفين' ? EXPLORERS_BANNER_IMAGE_DETAIL.hint : PIONEERS_BANNER_IMAGE_DETAIL.hint}
+                  priority
+                />
+              </div>
               <div className="border-b pb-6">
                 <Label className="text-lg font-semibold mb-4 block"><Rocket className="inline-block me-2 w-5 h-5 text-primary" />3. اختر الحقيبة العلمية:</Label>
                 <RadioGroup value={selectedScientificPackageId} onValueChange={setSelectedScientificPackageId} className="space-y-2">
@@ -206,8 +208,8 @@ export default function SummerCampPage() {
               </div>
             </>
           )}
-          
-          
+
+
           {currentSkillPackageDetails && selectedScientificPackageId && (
             <div className="border-b pb-6">
               <Label className="text-lg font-semibold mb-2 block"><Brain className="inline-block me-2 w-5 h-5 text-primary" />4. الحقيبتان المهاريتان (مجانية ومضافة تلقائيًا):</Label>
@@ -221,7 +223,7 @@ export default function SummerCampPage() {
             </div>
           )}
 
-          
+
           {selectedGender && selectedScientificPackageId && (
              <div className="border-b pb-6">
               <Label className="text-lg font-semibold mb-4 block"><Dumbbell className="inline-block me-2 w-5 h-5 text-primary" />5. النشاط الرياضي (أساسي - اختر النوع والمدة):</Label>
@@ -256,8 +258,8 @@ export default function SummerCampPage() {
             </div>
           )}
 
-          
-          {selectedScientificPackageId && ( 
+
+          {selectedScientificPackageId && (
             <div className="pt-6 text-center">
               <h3 className="text-2xl font-headline font-bold mb-2">💰 حساب السعر:</h3>
               <p className="text-3xl text-primary font-bold mb-2">{totalPrice} ريال</p>
@@ -269,8 +271,8 @@ export default function SummerCampPage() {
           )}
         </CardContent>
       </Card>
-      
-      
+
+
       <section className="mb-12">
         <Tabs defaultValue="scientific" className="w-full">
           <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 mb-6">
@@ -278,7 +280,7 @@ export default function SummerCampPage() {
             <TabsTrigger value="skill" className="text-lg"><Brain className="inline-block me-2 w-5 h-5" />الحقائب المهارية</TabsTrigger>
             <TabsTrigger value="sports" className="text-lg"><Dumbbell className="inline-block me-2 w-5 h-5" />النشاط الرياضي</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="scientific">
             <Card>
               <CardHeader className="text-center"><CardTitle>طلابنا في الحقيبة العلمية</CardTitle></CardHeader>
@@ -286,11 +288,11 @@ export default function SummerCampPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
                   {IMAGE_GALLERY_DETAILS.scientific.map((imgDetail, index) => (
                     <div key={`sci-gal-${index}`} className="rounded-lg overflow-hidden shadow-md aspect-video">
-                      <Image 
-                        src={imgDetail.originalSrc} 
-                        alt={imgDetail.alt} 
-                        width={250} 
-                        height={180} 
+                      <Image
+                        src={imgDetail.originalSrc}
+                        alt={imgDetail.alt}
+                        width={250}
+                        height={180}
                         className="w-full h-full object-cover"
                         data-ai-hint={imgDetail.hint}
                       />
@@ -327,11 +329,11 @@ export default function SummerCampPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
                   {IMAGE_GALLERY_DETAILS.skill.map((imgDetail, index) => (
                      <div key={`skill-gal-${index}`} className="rounded-lg overflow-hidden shadow-md aspect-video">
-                        <Image 
-                            src={imgDetail.originalSrc} 
-                            alt={imgDetail.alt} 
-                            width={250} 
-                            height={180} 
+                        <Image
+                            src={imgDetail.originalSrc}
+                            alt={imgDetail.alt}
+                            width={250}
+                            height={180}
                             className="w-full h-full object-cover"
                             data-ai-hint={imgDetail.hint}
                         />
@@ -373,11 +375,11 @@ export default function SummerCampPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
                   {IMAGE_GALLERY_DETAILS.sports.map((imgDetail, index) => (
                     <div key={`sport-gal-${index}`} className="rounded-lg overflow-hidden shadow-md aspect-video">
-                        <Image 
-                            src={imgDetail.originalSrc} 
-                            alt={imgDetail.alt} 
-                            width={250} 
-                            height={180} 
+                        <Image
+                            src={imgDetail.originalSrc}
+                            alt={imgDetail.alt}
+                            width={250}
+                            height={180}
                             className="w-full h-full object-cover"
                             data-ai-hint={imgDetail.hint}
                         />
@@ -409,22 +411,22 @@ export default function SummerCampPage() {
         </Tabs>
       </section>
 
-      
+
       <div className="text-center">
-        <Link href="/checkout">
-          <Button 
-            size="lg" 
-            className="bg-accent hover:bg-accent/90 text-accent-foreground" 
+        <Link href={getRegistrationLink()} passHref legacyBehavior>
+          <Button
+            as="a"
+            size="lg"
+            className="bg-accent hover:bg-accent/90 text-accent-foreground"
             disabled={!selectedScientificPackageId || !selectedSport || !sportDuration}
           >
              <ShoppingCart className="me-2 h-5 w-5" /> أكمل التسجيل الآن
           </Button>
         </Link>
-        {(!selectedScientificPackageId || !selectedSport || !sportDuration) && 
+        {(!selectedScientificPackageId || !selectedSport || !sportDuration) &&
           <p className="text-red-500 mt-2 text-sm">يرجى إكمال جميع الاختيارات المطلوبة (الحقيبة العلمية، نوع ومدة النشاط الرياضي).</p>
         }
       </div>
     </div>
   );
 }
-
