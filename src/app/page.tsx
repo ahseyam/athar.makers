@@ -25,8 +25,8 @@ const programTracksData = [
     description: 'تأهيل شامل لاختبار القدرات العامة، من التأسيس وحتى الاحتراف.',
     icon: <BarChart className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/qiyas-gat',
-    originalImage: imageManifest.homePage.programTracks_qiyasGat_image,
-    imageHint: 'focused high school students studying diligently for the Qiyas (GAT) standardized test, perhaps in a modern library setting, conveying seriousness and preparation',
+    originalImage: "https://i.imgur.com/HmqgSCf.png",
+    imageHint: 'Qiyas GAT test preparation student focused studying',
     alt: 'دورات القدرات'
   },
   {
@@ -69,8 +69,8 @@ const visionMissionImages = {
 const heroImageDetails = {
   id: 'heroImage',
   originalSrc: imageManifest.homePage.heroImage,
-  alt: "أكاديمية صناع الأثر - صورة بانر رئيسية",
-  hint: "modern learning concept", 
+  alt: "أكاديمية صناع الأثر - بانر تعليمي حديث",
+  hint: "modern learning concept educational banner abstract",
 };
 
 
