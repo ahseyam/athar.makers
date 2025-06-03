@@ -15,9 +15,9 @@ const programTracksData = [
     description: 'برامج مكثفة تجمع بين العلم والمهارة والمرح لصناعة جيل مبدع.',
     icon: <Sparkles className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/summer-camps',
-    originalImage: imageManifest.homePage.programTracks_summerCamps_image,
-    imageHint: 'group of diverse children happily engaged in a fun and educational summer camp activity, outdoors or in a bright classroom, focus on creativity and exploration',
-    alt: 'المعسكرات الصيفية'
+    originalImage: 'https://i.imgur.com/COFjO3A.png',
+    imageHint: 'diverse children summer camp activity',
+    alt: 'المعسكرات الصيفية والمسائية'
   },
   {
     id: 'qiyasGat',
@@ -68,7 +68,7 @@ const visionMissionImages = {
 
 const heroImageDetails = {
   id: 'heroImage',
-  originalSrc: imageManifest.homePage.heroImage, // This is "https://i.imgur.com/vn8p8bF.jpeg"
+  originalSrc: imageManifest.homePage.heroImage,
   alt: "أكاديمية صناع الأثر - بانر تعليمي حديث",
   hint: "educational banner abstract", 
 };
