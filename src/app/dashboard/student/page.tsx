@@ -4,7 +4,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LayoutDashboard } from "lucide-react";
 
-export default function StudentDashboardPage() {
+export default function StudentDashboardPage({}: {}) {
   // params and searchParams are no longer received as props
 
   return (
