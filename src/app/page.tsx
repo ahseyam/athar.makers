@@ -6,9 +6,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, BookOpen, Target, Lightbulb, BarChart, Sparkles } from 'lucide-react';
-import { useState, useEffect } from 'react';
-// import { generateImageFromHint } from '@/ai/flows/image-generator-flow'; // Removed for this iteration
-// import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants'; // Removed for this iteration
+import imageManifest from '@/config/image-manifest.json';
 
 const programTracksData = [
   {
@@ -17,7 +15,7 @@ const programTracksData = [
     description: 'برامج مكثفة تجمع بين العلم والمهارة والمرح لصناعة جيل مبدع.',
     icon: <Sparkles className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/summer-camps',
-    originalImage: 'https://placehold.co/600x400.png',
+    originalImage: imageManifest.homePage.programTracks_summerCamps_image,
     imageHint: 'group of diverse children happily engaged in a fun and educational summer camp activity, outdoors or in a bright classroom, focus on creativity and exploration',
     alt: 'المعسكرات الصيفية'
   },
@@ -27,7 +25,7 @@ const programTracksData = [
     description: 'تأهيل شامل لاختبار القدرات العامة، من التأسيس وحتى الاحتراف.',
     icon: <BarChart className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/qiyas-gat',
-    originalImage: 'https://placehold.co/600x400.png',
+    originalImage: imageManifest.homePage.programTracks_qiyasGat_image,
     imageHint: 'focused high school students studying diligently for the Qiyas (GAT) standardized test, perhaps in a modern library setting, conveying seriousness and preparation',
     alt: 'دورات القدرات'
   },
@@ -37,7 +35,7 @@ const programTracksData = [
     description: 'اكتشف قدراتك العقلية المتعددة واستعد بثقة لاختبار موهبة.',
     icon: <Lightbulb className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/mawhiba',
-    originalImage: 'https://placehold.co/600x400.png',
+    originalImage: imageManifest.homePage.programTracks_mawhiba_image,
     imageHint: 'young, bright student solving a complex puzzle or engaging in a creative thinking exercise, related to the Mawhiba giftedness test, conveying intelligence and innovation',
     alt: 'مقياس موهبة'
   },
@@ -47,7 +45,7 @@ const programTracksData = [
     description: 'مراجعة مركزة للمواد العلمية لضمان التفوق في اختبار التحصيلي.',
     icon: <BookOpen className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/tahsili',
-    originalImage: 'https://placehold.co/600x400.png',
+    originalImage: imageManifest.homePage.programTracks_tahsili_image,
     imageHint: 'Saudi Arabian high school students intensely focused on studying science subjects (physics, chemistry, biology, math) for the Tahsili achievement test, conveying academic rigor',
     alt: 'دورات التحصيلي'
   },
@@ -56,20 +54,19 @@ const programTracksData = [
 const visionMissionImages = {
   vision: {
     id: 'visionImage',
-    originalSrc: "https://placehold.co/600x400.png",
+    originalSrc: imageManifest.homePage.vision_image,
     alt: "رؤيتنا",
     hint: "futuristic and inspiring educational landscape, symbolizing a leading educational platform in the Arab world, with diverse learners achieving excellence, bright and optimistic",
   },
   mission: {
     id: 'missionImage',
-    originalSrc: "https://placehold.co/600x400.png",
+    originalSrc: imageManifest.homePage.mission_image,
     alt: "رسالتنا",
     hint: "interactive learning environment where students are engaged in hands-on activities and collaborative projects, guided by an inspiring educator, embodying deep understanding and practical application, dynamic and engaging",
   }
 };
 
 export default function HomePage() {
-  // Using originalSrc directly now, dynamic loading via useEffect has been removed for these.
   const visionImageUrl = visionMissionImages.vision.originalSrc;
   const missionImageUrl = visionMissionImages.mission.originalSrc;
 
@@ -118,7 +115,7 @@ export default function HomePage() {
                       src={track.originalImage} 
                       alt={track.alt} 
                       layout="fill" 
-                      objectFit="cover" 
+                      style={{objectFit:"cover"}}
                       data-ai-hint={track.imageHint} 
                     />
                   </div>

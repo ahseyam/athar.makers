@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { AlertCircle, Check, Sparkles, Brain, Rocket, Dumbbell, Info, ShoppingCart, Clock, TargetIcon, Users, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import imageManifest from '@/config/image-manifest.json';
 
 const scientificPackages = [
   { id: 'inventor', name: 'كُن مخترعًا', category: 'المستكشفين', description: 'تجارب وابتكارات مبنية على أدوات من البيئة', price: 750, duration: "12 يومًا", dailyTime: "90 دقيقة/يوم", skills: ["التفكير الإبداعي", "حل المشكلات", "الاستكشاف العلمي", "استخدام الأدوات البسيطة"] },
@@ -49,46 +50,46 @@ type Stage = 'المستكشفين' | 'الروّاد';
 
 interface GalleryImageDetail {
   id: string;
-  originalSrc: string;
+  // originalSrc will be populated from manifest
   hint: string;
   alt: string;
 }
 
 const IMAGE_GALLERY_DETAILS = {
   scientific: [
-    { id: 'sci_img1', originalSrc: 'https://images.unsplash.com/photo-1519671845924-1fd18db430b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxkaXZlcnNlJTIwZ3JvdXAlMjBlbGVtZW50YXJ5JTIwc3R1ZGVudHMlMjBleGNpdGVkbHklMjBjb25kdWN0aW5nJTIwY29sb3JmdWwlMjBjaGVtaXN0cnklMjBleHBlcmltZW50JTIwYnJpZ2h0JTIwY2xhc3Nyb29tfGVufDB8fHx8MTc0ODkzOTEyOHww&ixlib=rb-4.1.0&q=80&w=1080', hint: 'diverse group elementary students excitedly conducting colorful chemistry experiment bright classroom', alt: 'طلاب يقومون بتجربة علمية' },
-    { id: 'sci_img2', originalSrc: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtaWRkbGUlMjBzY2hvb2wlMjBzdHVkZW50cyUyMGNvbGxhYm9yYXRpdmVseSUyMGJ1aWxkaW5nJTIwcHJvZ3JhbW1pbmclMjBzbWFsbCUyMHJvYm90JTIwa2l0fGVufDB8fHx8MTc0ODkzOTEyOXww&ixlib=rb-4.1.0&q=80&w=1080', hint: 'middle school students collaboratively building programming small robot kit', alt: 'طلاب يبنون روبوت' },
-    { id: 'sci_img3', originalSrc: 'https://images.unsplash.com/photo-1502802619459-7448b7c07b52?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjaGlsZHJlbiUyMGxvb2tpbmclMjB0aHJvdWdoJTIwbWljcm9zY29wZXMlMjBmb2N1c2VkJTIwZXhwcmVzc2lvbnMlMjBzY2llbmNlJTIwbGFiJTIwc2V0dGluZ3xlbnwwfHx8fDE3NDg5MzkxMjh8MA&ixlib=rb-4.1.0&q=80&w=1080', hint: 'children looking through microscopes focused expressions science lab setting', alt: 'طلاب يستخدمون المجهر' },
+    { id: 'sci_img1', hint: 'diverse group elementary students excitedly conducting colorful chemistry experiment bright classroom', alt: 'طلاب يقومون بتجربة علمية' },
+    { id: 'sci_img2', hint: 'middle school students collaboratively building programming small robot kit', alt: 'طلاب يبنون روبوت' },
+    { id: 'sci_img3', hint: 'children looking through microscopes focused expressions science lab setting', alt: 'طلاب يستخدمون المجهر' },
   ],
   skill: [
-    { id: 'skill_img1', originalSrc: 'https://placehold.co/250x180.png', hint: 'young student confidently giving presentation peers supportive classroom environment', alt: 'طالب يلقي عرضًا تقديميًا' },
-    { id: 'skill_img2', originalSrc: 'https://placehold.co/250x180.png', hint: 'group students engaged creative storytelling drama workshop expressing themselves', alt: 'طلاب في ورشة عمل مهارية' },
-    { id: 'skill_img3', originalSrc: 'https://placehold.co/250x180.png', hint: 'children participating team-building activity showing collaboration problem-solving', alt: 'طلاب في نشاط جماعي مهاري' },
+    { id: 'skill_img1', hint: 'young student confidently giving presentation peers supportive classroom environment', alt: 'طالب يلقي عرضًا تقديميًا' },
+    { id: 'skill_img2', hint: 'group students engaged creative storytelling drama workshop expressing themselves', alt: 'طلاب في ورشة عمل مهارية' },
+    { id: 'skill_img3', hint: 'children participating team-building activity showing collaboration problem-solving', alt: 'طلاب في نشاط جماعي مهاري' },
   ],
   sports: [
-    { id: 'sport_img1', originalSrc: 'https://placehold.co/250x180.png', hint: 'boys joyfully playing soccer match green field summer camp', alt: 'أولاد يلعبون كرة القدم' },
-    { id: 'sport_img2', originalSrc: 'https://placehold.co/250x180.png', hint: 'girls practicing gymnastics routines well-equipped gymnasium instructor guidance', alt: 'بنات يمارسن الجمباز' },
-    { id: 'sport_img3', originalSrc: 'https://placehold.co/250x180.png', hint: 'children learning swim pool swimming instructor sports activity', alt: 'أطفال يتعلمون السباحة' },
+    { id: 'sport_img1', hint: 'boys joyfully playing soccer match green field summer camp', alt: 'أولاد يلعبون كرة القدم' },
+    { id: 'sport_img2', hint: 'girls practicing gymnastics routines well-equipped gymnasium instructor guidance', alt: 'بنات يمارسن الجمباز' },
+    { id: 'sport_img3', hint: 'children learning swim pool swimming instructor sports activity', alt: 'أطفال يتعلمون السباحة' },
   ],
 };
 
 const EXPLORERS_BANNER_IMAGE_DETAIL = {
   id: "summer_camp_explorers_banner",
-  originalSrc: "https://images.unsplash.com/photo-1503785640985-22b8febf3957",
+  originalSrc: imageManifest.summerCampsPage.explorersBanner_image,
   hint: "children grass circle summer camp",
   alt: "طلاب المستكشفين يجلسون في حلقة على العشب خلال نشاط في المعسكر الصيفي",
 };
 
 const PIONEERS_BANNER_IMAGE_DETAIL = {
   id: "summer_camp_pioneers_banner",
-  originalSrc: "https://placehold.co/1200x400.png",
+  originalSrc: imageManifest.summerCampsPage.pioneersBanner_image,
   hint: "teenagers robotics coding technology camp",
   alt: "طلاب الرواد في معسكر صيفي تكنولوجي",
 };
 
 const HEADER_BACKGROUND_IMAGE_DETAIL = {
     id: "summer_camp_header_bg",
-    originalSrc: "https://placehold.co/1200x300.png",
+    originalSrc: imageManifest.summerCampsPage.headerBackground_image,
     hint: "vibrant abstract background education activities",
     alt: "خلفية ترويسة معسكر صناع الموهبة",
 };
@@ -149,7 +150,7 @@ export default function SummerCampPage() {
             style={{objectFit: 'cover'}}
             className="z-0"
             data-ai-hint={HEADER_BACKGROUND_IMAGE_DETAIL.hint}
-            priority
+            
         />
         <div className="absolute inset-0 bg-primary/70 flex flex-col items-center justify-center p-4 z-10">
             <Sparkles className="w-16 h-16 text-primary-foreground mx-auto mb-4" />
@@ -203,7 +204,7 @@ export default function SummerCampPage() {
                   style={{objectFit: 'cover'}}
                   className="rounded-lg shadow-md"
                   data-ai-hint={selectedStage === 'المستكشفين' ? EXPLORERS_BANNER_IMAGE_DETAIL.hint : PIONEERS_BANNER_IMAGE_DETAIL.hint}
-                  priority
+                  
                 />
               </div>
               <div className="border-b pb-6">
@@ -304,7 +305,7 @@ export default function SummerCampPage() {
                   {IMAGE_GALLERY_DETAILS.scientific.map((imgDetail, index) => (
                     <div key={`sci-gal-${index}`} className="rounded-lg overflow-hidden shadow-md aspect-video">
                       <Image
-                        src={imgDetail.originalSrc}
+                        src={imageManifest.summerCampsPage[`gallery_scientific_${index}_image` as keyof typeof imageManifest.summerCampsPage] || 'https://placehold.co/250x180.png'}
                         alt={imgDetail.alt}
                         width={250}
                         height={180}
@@ -346,7 +347,7 @@ export default function SummerCampPage() {
                   {IMAGE_GALLERY_DETAILS.skill.map((imgDetail, index) => (
                      <div key={`skill-gal-${index}`} className="rounded-lg overflow-hidden shadow-md aspect-video">
                         <Image
-                            src={imgDetail.originalSrc}
+                            src={imageManifest.summerCampsPage[`gallery_skill_${index}_image` as keyof typeof imageManifest.summerCampsPage] || 'https://placehold.co/250x180.png'}
                             alt={imgDetail.alt}
                             width={250}
                             height={180}
@@ -393,7 +394,7 @@ export default function SummerCampPage() {
                   {IMAGE_GALLERY_DETAILS.sports.map((imgDetail, index) => (
                     <div key={`sport-gal-${index}`} className="rounded-lg overflow-hidden shadow-md aspect-video">
                         <Image
-                            src={imgDetail.originalSrc}
+                            src={imageManifest.summerCampsPage[`gallery_sports_${index}_image` as keyof typeof imageManifest.summerCampsPage] || 'https://placehold.co/250x180.png'}
                             alt={imgDetail.alt}
                             width={250}
                             height={180}
@@ -448,6 +449,3 @@ export default function SummerCampPage() {
     </div>
   );
 }
-
-
-    
