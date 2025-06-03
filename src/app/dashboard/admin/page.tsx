@@ -1,18 +1,11 @@
 
 // Removed 'use client'
-import React from 'react'; // Removed 'use' from import
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Settings } from "lucide-react";
 
-export default function AdminDashboardPage({
-  params, // Directly use the prop
-  searchParams, // Directly use the prop
-}: {
-  params: { [key: string]: string | string[] | undefined };
-  searchParams: { [key:string]: string | string[] | undefined };
-}) {
-  // params and searchParams are directly available if needed.
-  // No React.use() is necessary for these props in a non-async Server Component.
+export default function AdminDashboardPage() {
+  // params and searchParams are no longer received as props
 
   return (
     <div className="container mx-auto px-4 py-12">

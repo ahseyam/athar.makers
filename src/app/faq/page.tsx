@@ -1,10 +1,10 @@
 
 // Removed 'use client'
-import React from 'react'; // Removed 'use' from import
+import React from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HelpCircle } from "lucide-react";
 import { Button } from '@/components/ui/button';
-import Link from 'next/link'; // Added Link import
+import Link from 'next/link';
 
 const faqItems = [
   {
@@ -33,14 +33,8 @@ const faqItems = [
   }
 ];
 
-export default function FaqPage({
-  params, // Directly use the prop
-  searchParams, // Directly use the prop
-}: {
-  params: { [key: string]: string | string[] | undefined };
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  // params and searchParams are directly available if needed.
+export default function FaqPage() {
+  // params and searchParams are no longer received as props
 
   return (
     <div className="container mx-auto px-4 py-12">
