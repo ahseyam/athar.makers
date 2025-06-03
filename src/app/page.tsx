@@ -70,7 +70,7 @@ const heroImageDetails = {
   id: 'heroImage',
   originalSrc: imageManifest.homePage.heroImage,
   alt: "أكاديمية صناع الأثر - صورة بانر رئيسية",
-  hint: "educational banner abstract",
+  hint: "modern learning concept", 
 };
 
 
@@ -89,7 +89,7 @@ export default function HomePage() {
           <p className="text-xl md:text-2xl text-foreground font-medium mb-8 max-w-3xl mx-auto">
             التعليم يبدأ من الأثر.. وينتهي إلى التميّز.
           </p>
-          <div className="w-full max-w-5xl mx-auto mb-10"> {/* Changed my-8 to mb-10 */}
+          <div className="w-full max-w-5xl mx-auto mb-10">
             <Image
               src={heroBannerImageUrl} 
               alt={heroImageDetails.alt}
