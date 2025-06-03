@@ -69,8 +69,8 @@ const visionMissionImages = {
 const heroImageDetails = {
   id: 'heroImage',
   originalSrc: imageManifest.homePage.heroImage,
-  alt: "صورة تعريفية بأكاديمية صناع الأثر",
-  hint: "platform identity educational elements",
+  alt: "خلفية ترويسة أكاديمية صناع الأثر",
+  hint: "abstract background education",
 };
 
 
@@ -82,36 +82,35 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col items-center">
-      <section className="w-full py-20 md:py-28 text-center bg-background">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary mb-6">
+      <section className="relative w-full py-20 md:py-28 text-center bg-background min-h-[70vh] flex flex-col items-center justify-center">
+        <Image
+          src={heroImageUrl}
+          alt={heroImageDetails.alt}
+          layout="fill"
+          objectFit="cover"
+          className="absolute inset-0 w-full h-full z-0"
+          data-ai-hint={heroImageDetails.hint}
+          priority
+        />
+        <div className="absolute inset-0 bg-primary/70 z-10"></div>
+        <div className="container mx-auto px-4 relative z-20">
+          <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary-foreground mb-6">
             أكاديمية صُنَّاع الأثَر
           </h1>
-          <div className="my-8 md:my-12 flex justify-center">
-            <Image
-              src={heroImageUrl}
-              alt={heroImageDetails.alt}
-              width={1200}
-              height={500}
-              className="rounded-lg shadow-xl object-contain max-w-full h-auto"
-              data-ai-hint={heroImageDetails.hint}
-              priority
-            />
-          </div>
-          <p className="text-xl md:text-2xl text-foreground font-medium mb-8">
+          <p className="text-xl md:text-2xl text-primary-foreground/90 font-medium mb-8">
             التعليم يبدأ من الأثر.. وينتهي إلى التميّز.
           </p>
-          <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-10">
+          <p className="max-w-3xl mx-auto text-lg text-primary-foreground/80 mb-10">
             منصة سعودية تعليمية رقمية شاملة، تقدم برامج تدريبية مخصصة ومتكاملة في المهارات العلمية، الشخصية والقيادية، الاختبارات الوطنية، والاعتماد المؤسسي للمدارس.
           </p>
           <div className="space-x-4 space-x-reverse">
             <Link href="/courses/summer-camps">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+              <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
                 اكتشف برامجنا
               </Button>
             </Link>
             <Link href="/register">
-              <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/5">
+              <Button size="lg" variant="outline" className="border-primary-foreground/50 text-primary-foreground hover:bg-primary-foreground/10">
                 سجّل الآن
               </Button>
             </Link>
@@ -220,5 +219,4 @@ export default function HomePage() {
     </div>
   );
 }
-
     
