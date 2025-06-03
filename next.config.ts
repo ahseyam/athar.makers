@@ -42,8 +42,14 @@ const nextConfig = {
         hostname: 'res-console.cloudinary.com', // Added for Cloudinary console/thumbnail images
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'i.imgur.com', // Added for Imgur images
+        pathname: '/**',
+      },
     ],
   },
 };
 
 export default nextConfig;
+

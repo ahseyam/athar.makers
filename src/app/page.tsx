@@ -35,7 +35,7 @@ const programTracksData = [
     description: 'اكتشف قدراتك العقلية المتعددة واستعد بثقة لاختبار موهبة.',
     icon: <Lightbulb className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/mawhiba',
-    originalImage: 'https://images.unsplash.com/photo-1748941709930-3b2feeef718d?q=80&w=2589&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    originalImage: imageManifest.homePage.programTracks_mawhiba_image,
     imageHint: 'student critical thinking puzzle',
     alt: 'مقياس موهبة'
   },
@@ -45,7 +45,7 @@ const programTracksData = [
     description: 'مراجعة مركزة للمواد العلمية لضمان التفوق في اختبار التحصيلي.',
     icon: <BookOpen className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/tahsili',
-    originalImage: 'https://images.unsplash.com/photo-1748941715828-60b74ee39b03?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    originalImage: imageManifest.homePage.programTracks_tahsili_image,
     imageHint: 'students studying science academic achievement',
     alt: 'دورات التحصيلي'
   },
@@ -69,8 +69,8 @@ const visionMissionImages = {
 const heroImageDetails = {
   id: 'heroImage',
   originalSrc: imageManifest.homePage.heroImage,
-  alt: "خلفية ترويسة أكاديمية صناع الأثر مع طلاب مبدعين كخلفية",
-  hint: "creative students education background",
+  alt: "خلفية مجردة عصرية لأكاديمية صناع الأثر",
+  hint: "abstract background design",
 };
 
 
