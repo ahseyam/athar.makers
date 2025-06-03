@@ -76,8 +76,8 @@ const IMAGE_GALLERY_DETAILS = {
 const EXPLORERS_BANNER_IMAGE_DETAIL = {
   id: "summer_camp_explorers_banner",
   originalSrc: imageManifest.summerCampsPage.explorersBanner_image,
-  hint: "children grass circle summer camp",
-  alt: "طلاب المستكشفين يجلسون في حلقة على العشب خلال نشاط في المعسكر الصيفي",
+  hint: "green field",
+  alt: "حقل عشبي أخضر واسع تحت السماء",
 };
 
 const PIONEERS_BANNER_IMAGE_DETAIL = {
