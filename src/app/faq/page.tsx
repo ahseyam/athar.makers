@@ -33,7 +33,7 @@ const faqItems = [
   }
 ];
 
-export default function FaqPage({}: {}) {
+export default function FaqPage({ params, searchParams }: { params: { [key: string]: string | string[] }; searchParams: { [key: string]: string | string[] | undefined } }) {
   // params and searchParams are no longer received as props
 
   return (
@@ -75,3 +75,4 @@ export default function FaqPage({}: {}) {
     </div>
   );
 }
+
