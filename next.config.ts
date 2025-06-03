@@ -32,6 +32,11 @@ const nextConfig = {
         hostname: 'avatar.iran.liara.run', // Added for avatars
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'drive.google.com', // Added for Google Drive images
+        pathname: '/**',
+      },
     ],
   },
 };
