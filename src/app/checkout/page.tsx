@@ -1,26 +1,19 @@
+
 'use client';
 
+import { Suspense } from 'react'; // Import Suspense
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle, CreditCard, Landmark, AlertTriangle } from "lucide-react";
+import { CheckCircle, CreditCard, Landmark, AlertTriangle, Loader2 } from "lucide-react"; // Added Loader2
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
-
-const mockOrderDetails = {
-  studentName: "اسم الطالب الافتراضي",
-  parentName: "اسم ولي الأمر الافتراضي",
-  parentEmail: "parent@example.com",
-  parentPhone: "0512345678",
-  scientificPackage: { name: "الروبوتيكس باستخدام SPIKE", price: 900 },
-  sportsActivity: { name: "سباحة - 6 أيام", price: 150 },
-  discountCode: "",
-};
 
 const IMAGE_DETAILS = {
   mada: { id: "checkout_mada_logo", originalSrc: "https://placehold.co/40x25.png", hint: "mada logo", alt: "مدى" },
@@ -28,20 +21,49 @@ const IMAGE_DETAILS = {
   applePay: { id: "checkout_applepay_logo", originalSrc: "https://placehold.co/50x25.png", hint: "apple pay logo", alt: "Apple Pay" },
 };
 
-export default function CheckoutPage() {
+function CheckoutPageContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { toast } = useToast();
+
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | undefined>(undefined);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
   const [subscriptionId, setSubscriptionId] = useState<string | null>(null);
 
+  // Construct orderDetails from searchParams or fall back to defaults
+  const orderDetails = {
+    studentName: searchParams.get('studentName') || "اسم الطالب الافتراضي",
+    parentName: searchParams.get('parentName') || "اسم ولي الأمر الافتراضي",
+    parentEmail: searchParams.get('parentEmail') || "parent@example.com",
+    parentPhone: searchParams.get('parentPhone') || "0512345678",
+    scientificPackage: {
+      name: searchParams.get('sciPackageName') || "الباقة العلمية الافتراضية",
+      price: parseFloat(searchParams.get('sciPackagePrice') || "0"),
+    },
+    sportsActivity: searchParams.get('sportName') && searchParams.get('sportPrice') ? {
+      name: searchParams.get('sportName') as string, // Already checked it exists
+      price: parseFloat(searchParams.get('sportPrice') as string), // Already checked it exists
+    } : null,
+    discountCode: searchParams.get('discountCode') || "",
+  };
+
   const madaLogoUrl = IMAGE_DETAILS.mada.originalSrc;
   const visaMastercardLogoUrl = IMAGE_DETAILS.visaMastercard.originalSrc;
   const applePayLogoUrl = IMAGE_DETAILS.applePay.originalSrc;
 
-  const subtotal = mockOrderDetails.scientificPackage.price + (mockOrderDetails.sportsActivity?.price || 0);
-  const vat = subtotal * 0.15;
-  const total = subtotal + vat;
+  const calculatedSubtotal = orderDetails.scientificPackage.price + (orderDetails.sportsActivity?.price || 0);
+  const calculatedVat = calculatedSubtotal * 0.15;
+  const calculatedTotal = calculatedSubtotal + calculatedVat;
+  
+  // For display, use the total passed from student-details page if available, otherwise calculate.
+  // This handles cases where student-details might have more complex pricing logic (e.g. family discounts not yet implemented here)
+  const displayTotal = parseFloat(searchParams.get('totalPrice') || calculatedTotal.toFixed(2));
+  // Recalculate subtotal and VAT based on displayTotal if it was provided, for consistency in display.
+  // This assumes VAT is always 15% of the (subtotal before VAT).
+  const displaySubtotal = displayTotal / 1.15;
+  const displayVat = displayTotal - displaySubtotal;
+
 
   useEffect(() => {
     if (isPaid && !subscriptionId && typeof window !== 'undefined') {
@@ -59,13 +81,9 @@ export default function CheckoutPage() {
       return;
     }
     setIsProcessing(true);
-    // TODO: Implement actual payment processing logic here with a payment gateway API
-    // This setTimeout is a placeholder for the API call.
-    // On successful payment from the gateway, set isPaid to true.
-    // On failure, show an error toast and set isProcessing to false.
     setTimeout(() => {
       setIsProcessing(false);
-      setIsPaid(true); // Assume payment is successful for now
+      setIsPaid(true);
       toast({
         title: "تم الدفع بنجاح!",
         description: "تم تأكيد تسجيلك في البرنامج. ستصلك رسالة تأكيد عبر البريد.",
@@ -83,15 +101,15 @@ export default function CheckoutPage() {
           </CardHeader>
           <CardContent>
             <p className="text-lg text-muted-foreground mb-2">
-              شكرًا لك على تسجيل {mockOrderDetails.studentName} في البرنامج.
+              شكرًا لك على تسجيل {orderDetails.studentName} في البرنامج.
             </p>
             <p className="text-muted-foreground mb-4">
-              ستصلك رسالة تأكيد عبر البريد الإلكتروني ({mockOrderDetails.parentEmail}) تتضمن تفاصيل الدورة ورابط لوحة الطالب.
+              ستصلك رسالة تأكيد عبر البريد الإلكتروني ({orderDetails.parentEmail}) تتضمن تفاصيل الدورة ورابط لوحة الطالب.
             </p>
             <Separator className="my-4" />
             <div className="text-sm text-muted-foreground">
               <p>رقم الاشتراك: <span className="font-mono">{subscriptionId || 'جاري الإنشاء...'}</span></p>
-              <p>المبلغ المدفوع: <span className="font-semibold">{total.toFixed(2)} ر.س</span></p>
+              <p>المبلغ المدفوع: <span className="font-semibold">{displayTotal.toFixed(2)} ر.س</span></p>
             </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
@@ -127,25 +145,25 @@ export default function CheckoutPage() {
             <CardContent className="space-y-3">
               <div>
                 <h4 className="font-semibold">بيانات الطالب:</h4>
-                <p className="text-sm text-muted-foreground">الاسم: {mockOrderDetails.studentName}</p>
+                <p className="text-sm text-muted-foreground">الاسم: {orderDetails.studentName}</p>
               </div>
               <div>
                 <h4 className="font-semibold">بيانات ولي الأمر:</h4>
-                <p className="text-sm text-muted-foreground">الاسم: {mockOrderDetails.parentName}</p>
-                <p className="text-sm text-muted-foreground">البريد: {mockOrderDetails.parentEmail}</p>
-                <p className="text-sm text-muted-foreground">الجوال: {mockOrderDetails.parentPhone}</p>
+                <p className="text-sm text-muted-foreground">الاسم: {orderDetails.parentName}</p>
+                <p className="text-sm text-muted-foreground">البريد: {orderDetails.parentEmail}</p>
+                <p className="text-sm text-muted-foreground">الجوال: {orderDetails.parentPhone}</p>
               </div>
               <Separator />
               <div>
                 <h4 className="font-semibold">تفاصيل التسجيل:</h4>
                 <div className="flex justify-between text-sm">
-                  <span>{mockOrderDetails.scientificPackage.name}</span>
-                  <span>{mockOrderDetails.scientificPackage.price.toFixed(2)} ر.س</span>
+                  <span>{orderDetails.scientificPackage.name}</span>
+                  <span>{orderDetails.scientificPackage.price.toFixed(2)} ر.س</span>
                 </div>
-                {mockOrderDetails.sportsActivity && (
+                {orderDetails.sportsActivity && (
                   <div className="flex justify-between text-sm text-muted-foreground">
-                    <span>{mockOrderDetails.sportsActivity.name}</span>
-                    <span>{mockOrderDetails.sportsActivity.price.toFixed(2)} ر.س</span>
+                    <span>{orderDetails.sportsActivity.name}</span>
+                    <span>{orderDetails.sportsActivity.price.toFixed(2)} ر.س</span>
                   </div>
                 )}
               </div>
@@ -153,15 +171,15 @@ export default function CheckoutPage() {
               <div className="space-y-1">
                 <div className="flex justify-between text-sm">
                   <span>المجموع الفرعي:</span>
-                  <span>{subtotal.toFixed(2)} ر.س</span>
+                  <span>{displaySubtotal.toFixed(2)} ر.س</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>ضريبة القيمة المضافة (15%):</span>
-                  <span>{vat.toFixed(2)} ر.س</span>
+                  <span>{displayVat.toFixed(2)} ر.س</span>
                 </div>
                 <div className="flex justify-between text-lg font-bold text-primary">
                   <span>الإجمالي:</span>
-                  <span>{total.toFixed(2)} ر.س</span>
+                  <span>{displayTotal.toFixed(2)} ر.س</span>
                 </div>
               </div>
             </CardContent>
@@ -204,7 +222,6 @@ export default function CheckoutPage() {
               {selectedPaymentMethod === "visa_mastercard" && (
                 <div className="space-y-4 p-4 border rounded-lg bg-muted/50">
                   <h4 className="font-semibold">تفاصيل البطاقة الائتمانية:</h4>
-                  {/* TODO: Replace with actual PCI-compliant card input fields from payment gateway SDK */}
                   <Input placeholder="رقم البطاقة" />
                   <div className="grid grid-cols-2 gap-4">
                     <Input placeholder="تاريخ الانتهاء (MM/YY)" />
@@ -220,19 +237,17 @@ export default function CheckoutPage() {
                     <AlertTriangle className="w-5 h-5 me-2 mt-1 flex-shrink-0"/>
                     <div>
                       <h4 className="font-semibold">تعليمات التحويل البنكي:</h4>
-                      <p className="text-sm">يرجى تحويل المبلغ الإجمالي ({total.toFixed(2)} ر.س) إلى الحساب التالي:</p>
+                      <p className="text-sm">يرجى تحويل المبلغ الإجمالي ({displayTotal.toFixed(2)} ر.س) إلى الحساب التالي:</p>
                       <p className="text-sm mt-1"><strong>اسم البنك:</strong> البنك السعودي للاستثمار</p>
                       <p className="text-sm"><strong>رقم الحساب:</strong> SA00 0000 0000 0000 0000 0000</p>
                       <p className="text-sm"><strong>اسم المستفيد:</strong> شركة صناع الأثر للتعليم</p>
                       <p className="text-sm mt-2">بعد التحويل، يرجى إرسال إثبات الدفع إلى <a href="mailto:billing@sonna3.com" className="underline">billing@sonna3.com</a> مع ذكر رقم الطلب.</p>
-                      {/* TODO: Backend will need a way to manually confirm these payments */}
                     </div>
                   </div>
                 </div>
               )}
               
               <div className="mt-2">
-                {/* TODO: Implement discount code logic with backend validation */}
                 <Input placeholder="كود الخصم (إن وجد)" />
               </div>
 
@@ -244,7 +259,7 @@ export default function CheckoutPage() {
                 onClick={handlePayment}
                 disabled={isProcessing || !selectedPaymentMethod}
               >
-                {isProcessing ? "جاري المعالجة..." : `ادفع الآن ${total.toFixed(2)} ر.س`}
+                {isProcessing ? "جاري المعالجة..." : `ادفع الآن ${displayTotal.toFixed(2)} ر.س`}
               </Button>
             </CardFooter>
           </Card>
@@ -256,3 +271,19 @@ export default function CheckoutPage() {
     </div>
   );
 }
+
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={
+      <div className="container mx-auto px-4 py-12 flex flex-col items-center justify-center min-h-[calc(100vh-200px)]">
+        <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
+        <p className="text-lg text-muted-foreground">جاري تحميل صفحة الدفع...</p>
+      </div>
+    }>
+      <CheckoutPageContent />
+    </Suspense>
+  );
+}
+
+    
