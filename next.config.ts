@@ -37,6 +37,11 @@ const nextConfig = {
         hostname: 'drive.google.com', // Added for Google Drive images
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'res-console.cloudinary.com', // Added for Cloudinary console/thumbnail images
+        pathname: '/**',
+      },
     ],
   },
 };
