@@ -7,8 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, BookOpen, Target, Lightbulb, BarChart, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
-import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
+// import { generateImageFromHint } from '@/ai/flows/image-generator-flow'; // Removed for this iteration
+// import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants'; // Removed for this iteration
 
 const programTracksData = [
   {
@@ -69,47 +69,16 @@ const visionMissionImages = {
 };
 
 export default function HomePage() {
-  const [visionImageUrl, setVisionImageUrl] = useState<string>(visionMissionImages.vision.originalSrc);
-  const [missionImageUrl, setMissionImageUrl] = useState<string>(visionMissionImages.mission.originalSrc);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const loadDynamicImage = async (imageIdentifier: string, hint: string, originalSrc: string, setter: React.Dispatch<React.SetStateAction<string>>) => {
-      console.log(`[DebugImage] Page: HomePage, ID: ${imageIdentifier}. Initiating image load. Hint: "${hint}", Original: ${originalSrc}`);
-      try {
-        const result = await generateImageFromHint({ hint });
-        if (isMounted) {
-          if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
-            console.warn(`[DebugImage] Page: HomePage, ID: ${imageIdentifier}. AI FAILED or FALLBACK. Attempting to set placeholder: ${originalSrc}`);
-            setter(originalSrc);
-          } else {
-            console.log(`[DebugImage] Page: HomePage, ID: ${imageIdentifier}. AI SUCCEEDED. Attempting to set AI image (first 100 chars): ${result.imageDataUri.substring(0,100)}...`);
-            setter(result.imageDataUri);
-          }
-        }
-      } catch (error) {
-        console.error(`[DebugImage] Page: HomePage, ID: ${imageIdentifier}. EXCEPTION caught for hint "${hint}":`, error);
-        if (isMounted) {
-          console.warn(`[DebugImage] Page: HomePage, ID: ${imageIdentifier}. EXCEPTION. Attempting to set placeholder: ${originalSrc}`);
-          setter(originalSrc);
-        }
-      }
-    };
-    
-    loadDynamicImage(visionMissionImages.vision.id, visionMissionImages.vision.hint, visionMissionImages.vision.originalSrc, setVisionImageUrl);
-    loadDynamicImage(visionMissionImages.mission.id, visionMissionImages.mission.hint, visionMissionImages.mission.originalSrc, setMissionImageUrl);
-
-    return () => { isMounted = false; };
-  }, []);
-
+  // Using originalSrc directly now, dynamic loading via useEffect has been removed for these.
+  const visionImageUrl = visionMissionImages.vision.originalSrc;
+  const missionImageUrl = visionMissionImages.mission.originalSrc;
 
   return (
     <div className="flex flex-col items-center">
       <section className="w-full bg-gradient-to-b from-primary/10 via-background to-background py-20 md:py-32 text-center">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary mb-6">
-            منصة صُنّاع الأثَر
+            أكاديمية صُنَّاع الأثَر
           </h1>
           <p className="text-xl md:text-2xl text-foreground font-medium mb-8">
             التعليم يبدأ من الأثر.. وينتهي إلى التميّز.
