@@ -11,10 +11,16 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
+      // Example of adding a new image host:
+      // {
+      //   protocol: 'https',
+      //   hostname: 'your-image-hosting-domain.com',
+      //   pathname: '/**', // Or a more specific path if needed
+      // },
       {
         protocol: 'https',
         hostname: 'placehold.co',
-        pathname: '/**', 
+        pathname: '/**',
       },
       {
         protocol: 'https',
