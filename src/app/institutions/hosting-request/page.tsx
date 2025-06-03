@@ -79,7 +79,7 @@ export default function HostingRequestPage() {
 
   return (
     <div className="container mx-auto px-4 py-12">
-      <header className="relative w-full h-auto min-h-[320px] md:min-h-[400px] mb-12 rounded-lg overflow-hidden shadow-lg flex items-center justify-center">
+      <header className="relative w-full h-auto min-h-[320px] md:min-h-[320px] mb-12 rounded-lg overflow-hidden shadow-lg flex items-center justify-center">
         <Image
           src={headerImageUrl}
           alt={IMAGE_DETAIL.alt}
@@ -93,20 +93,9 @@ export default function HostingRequestPage() {
           <h1 className="text-3xl md:text-4xl font-headline font-bold text-primary-foreground mb-3">
             {pageTitle}
           </h1>
-          <p className="text-lg md:text-xl text-primary-foreground/90 max-w-2xl mx-auto mb-6">
+          <p className="text-lg md:text-xl text-primary-foreground/90 max-w-2xl mx-auto">
             {pageSubtitle}
           </p>
-          {/* New image added below subtitle */}
-          <div className="max-w-xl w-full">
-            <Image
-              src="https://placehold.co/600x300.png" 
-              alt="صورة توضيحية إضافية لطلب الاستضافة"
-              width={600}
-              height={300}
-              className="rounded-lg shadow-xl object-cover mx-auto"
-              data-ai-hint="hosting program illustration"
-            />
-          </div>
         </div>
       </header>
 

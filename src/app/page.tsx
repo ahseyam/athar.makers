@@ -66,32 +66,41 @@ const visionMissionImages = {
   }
 };
 
-// Hero image is no longer used as a background, its details are less critical here
-// but kept for potential future use if a banner-style image is re-introduced.
 const heroImageDetails = {
   id: 'heroImage',
   originalSrc: imageManifest.homePage.heroImage, // This will point to the imgur link or placeholder
-  alt: "الخلفية الرئيسية لأكاديمية صناع الأثر",
-  hint: "abstract background design", // Or a more generic hint if it's just a placeholder
+  alt: "أكاديمية صناع الأثر - صورة بانر رئيسية",
+  hint: "educational banner abstract", 
 };
 
 
 export default function HomePage() {
   const visionImageUrl = visionMissionImages.vision.originalSrc;
   const missionImageUrl = visionMissionImages.mission.originalSrc;
-  // const heroImageUrl = heroImageDetails.originalSrc; // No longer directly used for a separate image element or background
+  const heroBannerImageUrl = heroImageDetails.originalSrc; 
 
   return (
     <div className="flex flex-col items-center">
-      <section className="w-full py-20 md:py-28 flex items-center justify-center text-center min-h-[auto] md:min-h-[auto] bg-background"> {/* Removed min-heights related to background image, adjusted background */}
+      <section className="w-full py-20 md:py-28 flex items-center justify-center text-center min-h-[auto] md:min-h-[auto] bg-background">
         <div className="container mx-auto px-4 flex flex-col items-center">
-          <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary mb-6"> {/* Changed text color */}
+          <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary mb-6">
             أكاديمية صُنَّاع الأثَر
           </h1>
-          <p className="text-xl md:text-2xl text-foreground font-medium mb-8 max-w-3xl mx-auto"> {/* Changed text color */}
+          <p className="text-xl md:text-2xl text-foreground font-medium mb-8 max-w-3xl mx-auto">
             التعليم يبدأ من الأثر.. وينتهي إلى التميّز.
           </p>
-          <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-10"> {/* Changed text color */}
+          <div className="w-full max-w-5xl mx-auto my-8">
+            <Image
+              src={heroBannerImageUrl} 
+              alt={heroImageDetails.alt}
+              width={1200}
+              height={400}
+              className="rounded-lg shadow-xl object-cover"
+              data-ai-hint={heroImageDetails.hint}
+              priority
+            />
+          </div>
+          <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-10">
             أكاديمية سعودية تعليمية رقمية شاملة، تقدم برامج تدريبية مخصصة ومتكاملة في المهارات العلمية، الشخصية والقيادية، الاختبارات الوطنية، والاعتماد المؤسسي للمدارس.
           </p>
           <div className="space-x-4 space-x-reverse">
@@ -101,7 +110,7 @@ export default function HomePage() {
               </Button>
             </Link>
             <Link href="/register">
-              <Button size="lg" variant="outline"> {/* Reverted to default outline */}
+              <Button size="lg" variant="outline">
                 سجّل الآن
               </Button>
             </Link>
