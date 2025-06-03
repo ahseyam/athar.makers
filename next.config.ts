@@ -1,4 +1,5 @@
 
+
 // Removed: import type { NextConfig } from 'next';
 
 const nextConfig = {
@@ -13,12 +14,17 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'placehold.co',
-        pathname: '/**', // port removed
+        pathname: '/**', 
       },
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
-        pathname: '/**', // port removed
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'avatar.iran.liara.run', // Added for avatars
+        pathname: '/**',
       },
     ],
   },

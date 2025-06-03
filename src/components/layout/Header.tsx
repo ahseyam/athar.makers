@@ -2,14 +2,21 @@
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Menu, Info, Phone, HomeIcon, LayoutGrid, BookMarked, Store, Briefcase, UserCheck, LogIn, ChevronDownIcon } from 'lucide-react';
+import { Menu, Info, Phone, HomeIcon, LayoutGrid, BookMarked, Store, Briefcase, UserCheck, LogIn, LogOut, ChevronDownIcon, UserCircle, Loader2 } from 'lucide-react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
+import { useAuth } from '@/contexts/AuthContext';
+import { auth } from '@/lib/firebase/config';
+import { signOut } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const mainNavLinks = [
   { href: '/', label: 'الرئيسية', icon: <HomeIcon className="me-1 h-4 w-4" /> },
@@ -31,6 +38,31 @@ const secondaryNavLinks = [
 
 
 export default function Header() {
+  const { user, loading, initialLoadComplete } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      router.push('/'); // Redirect to homepage after logout
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Handle logout error, maybe show a toast
+    }
+  };
+  
+  const UserAvatar = () => {
+    if (!user) return <UserCircle className="h-6 w-6" />;
+    const initials = user.fullName ? user.fullName.split(' ').map(n => n[0]).join('').toUpperCase() : (user.email ? user.email[0].toUpperCase() : 'U');
+    return (
+      <Avatar className="h-8 w-8">
+        <AvatarImage src={user.avatarUrl} alt={user.fullName || user.email || 'User Avatar'} />
+        <AvatarFallback>{initials}</AvatarFallback>
+      </Avatar>
+    );
+  };
+
+
   return (
     <header data-testid="main-header" className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -71,23 +103,59 @@ export default function Header() {
         </nav>
 
         <div className="hidden md:flex items-center gap-x-2">
-          <Link href="/register">
-            <Button
-              variant="secondary"
-              className="bg-accent text-accent-foreground hover:bg-accent/90 px-4 py-2 shadow-md hover:shadow-lg transition-shadow"
-            >
-              سجّل الآن
-            </Button>
-          </Link>
-          <Link href="/login">
-            <Button
-              variant="outline"
-              className="border-secondary/70 text-secondary hover:bg-secondary/20 hover:text-secondary/90 px-4 py-2 bg-background/20 shadow-md hover:shadow-lg transition-shadow"
-            >
-              <LogIn className="me-2 h-4 w-4" />
-              دخول
-            </Button>
-          </Link>
+          {loading && !initialLoadComplete ? (
+            <Loader2 className="h-6 w-6 animate-spin text-primary-foreground" />
+          ) : user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="flex items-center gap-2 p-1 rounded-full hover:bg-primary/80">
+                  <UserAvatar />
+                  <span className="text-sm font-medium hidden lg:inline">{user.fullName || user.email}</span>
+                  <ChevronDownIcon className="h-4 w-4 text-primary-foreground/70" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 bg-card text-card-foreground">
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">{user.fullName}</p>
+                    <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+                    <p className="text-xs leading-none text-muted-foreground">الدور: {user.role || 'مستخدم'}</p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/dashboard/student">
+                    <LayoutGrid className="me-2 h-4 w-4" />
+                    لوحة التحكم
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-destructive focus:bg-destructive/10 focus:text-destructive">
+                  <LogOut className="me-2 h-4 w-4" />
+                  تسجيل الخروج
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <>
+              <Link href="/register">
+                <Button
+                  variant="secondary"
+                  className="bg-accent text-accent-foreground hover:bg-accent/90 px-4 py-2 shadow-md hover:shadow-lg transition-shadow"
+                >
+                  سجّل الآن
+                </Button>
+              </Link>
+              <Link href="/login">
+                <Button
+                  variant="outline"
+                  className="border-secondary/70 text-secondary hover:bg-secondary/20 hover:text-secondary/90 px-4 py-2 bg-background/20 shadow-md hover:shadow-lg transition-shadow"
+                >
+                  <LogIn className="me-2 h-4 w-4" />
+                  دخول
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Navigation Trigger */}
@@ -154,15 +222,31 @@ export default function Header() {
                 اتصل بنا
                 </Link>
                 <div className="pt-4 space-y-2">
-                    <Link href="/register">
-                    <Button variant="secondary" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">سجّل الآن</Button>
-                    </Link>
-                    <Link href="/login">
-                    <Button variant="outline" className="w-full border-secondary/70 text-secondary hover:bg-secondary/20 hover:text-secondary/90 bg-background/20">
-                        <LogIn className="me-2 h-4 w-4" />
-                        دخول
-                    </Button>
-                    </Link>
+                  {loading && !initialLoadComplete ? (
+                     <Button variant="outline" className="w-full" disabled><Loader2 className="animate-spin" /> جاري التحميل...</Button>
+                  ) : user ? (
+                    <>
+                      <Link href="/dashboard/student">
+                        <Button variant="secondary" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">لوحة التحكم</Button>
+                      </Link>
+                      <Button onClick={handleLogout} variant="outline" className="w-full border-secondary/70 text-secondary hover:bg-secondary/20 hover:text-secondary/90 bg-background/20">
+                        <LogOut className="me-2 h-4 w-4" />
+                        تسجيل الخروج
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Link href="/register">
+                        <Button variant="secondary" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">سجّل الآن</Button>
+                      </Link>
+                      <Link href="/login">
+                        <Button variant="outline" className="w-full border-secondary/70 text-secondary hover:bg-secondary/20 hover:text-secondary/90 bg-background/20">
+                            <LogIn className="me-2 h-4 w-4" />
+                            دخول
+                        </Button>
+                      </Link>
+                    </>
+                  )}
                 </div>
               </nav>
             </SheetContent>

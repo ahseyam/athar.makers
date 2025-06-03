@@ -1,11 +1,11 @@
+
 'use client';
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { UserPlus, LogIn, Mail, Lock } from "lucide-react";
+import { UserPlus, LogIn, Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,13 +13,19 @@ import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { createUserWithEmailAndPassword, type AuthError } from "firebase/auth";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { auth, db } from "@/lib/firebase/config";
+import imageManifest from '@/config/image-manifest.json';
 
 const registrationSchema = z.object({
   fullName: z.string().min(3, "الاسم يجب أن لا يقل عن 3 أحرف"),
   email: z.string().email("بريد إلكتروني غير صالح"),
   password: z.string().min(6, "كلمة المرور يجب أن لا تقل عن 6 أحرف"),
   confirmPassword: z.string().min(6, "تأكيد كلمة المرور مطلوب"),
-  userType: z.enum(["طالب", "ولي أمر", "معلم", "جهة تعليمية"]),
+  userType: z.enum(["طالب", "ولي أمر", "معلم", "جهة تعليمية"], { required_error: "نوع الحساب مطلوب" }),
 }).refine(data => data.password === data.confirmPassword, {
   message: "كلمتا المرور غير متطابقتين",
   path: ["confirmPassword"],
@@ -27,33 +33,61 @@ const registrationSchema = z.object({
 
 type RegistrationFormValues = z.infer<typeof registrationSchema>;
 
-const IMAGE_DETAIL = {
-  id: "register_logo", 
-  originalSrc: "https://placehold.co/150x80.png",
-  hint: "education platform logo", 
-  alt: "شعار صناع الأثر",
-};
-
 export default function RegisterPage() {
   const { toast } = useToast();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<RegistrationFormValues>({
     resolver: zodResolver(registrationSchema),
     defaultValues: {
       userType: "طالب",
+      fullName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
     },
   });
 
-  const logoImageUrl = IMAGE_DETAIL.originalSrc;
+  const logoImageUrl = imageManifest.registerPage.logo;
 
   const onSubmit: SubmitHandler<RegistrationFormValues> = async (data) => {
-    // TODO: Implement backend API call for user registration and authentication
-    console.log(data);
-    toast({
-      title: "تم التسجيل بنجاح!",
-      description: "يمكنك الآن تسجيل الدخول إلى حسابك.",
-    });
-    // Potentially redirect to login page or dashboard after successful registration
-    // form.reset(); // Reset form if staying on page, or not needed if redirecting
+    setIsLoading(true);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      const user = userCredential.user;
+
+      // Store additional user info in Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        authUid: user.uid,
+        fullName: data.fullName,
+        email: data.email,
+        role: data.userType,
+        createdAt: serverTimestamp(), // Use server timestamp for consistency
+      });
+
+      toast({
+        title: "تم التسجيل بنجاح!",
+        description: "مرحباً بك! سيتم توجيهك إلى لوحة التحكم.",
+      });
+      router.push("/dashboard/student"); // Redirect to dashboard
+    } catch (error) {
+      const authError = error as AuthError;
+      console.error("Registration error:", authError);
+      let errorMessage = "فشل إنشاء الحساب. يرجى المحاولة مرة أخرى.";
+      if (authError.code === "auth/email-already-in-use") {
+        errorMessage = "هذا البريد الإلكتروني مستخدم بالفعل.";
+      } else if (authError.code === "auth/weak-password") {
+        errorMessage = "كلمة المرور ضعيفة جداً. يجب أن تتكون من 6 أحرف على الأقل.";
+      }
+      toast({
+        title: "خطأ في التسجيل",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -62,11 +96,11 @@ export default function RegisterPage() {
         <CardHeader className="text-center">
           <Image 
             src={logoImageUrl} 
-            alt={IMAGE_DETAIL.alt} 
+            alt="شعار صناع الأثر" 
             width={150} 
             height={80} 
             className="mx-auto mb-4"
-            data-ai-hint={IMAGE_DETAIL.hint}
+            data-ai-hint="education platform logo"
           />
           <CardTitle className="text-3xl font-headline text-primary">إنشاء حساب جديد</CardTitle>
           <CardDescription>انضم إلى منصة صُنّاع الأثَر وابدأ رحلتك التعليمية.</CardDescription>
@@ -81,7 +115,7 @@ export default function RegisterPage() {
                   <FormItem>
                     <FormLabel>الاسم الكامل</FormLabel>
                     <FormControl>
-                      <Input placeholder="ادخل اسمك الكامل" {...field} />
+                      <Input placeholder="ادخل اسمك الكامل" {...field} disabled={isLoading} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -94,7 +128,7 @@ export default function RegisterPage() {
                   <FormItem>
                     <FormLabel>البريد الإلكتروني</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="example@mail.com" {...field} />
+                      <Input type="email" placeholder="example@mail.com" {...field} disabled={isLoading} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -107,7 +141,7 @@ export default function RegisterPage() {
                   <FormItem>
                     <FormLabel>كلمة المرور</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="********" {...field} />
+                      <Input type="password" placeholder="********" {...field} disabled={isLoading} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -120,7 +154,7 @@ export default function RegisterPage() {
                   <FormItem>
                     <FormLabel>تأكيد كلمة المرور</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="********" {...field} />
+                      <Input type="password" placeholder="********" {...field} disabled={isLoading} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -132,7 +166,7 @@ export default function RegisterPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>أنا أسجل كـ</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isLoading}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="اختر نوع حسابك" />
@@ -149,8 +183,9 @@ export default function RegisterPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-                <UserPlus className="me-2 h-5 w-5" /> إنشاء حساب
+              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" disabled={isLoading}>
+                {isLoading ? <Loader2 className="animate-spin" /> : <UserPlus className="me-2 h-5 w-5" />}
+                {isLoading ? "جاري الإنشاء..." : "إنشاء حساب"}
               </Button>
             </form>
           </Form>
@@ -162,6 +197,15 @@ export default function RegisterPage() {
               </Link>
             </p>
           </div>
+           <div className="mt-4 text-center border-t pt-4">
+             <p className="text-sm text-muted-foreground mb-2">أو إذا كنت ترغب بالتسجيل المباشر في برنامج محدد:</p>
+              <Link href="/courses/summer-camps">
+                <Button variant="outline" className="w-full">
+                  <ArrowLeft className="me-2 h-4 w-4" />
+                  التسجيل في المعسكر الصيفي
+                </Button>
+              </Link>
+           </div>
         </CardContent>
       </Card>
     </div>

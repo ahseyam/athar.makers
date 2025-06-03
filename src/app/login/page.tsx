@@ -1,10 +1,10 @@
+
 'use client';
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { LogIn, Mail, Lock } from "lucide-react";
+import { LogIn, Mail, Lock, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,6 +12,11 @@ import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { signInWithEmailAndPassword, type AuthError } from "firebase/auth";
+import { auth } from "@/lib/firebase/config";
+import imageManifest from '@/config/image-manifest.json';
 
 const loginSchema = z.object({
   email: z.string().email("بريد إلكتروني غير صالح"),
@@ -20,30 +25,45 @@ const loginSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
-const IMAGE_DETAIL = {
-  id: "login_logo",
-  originalSrc: "https://placehold.co/150x80.png",
-  hint: "education platform logo",
-  alt: "شعار صناع الأثر",
-};
-
 export default function LoginPage() {
   const { toast } = useToast();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    }
   });
 
-  const logoImageUrl = IMAGE_DETAIL.originalSrc;
+  const logoImageUrl = imageManifest.loginPage.logo;
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
-    // TODO: Implement backend API call for user login and authentication
-    console.log(data);
-    toast({
-      title: "تم تسجيل الدخول بنجاح!",
-      description: "مرحباً بعودتك.",
-    });
-    // Potentially redirect to dashboard after successful login
-    // form.reset(); // Reset form if staying on page, or not needed if redirecting
+    setIsLoading(true);
+    try {
+      await signInWithEmailAndPassword(auth, data.email, data.password);
+      toast({
+        title: "تم تسجيل الدخول بنجاح!",
+        description: "مرحباً بعودتك. سيتم توجيهك إلى لوحة التحكم.",
+      });
+      router.push("/dashboard/student"); // Redirect to dashboard
+    } catch (error) {
+      const authError = error as AuthError;
+      console.error("Login error:", authError);
+      let errorMessage = "فشل تسجيل الدخول. يرجى التحقق من بريدك الإلكتروني وكلمة المرور.";
+      if (authError.code === "auth/user-not-found" || authError.code === "auth/wrong-password" || authError.code === "auth/invalid-credential") {
+        errorMessage = "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
+      }
+      toast({
+        title: "خطأ في تسجيل الدخول",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -52,11 +72,11 @@ export default function LoginPage() {
         <CardHeader className="text-center">
           <Image 
             src={logoImageUrl} 
-            alt={IMAGE_DETAIL.alt} 
+            alt="شعار صناع الأثر" 
             width={150} 
             height={80} 
             className="mx-auto mb-4"
-            data-ai-hint={IMAGE_DETAIL.hint}
+            data-ai-hint="education platform logo"
           />
           <CardTitle className="text-3xl font-headline text-primary">تسجيل الدخول</CardTitle>
           <CardDescription>مرحباً بعودتك إلى منصة صُنّاع الأثَر.</CardDescription>
@@ -71,7 +91,7 @@ export default function LoginPage() {
                   <FormItem>
                     <FormLabel>البريد الإلكتروني</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="example@mail.com" {...field} />
+                      <Input type="email" placeholder="example@mail.com" {...field} disabled={isLoading} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -84,7 +104,7 @@ export default function LoginPage() {
                   <FormItem>
                     <FormLabel>كلمة المرور</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="********" {...field} />
+                      <Input type="password" placeholder="********" {...field} disabled={isLoading} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -95,8 +115,9 @@ export default function LoginPage() {
                   هل نسيت كلمة المرور؟
                 </Link>
               </div>
-              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-                <LogIn className="me-2 h-5 w-5" /> تسجيل الدخول
+              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" disabled={isLoading}>
+                {isLoading ? <Loader2 className="animate-spin" /> : <LogIn className="me-2 h-5 w-5" />}
+                {isLoading ? "جاري الدخول..." : "تسجيل الدخول"}
               </Button>
             </form>
           </Form>
