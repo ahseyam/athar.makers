@@ -70,7 +70,7 @@ const heroImageDetails = {
   id: 'heroImage',
   originalSrc: imageManifest.homePage.heroImage,
   alt: "أكاديمية صناع الأثر - بانر تعليمي حديث",
-  hint: "modern learning concept educational banner abstract",
+  hint: "educational banner abstract", 
 };
 
 
@@ -78,14 +78,33 @@ export default function HomePage() {
   const visionImageUrl = visionMissionImages.vision.originalSrc;
   const missionImageUrl = visionMissionImages.mission.originalSrc;
   const heroBannerImageUrl = heroImageDetails.originalSrc; 
+  const academyLogoUrl = "https://i.imgur.com/YUHa6D6.png";
 
   return (
     <div className="flex flex-col items-center">
       <section className="w-full py-20 md:py-28 flex items-center justify-center text-center min-h-[auto] md:min-h-[auto] bg-background">
         <div className="container mx-auto px-4 flex flex-col items-center">
-          <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary mb-6">
-            أكاديمية صُنَّاع الأثَر
-          </h1>
+          <div className="flex items-center justify-center mb-6">
+            <Image
+              src={academyLogoUrl}
+              alt="شعار أكاديمية صناع الأثر"
+              width={80}
+              height={80}
+              className="w-20 h-20 object-contain mx-4"
+              data-ai-hint="academy logo"
+            />
+            <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary">
+              أكاديمية صُنَّاع الأثَر
+            </h1>
+            <Image
+              src={academyLogoUrl}
+              alt="شعار أكاديمية صناع الأثر"
+              width={80}
+              height={80}
+              className="w-20 h-20 object-contain mx-4"
+              data-ai-hint="academy logo"
+            />
+          </div>
           <p className="text-xl md:text-2xl text-foreground font-medium mb-8 max-w-3xl mx-auto">
             التعليم يبدأ من الأثر.. وينتهي إلى التميّز.
           </p>
