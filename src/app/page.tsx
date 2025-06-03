@@ -68,7 +68,7 @@ const visionMissionImages = {
 
 const heroImageDetails = {
   id: 'heroImage',
-  originalSrc: imageManifest.homePage.heroImage,
+  originalSrc: imageManifest.homePage.heroImage, // This is "https://i.imgur.com/vn8p8bF.jpeg"
   alt: "أكاديمية صناع الأثر - بانر تعليمي حديث",
   hint: "educational banner abstract", 
 };
@@ -88,9 +88,9 @@ export default function HomePage() {
             <Image
               src={academyLogoUrl}
               alt="شعار أكاديمية صناع الأثر"
-              width={120}
-              height={120}
-              className="w-32 h-32 object-contain mx-6"
+              width={160}
+              height={160}
+              className="w-40 h-40 object-contain mx-8"
               data-ai-hint="academy logo"
             />
             <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary">
@@ -99,9 +99,9 @@ export default function HomePage() {
             <Image
               src={academyLogoUrl}
               alt="شعار أكاديمية صناع الأثر"
-              width={120}
-              height={120}
-              className="w-32 h-32 object-contain mx-6"
+              width={160}
+              height={160}
+              className="w-40 h-40 object-contain mx-8"
               data-ai-hint="academy logo"
             />
           </div>
