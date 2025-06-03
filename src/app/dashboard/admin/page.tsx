@@ -1,4 +1,3 @@
-
 // No 'use client' needed, this is a Server Component by default
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,4 +25,3 @@ export default function AdminDashboardPage({}: {}) {
     </div>
   );
 }
-
