@@ -45,8 +45,8 @@ const programTracksData = [
     description: 'مراجعة مركزة للمواد العلمية لضمان التفوق في اختبار التحصيلي.',
     icon: <BookOpen className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/tahsili',
-    originalImage: imageManifest.homePage.programTracks_tahsili_image,
-    imageHint: 'Saudi Arabian high school students intensely focused on studying science subjects (physics, chemistry, biology, math) for the Tahsili achievement test, conveying academic rigor',
+    originalImage: 'https://images.unsplash.com/photo-1748941715828-60b74ee39b03?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    imageHint: 'students studying science academic achievement',
     alt: 'دورات التحصيلي'
   },
 ];
@@ -92,7 +92,7 @@ export default function HomePage() {
           data-ai-hint={heroImageDetails.hint}
           priority
         />
-        <div className="absolute inset-0 bg-primary/60 z-10"></div> {/* Overlay */}
+        <div className="absolute inset-0 bg-primary/70 z-10"></div> {/* Overlay */}
         
         <div className="relative z-20 container mx-auto px-4 flex flex-col items-center">
           <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary-foreground mb-6">
