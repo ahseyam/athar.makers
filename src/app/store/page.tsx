@@ -10,8 +10,8 @@ import { ShoppingCart, Search, Filter, Heart, Star, FileText, Presentation, Chec
 import Image from 'next/image';
 import Link from 'next/link';
 import { Label } from "@/components/ui/label";
-import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
-import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
+// Removed unused imports: import { generateImageFromHint } from '@/ai/flows/image-generator-flow';
+// Removed unused imports: import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
 
 interface Product {
   id: string;
@@ -21,9 +21,8 @@ interface Product {
   fileType: 'PDF' | 'Word' | 'Excel' | 'PowerPoint' | 'ZIP';
   price: number;
   originalImage: string; 
-  // currentImage: string; // Removed, will use originalImage directly for src
   imageHint: string;
-  alt: string; // Added alt text for images
+  alt: string; 
   sampleUrl?: string;
   rating?: number;
 }
@@ -65,44 +64,16 @@ export default function StorePage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('الكل');
   const [sortBy, setSortBy] = useState('newest');
-  // const [products, setProducts] = useState<Product[]>(initialSampleProductsData); // Use initial data directly
   const [headerImageUrl, setHeaderImageUrl] = useState<string>(HEADER_IMAGE_DETAIL.originalSrc);
 
   useEffect(() => {
-    let isMounted = true;
-    const loadDynamicImage = async (imageIdentifier: string, hint: string, originalSrc: string, setter: (url: string) => void) => {
-      console.log(`[DebugImage] Page: StorePage, ID: ${imageIdentifier}. Initiating image load. Hint: "${hint}", Original: ${originalSrc}`);
-      try {
-        const result = await generateImageFromHint({ hint });
-        if (isMounted) {
-          if (result.imageDataUri === IMAGE_GENERATION_FAILED_FALLBACK) {
-            console.warn(`[DebugImage] Page: StorePage, ID: ${imageIdentifier}. AI FAILED or FALLBACK. Attempting to set placeholder: ${originalSrc}`);
-            setter(originalSrc);
-          } else {
-            console.log(`[DebugImage] Page: StorePage, ID: ${imageIdentifier}. AI SUCCEEDED. Attempting to set AI image (first 100 chars): ${result.imageDataUri.substring(0,100)}...`);
-            setter(result.imageDataUri);
-          }
-        }
-      } catch (error) {
-        console.error(`[DebugImage] Page: StorePage, ID: ${imageIdentifier}. EXCEPTION caught for hint "${hint}":`, error);
-        if (isMounted) {
-            console.warn(`[DebugImage] Page: StorePage, ID: ${imageIdentifier}. EXCEPTION. Attempting to set placeholder: ${originalSrc}`);
-            setter(originalSrc);
-        }
-      }
-    };
-
-    loadDynamicImage(HEADER_IMAGE_DETAIL.id, HEADER_IMAGE_DETAIL.hint, HEADER_IMAGE_DETAIL.originalSrc, setHeaderImageUrl);
-
-    // Product images are now directly using originalImage, so no dynamic loading loop here.
-    // If individual product images were to be AI-generated, that logic would go here,
-    // but for performance, we're using placeholders for the list.
-
-    return () => { isMounted = false; };
+    // Dynamic image loading for the header has been removed.
+    // The headerImageUrl state is initialized with originalSrc and will be used directly.
+    // Product images also use originalImage directly in the rendering logic.
   }, []);
 
 
-  const filteredProducts = sampleProductsData // Use sampleProductsData directly
+  const filteredProducts = sampleProductsData
     .filter(product => 
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
       product.description.toLowerCase().includes(searchTerm.toLowerCase())
@@ -186,7 +157,7 @@ export default function StorePage() {
             <Card key={product.id} className="shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col overflow-hidden">
               <CardHeader className="p-0 relative">
                 <Image 
-                  src={product.originalImage} // Use originalImage directly
+                  src={product.originalImage} 
                   alt={product.alt} 
                   width={300} 
                   height={200} 
