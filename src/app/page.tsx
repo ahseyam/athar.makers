@@ -88,9 +88,9 @@ export default function HomePage() {
             <Image
               src={academyLogoUrl}
               alt="شعار أكاديمية صناع الأثر"
-              width={80}
-              height={80}
-              className="w-20 h-20 object-contain mx-4"
+              width={120}
+              height={120}
+              className="w-32 h-32 object-contain mx-6"
               data-ai-hint="academy logo"
             />
             <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary">
@@ -99,9 +99,9 @@ export default function HomePage() {
             <Image
               src={academyLogoUrl}
               alt="شعار أكاديمية صناع الأثر"
-              width={80}
-              height={80}
-              className="w-20 h-20 object-contain mx-4"
+              width={120}
+              height={120}
+              className="w-32 h-32 object-contain mx-6"
               data-ai-hint="academy logo"
             />
           </div>
