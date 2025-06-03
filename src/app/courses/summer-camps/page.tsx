@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { AlertCircle, Check, Sparkles, Brain, Rocket, Dumbbell, Info, ShoppingCart, Clock, TargetIcon, Users } from 'lucide-react';
+import { AlertCircle, Check, Sparkles, Brain, Rocket, Dumbbell, Info, ShoppingCart, Clock, TargetIcon, Users, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -56,9 +56,9 @@ interface GalleryImageDetail {
 
 const IMAGE_GALLERY_DETAILS = {
   scientific: [
-    { id: 'sci_img1', originalSrc: 'https://placehold.co/250x180.png', hint: 'diverse group elementary students excitedly conducting colorful chemistry experiment bright classroom', alt: 'طلاب يقومون بتجربة علمية' },
-    { id: 'sci_img2', originalSrc: 'https://placehold.co/250x180.png', hint: 'middle school students collaboratively building programming small robot kit', alt: 'طلاب يبنون روبوت' },
-    { id: 'sci_img3', originalSrc: 'https://placehold.co/250x180.png', hint: 'children looking through microscopes focused expressions science lab setting', alt: 'طلاب يستخدمون المجهر' },
+    { id: 'sci_img1', originalSrc: 'https://images.unsplash.com/photo-1519671845924-1fd18db430b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxkaXZlcnNlJTIwZ3JvdXAlMjBlbGVtZW50YXJ5JTIwc3R1ZGVudHMlMjBleGNpdGVkbHklMjBjb25kdWN0aW5nJTIwY29sb3JmdWwlMjBjaGVtaXN0cnklMjBleHBlcmltZW50JTIwYnJpZ2h0JTIwY2xhc3Nyb29tfGVufDB8fHx8MTc0ODkzOTEyOHww&ixlib=rb-4.1.0&q=80&w=1080', hint: 'diverse group elementary students excitedly conducting colorful chemistry experiment bright classroom', alt: 'طلاب يقومون بتجربة علمية' },
+    { id: 'sci_img2', originalSrc: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtaWRkbGUlMjBzY2hvb2wlMjBzdHVkZW50cyUyMGNvbGxhYm9yYXRpdmVseSUyMGJ1aWxkaW5nJTIwcHJvZ3JhbW1pbmclMjBzbWFsbCUyMHJvYm90JTIwa2l0fGVufDB8fHx8MTc0ODkzOTEyOXww&ixlib=rb-4.1.0&q=80&w=1080', hint: 'middle school students collaboratively building programming small robot kit', alt: 'طلاب يبنون روبوت' },
+    { id: 'sci_img3', originalSrc: 'https://images.unsplash.com/photo-1502802619459-7448b7c07b52?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjaGlsZHJlbiUyMGxvb2tpbmclMjB0aHJvdWdoJTIwbWljcm9zY29wZXMlMjBmb2N1c2VkJTIwZXhwcmVzc2lvbnMlMjBzY2llbmNlJTIwbGFiJTIwc2V0dGluZ3xlbnwwfHx8fDE3NDg5MzkxMjh8MA&ixlib=rb-4.1.0&q=80&w=1080', hint: 'children looking through microscopes focused expressions science lab setting', alt: 'طلاب يستخدمون المجهر' },
   ],
   skill: [
     { id: 'skill_img1', originalSrc: 'https://placehold.co/250x180.png', hint: 'young student confidently giving presentation peers supportive classroom environment', alt: 'طالب يلقي عرضًا تقديميًا' },
@@ -74,16 +74,23 @@ const IMAGE_GALLERY_DETAILS = {
 
 const EXPLORERS_BANNER_IMAGE_DETAIL = {
   id: "summer_camp_explorers_banner",
-  originalSrc: "https://placehold.co/1200x400.png",
+  originalSrc: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxjaGlsZHJlbiUyMGV4cGxvcmluZyUyMG5hdHVyZSUyMHNjaWVuY2UlMjBzdW1tZXIlMjBjYW1wfGVufDB8fHx8MTc0ODkzOTEyOXww&ixlib=rb-4.1.0&q=80&w=1080",
   hint: "children exploring nature science summer camp",
   alt: "طلاب المستكشفين في معسكر صيفي",
 };
 
 const PIONEERS_BANNER_IMAGE_DETAIL = {
   id: "summer_camp_pioneers_banner",
-  originalSrc: "https://placehold.co/1200x400.png",
+  originalSrc: "https://placehold.co/1200x400.png", // This one was not requested to be changed
   hint: "teenagers robotics coding technology camp",
   alt: "طلاب الرواد في معسكر صيفي تكنولوجي",
+};
+
+const HEADER_BACKGROUND_IMAGE_DETAIL = {
+    id: "summer_camp_header_bg",
+    originalSrc: "https://placehold.co/1200x300.png",
+    hint: "vibrant abstract background education activities",
+    alt: "خلفية ترويسة معسكر صناع الموهبة",
 };
 
 
@@ -117,7 +124,7 @@ export default function SummerCampPage() {
 
   const getRegistrationLink = () => {
     if (!selectedScientificPackageDetails || !selectedSportDetails || !sportDuration) {
-      return "#"; // Or some other handling for disabled state
+      return "#"; 
     }
 
     const queryParams = new URLSearchParams();
@@ -127,22 +134,30 @@ export default function SummerCampPage() {
     const sportPrice = sportDuration === '6' ? selectedSportDetails.price6 : selectedSportDetails.price12;
     queryParams.append('sportPrice', sportPrice.toString());
     queryParams.append('totalPrice', totalPrice.toString());
-    // You might want to pass IDs as well if needed on the next page
-    // queryParams.append('sciPackageId', selectedScientificPackageDetails.id);
-
-
+    
     return `/courses/summer-camps/student-details?${queryParams.toString()}`;
   };
 
 
   return (
     <div className="container mx-auto px-4 py-12">
-      <header className="text-center mb-12">
-        <Sparkles className="w-16 h-16 text-primary mx-auto mb-4" />
-        <h1 className="text-4xl md:text-5xl font-headline font-bold text-primary mb-4">معسكر صُنّاع الموهبة</h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          اختر مسارك التدريبي في معسكراتنا الصيفية والمسائية المليئة بالإبداع والتعلم والمرح!
-        </p>
+      <header className="relative text-center mb-12 h-72 md:h-80 rounded-lg overflow-hidden shadow-lg">
+        <Image
+            src={HEADER_BACKGROUND_IMAGE_DETAIL.originalSrc}
+            alt={HEADER_BACKGROUND_IMAGE_DETAIL.alt}
+            layout="fill"
+            objectFit="cover"
+            className="z-0"
+            data-ai-hint={HEADER_BACKGROUND_IMAGE_DETAIL.hint}
+            priority
+        />
+        <div className="absolute inset-0 bg-primary/70 flex flex-col items-center justify-center p-4 z-10">
+            <Sparkles className="w-16 h-16 text-primary-foreground mx-auto mb-4" />
+            <h1 className="text-4xl md:text-5xl font-headline font-bold text-primary-foreground mb-4">معسكر صُنّاع الموهبة</h1>
+            <p className="text-xl text-primary-foreground/90 max-w-2xl mx-auto">
+            اختر مسارك التدريبي في معسكراتنا الصيفية والمسائية المليئة بالإبداع والتعلم والمرح!
+            </p>
+        </div>
       </header>
 
       <Card className="shadow-xl mb-12">
@@ -180,7 +195,7 @@ export default function SummerCampPage() {
 
           {selectedStage && (
             <>
-              <div className="mb-2 relative aspect-[3/1] w-full"> {/* aspect-video is 16/9, for 1200x400 this is 3/1 */}
+              <div className="mb-6 relative aspect-[3/1] w-full">
                 <Image
                   src={selectedStage === 'المستكشفين' ? EXPLORERS_BANNER_IMAGE_DETAIL.originalSrc : PIONEERS_BANNER_IMAGE_DETAIL.originalSrc}
                   alt={selectedStage === 'المستكشفين' ? EXPLORERS_BANNER_IMAGE_DETAIL.alt : PIONEERS_BANNER_IMAGE_DETAIL.alt}
@@ -430,3 +445,6 @@ export default function SummerCampPage() {
     </div>
   );
 }
+
+
+    
