@@ -69,8 +69,8 @@ const visionMissionImages = {
 const heroImageDetails = {
   id: 'heroImage',
   originalSrc: imageManifest.homePage.heroImage,
-  alt: "صورة ترويجية رئيسية لأكاديمية صناع الأثر",
-  hint: "education academy promotion",
+  alt: "خلفية ترويجية لأكاديمية صناع الأثر", // Updated alt text
+  hint: "education academy background", // Updated hint
 };
 
 
@@ -82,29 +82,29 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col items-center">
-      <section className="w-full py-20 md:py-28 text-center bg-background flex flex-col items-center justify-center">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary mb-6">
+      <section className="relative w-full py-20 md:py-28 flex flex-col items-center justify-center min-h-[70vh] text-center">
+        <Image
+          src={heroImageUrl}
+          alt={heroImageDetails.alt}
+          layout="fill"
+          objectFit="cover"
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          data-ai-hint={heroImageDetails.hint}
+          priority
+        />
+        <div className="absolute inset-0 bg-primary/70 z-10"></div> {/* Overlay */}
+        <div className="relative z-20 container mx-auto px-4">
+          <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary-foreground mb-6">
             أكاديمية صُنَّاع الأثَر
           </h1>
-          <p className="text-xl md:text-2xl text-foreground font-medium mb-8">
+          <p className="text-xl md:text-2xl text-primary-foreground/90 font-medium mb-8 max-w-3xl mx-auto">
             التعليم يبدأ من الأثر.. وينتهي إلى التميّز.
           </p>
           
-          <div className="my-8 max-w-[1200px] mx-auto">
-            <Image
-              src={heroImageUrl}
-              alt={heroImageDetails.alt}
-              width={1200}
-              height={400}
-              className="rounded-lg shadow-xl object-cover w-full"
-              data-ai-hint={heroImageDetails.hint}
-              priority
-            />
-          </div>
+          {/* Removed standalone image div that was here */}
 
-          <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-10">
-            منصة سعودية تعليمية رقمية شاملة، تقدم برامج تدريبية مخصصة ومتكاملة في المهارات العلمية، الشخصية والقيادية، الاختبارات الوطنية، والاعتماد المؤسسي للمدارس.
+          <p className="max-w-3xl mx-auto text-lg text-primary-foreground/80 mb-10">
+            أكاديمية سعودية تعليمية رقمية شاملة، تقدم برامج تدريبية مخصصة ومتكاملة في المهارات العلمية، الشخصية والقيادية، الاختبارات الوطنية، والاعتماد المؤسسي للمدارس.
           </p>
           <div className="space-x-4 space-x-reverse">
             <Link href="/courses/summer-camps">
@@ -113,7 +113,7 @@ export default function HomePage() {
               </Button>
             </Link>
             <Link href="/register">
-              <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/10">
+              <Button size="lg" variant="outline" className="border-primary-foreground/50 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground">
                 سجّل الآن
               </Button>
             </Link>
