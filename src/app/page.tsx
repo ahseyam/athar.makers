@@ -66,10 +66,18 @@ const visionMissionImages = {
   }
 };
 
+const heroImageDetails = {
+  id: 'heroImage',
+  originalSrc: imageManifest.homePage.heroImage,
+  alt: "صورة تعريفية لمنصة صناع الأثر",
+  hint: "platform identity",
+}
+
 
 export default function HomePage() {
   const visionImageUrl = visionMissionImages.vision.originalSrc;
   const missionImageUrl = visionMissionImages.mission.originalSrc;
+  const heroImageUrl = heroImageDetails.originalSrc;
 
 
   return (
@@ -85,6 +93,17 @@ export default function HomePage() {
           <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-10">
             منصة سعودية تعليمية رقمية شاملة، تقدم برامج تدريبية مخصصة ومتكاملة في المهارات العلمية، الشخصية والقيادية، الاختبارات الوطنية، والاعتماد المؤسسي للمدارس.
           </p>
+          <div className="mb-10">
+            <Image
+              src={heroImageUrl}
+              alt={heroImageDetails.alt}
+              width={700}
+              height={350}
+              className="rounded-lg shadow-xl mx-auto object-cover"
+              data-ai-hint={heroImageDetails.hint}
+              priority
+            />
+          </div>
           <div className="space-x-4 space-x-reverse">
             <Link href="/courses/summer-camps">
               <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
