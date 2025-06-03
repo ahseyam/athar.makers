@@ -36,7 +36,7 @@ const programTracksData = [
     icon: <Lightbulb className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/mawhiba',
     originalImage: "https://images.unsplash.com/photo-1748941709930-3b2feeef718d?q=80&w=2589&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    imageHint: 'student critical thinking puzzle',
+    imageHint: 'طالب يحل ألغازًا تفكير نقدي',
     alt: 'مقياس موهبة'
   },
   {
@@ -46,7 +46,7 @@ const programTracksData = [
     icon: <BookOpen className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/tahsili',
     originalImage: "https://images.unsplash.com/photo-1748941715828-60b74ee39b03?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    imageHint: 'students studying science academic achievement',
+    imageHint: 'طلاب يدرسون مواد علمية لتحقيق التفوق الأكاديمي',
     alt: 'دورات التحصيلي'
   },
 ];
@@ -68,9 +68,9 @@ const visionMissionImages = {
 
 const heroImageDetails = {
   id: 'heroImage',
-  originalSrc: imageManifest.homePage.heroImage, // This will point to the imgur link or placeholder
+  originalSrc: imageManifest.homePage.heroImage,
   alt: "أكاديمية صناع الأثر - صورة بانر رئيسية",
-  hint: "educational banner abstract", 
+  hint: "educational banner abstract",
 };
 
 
@@ -89,7 +89,7 @@ export default function HomePage() {
           <p className="text-xl md:text-2xl text-foreground font-medium mb-8 max-w-3xl mx-auto">
             التعليم يبدأ من الأثر.. وينتهي إلى التميّز.
           </p>
-          <div className="w-full max-w-5xl mx-auto my-8">
+          <div className="w-full max-w-5xl mx-auto mb-10"> {/* Changed my-8 to mb-10 */}
             <Image
               src={heroBannerImageUrl} 
               alt={heroImageDetails.alt}
