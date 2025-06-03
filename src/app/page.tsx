@@ -87,12 +87,6 @@ export default function HomePage() {
           <h1 className="text-4xl md:text-6xl font-headline font-bold text-primary mb-6">
             أكاديمية صُنَّاع الأثَر
           </h1>
-          <p className="text-xl md:text-2xl text-foreground font-medium mb-8">
-            التعليم يبدأ من الأثر.. وينتهي إلى التميّز.
-          </p>
-          <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-10">
-            منصة سعودية تعليمية رقمية شاملة، تقدم برامج تدريبية مخصصة ومتكاملة في المهارات العلمية، الشخصية والقيادية، الاختبارات الوطنية، والاعتماد المؤسسي للمدارس.
-          </p>
           <div className="my-8 md:my-12 flex justify-center">
             <Image
               src={heroImageUrl}
@@ -104,6 +98,12 @@ export default function HomePage() {
               priority
             />
           </div>
+          <p className="text-xl md:text-2xl text-foreground font-medium mb-8">
+            التعليم يبدأ من الأثر.. وينتهي إلى التميّز.
+          </p>
+          <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-10">
+            منصة سعودية تعليمية رقمية شاملة، تقدم برامج تدريبية مخصصة ومتكاملة في المهارات العلمية، الشخصية والقيادية، الاختبارات الوطنية، والاعتماد المؤسسي للمدارس.
+          </p>
           <div className="space-x-4 space-x-reverse">
             <Link href="/courses/summer-camps">
               <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
