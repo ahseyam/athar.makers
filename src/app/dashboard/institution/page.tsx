@@ -4,7 +4,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Building } from "lucide-react";
 
-export default function InstitutionDashboardPage({ params, searchParams }: { params: { [key: string]: string | string[] }; searchParams: { [key: string]: string | string[] | undefined } }) {
+export default function InstitutionDashboardPage({ params }: { params: { [key: string]: string | string[] } }) {
   // params and searchParams are no longer received as props
 
   return (

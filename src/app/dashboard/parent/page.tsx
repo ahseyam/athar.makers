@@ -4,7 +4,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users } from "lucide-react";
 
-export default function ParentDashboardPage({ params, searchParams }: { params: { [key: string]: string | string[] }; searchParams: { [key: string]: string | string[] | undefined } }) {
+export default function ParentDashboardPage({ params }: { params: { [key: string]: string | string[] } }) {
   // params and searchParams are no longer received as props
 
   return (

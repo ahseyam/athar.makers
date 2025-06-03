@@ -33,8 +33,8 @@ const faqItems = [
   }
 ];
 
-export default function FaqPage({ params, searchParams }: { params: { [key: string]: string | string[] }; searchParams: { [key: string]: string | string[] | undefined } }) {
-  // params and searchParams are no longer received as props
+export default function FaqPage({ params }: { params: { [key: string]: string | string[] } }) {
+  // searchParams prop removed
 
   return (
     <div className="container mx-auto px-4 py-12">
