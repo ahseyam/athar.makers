@@ -79,7 +79,7 @@ export default function TrainerApplyPage() {
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="mb-12">
-        <div className="text-center py-8 md:py-10">
+        <div className="text-center pt-8 md:pt-10 pb-2"> {/* Reduced pb-X here */}
           <h1 className="text-3xl md:text-4xl font-headline font-bold text-primary mb-3">
             {pageTitle}
           </h1>
@@ -87,7 +87,7 @@ export default function TrainerApplyPage() {
             {pageSubtitle}
           </p>
         </div>
-        <div className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden shadow-lg mt-6">
+        <div className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden shadow-lg mt-2"> {/* Reduced mt-X here */}
           <Image
             src={headerImageUrl}
             alt={IMAGE_DETAIL.alt}
@@ -233,3 +233,5 @@ export default function TrainerApplyPage() {
     </div>
   );
 }
+
+    
