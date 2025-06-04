@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from "@/components/ui/button";
@@ -77,23 +78,25 @@ export default function TrainerApplyPage() {
 
   return (
     <div className="container mx-auto px-4 py-12">
-      <header className="relative w-full h-64 md:h-80 mb-12 rounded-lg overflow-hidden shadow-lg">
-        <Image
-          src={headerImageUrl}
-          alt={IMAGE_DETAIL.alt}
-          layout="fill"
-          objectFit="cover"
-          className="z-0"
-          priority
-          data-ai-hint={IMAGE_DETAIL.hint}
-        />
-        <div className="absolute inset-0 bg-primary/70 flex flex-col items-center justify-center text-center p-4 z-10">
-          <h1 className="text-3xl md:text-4xl font-headline font-bold text-primary-foreground mb-3">
+      <header className="mb-12">
+        <div className="text-center py-8 md:py-10">
+          <h1 className="text-3xl md:text-4xl font-headline font-bold text-primary mb-3">
             {pageTitle}
           </h1>
-          <p className="text-lg md:text-xl text-primary-foreground/90 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
             {pageSubtitle}
           </p>
+        </div>
+        <div className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden shadow-lg mt-6">
+          <Image
+            src={headerImageUrl}
+            alt={IMAGE_DETAIL.alt}
+            layout="fill"
+            objectFit="cover"
+            className="z-0"
+            priority
+            data-ai-hint={IMAGE_DETAIL.hint}
+          />
         </div>
       </header>
 
