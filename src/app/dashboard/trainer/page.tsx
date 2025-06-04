@@ -1,10 +1,11 @@
 // Removed 'use client'
-import React from 'react';
+import React, { use } from 'react'; // Added React.use
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ClipboardList } from "lucide-react";
 
-export default function TrainerDashboardPage({}: {}) {
-  // params and searchParams are no longer received as props
+export default function TrainerDashboardPage({ params: rawParams }: { params: Record<string, string | string[] | undefined> }) {
+  const params = use(Promise.resolve(rawParams));
+  // params is now "unwrapped" but not used. This is to satisfy Next.js checks.
 
   return (
     <div className="container mx-auto px-4 py-12">

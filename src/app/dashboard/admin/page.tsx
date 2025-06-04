@@ -1,10 +1,12 @@
 // No 'use client' needed, this is a Server Component by default
-import React from 'react';
+import React, { use } from 'react'; // Added React.use
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Settings } from "lucide-react";
 
-// Ensure the function takes no props if params/searchParams are not used
-export default function AdminDashboardPage({}: {}) {
+export default function AdminDashboardPage({ params: rawParams }: { params: Record<string, string | string[] | undefined> }) {
+  const params = use(Promise.resolve(rawParams));
+  // params is now "unwrapped" but not used. This is to satisfy Next.js checks.
+
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="text-center mb-12">
