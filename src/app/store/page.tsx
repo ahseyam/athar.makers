@@ -55,8 +55,8 @@ const CategoryIcon = ({ category }: { category: Product['category'] }) => {
 
 const HEADER_IMAGE_DETAIL = {
   id: "store_header",
-  originalSrc: "https://placehold.co/1200x300.png",
-  hint: "modern online store interface showcasing various digital educational products like e-books, training kits, and templates",
+  originalSrc: "https://i.imgur.com/yjiMnY9.png", // Updated image URL
+  hint: "abstract background store", // Updated hint
   alt: "المتجر الإلكتروني",
 };
 
@@ -64,14 +64,9 @@ export default function StorePage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('الكل');
   const [sortBy, setSortBy] = useState('newest');
-  const [headerImageUrl, setHeaderImageUrl] = useState<string>(HEADER_IMAGE_DETAIL.originalSrc);
+  const headerImageUrl = HEADER_IMAGE_DETAIL.originalSrc; // Use directly
 
-  useEffect(() => {
-    // Dynamic image loading for the header has been removed.
-    // The headerImageUrl state is initialized with originalSrc and will be used directly.
-    // Product images also use originalImage directly in the rendering logic.
-  }, []);
-
+  // Removed useEffect as dynamic image loading is no longer needed for the header
 
   const filteredProducts = sampleProductsData
     .filter(product => 
@@ -91,7 +86,7 @@ export default function StorePage() {
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="mb-12">
-        <div className="text-center py-8 md:py-10">
+        <div className="text-center pt-8 md:pt-10 pb-2">
           <h1 className="text-3xl md:text-4xl font-headline font-bold text-primary mb-3">
             {pageTitle}
           </h1>
@@ -99,7 +94,7 @@ export default function StorePage() {
             {pageSubtitle}
           </p>
         </div>
-        <div className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden shadow-lg mt-6">
+        <div className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden shadow-lg mt-2">
          <Image
             src={headerImageUrl}
             alt={HEADER_IMAGE_DETAIL.alt}
@@ -221,3 +216,4 @@ export default function StorePage() {
     </div>
   );
 }
+
