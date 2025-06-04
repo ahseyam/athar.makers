@@ -1,5 +1,6 @@
+
 // No 'use client' needed, this is a Server Component by default
-import React, { use } from 'react'; // Added React.use
+import React, { use } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Settings } from "lucide-react";
 

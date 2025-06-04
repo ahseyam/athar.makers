@@ -1,5 +1,6 @@
+
 // Removed 'use client'
-import React, { use } from 'react'; // Added React.use
+import React, { use } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ClipboardList } from "lucide-react";
 
