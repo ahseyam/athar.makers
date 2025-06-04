@@ -43,7 +43,7 @@ const accreditationSteps = [
 
 const IMAGE_DETAIL = {
   id: "trainer_apply_header",
-  originalSrc: "https://placehold.co/1200x400.png",
+  originalSrc: "https://i.imgur.com/00k5P5T.png", // Updated image URL
   hint: "professional engaging trainer presentation workshop attentive audience modern training room",
   alt: "انضم كمدرب",
 };
@@ -54,6 +54,16 @@ export default function TrainerApplyPage() {
     resolver: zodResolver(trainerApplicationSchema),
     defaultValues: {
       trainingModes: [],
+      fullName: "",
+      city: "",
+      // gender: undefined, // Let zod handle this
+      email: "",
+      phone: "",
+      linkedin: "",
+      specialty: "",
+      targetAudience: "",
+      experienceYears: "",
+      // cv, certificates, sampleContent will be FileList or undefined by default
     },
   });
 
@@ -79,7 +89,7 @@ export default function TrainerApplyPage() {
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="mb-12">
-        <div className="text-center pt-8 md:pt-10 pb-2"> {/* Reduced pb-X here */}
+        <div className="text-center pt-8 md:pt-10 pb-2">
           <h1 className="text-3xl md:text-4xl font-headline font-bold text-primary mb-3">
             {pageTitle}
           </h1>
@@ -87,7 +97,7 @@ export default function TrainerApplyPage() {
             {pageSubtitle}
           </p>
         </div>
-        <div className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden shadow-lg mt-2"> {/* Reduced mt-X here */}
+        <div className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden shadow-lg mt-2">
           <Image
             src={headerImageUrl}
             alt={IMAGE_DETAIL.alt}
@@ -233,5 +243,7 @@ export default function TrainerApplyPage() {
     </div>
   );
 }
+
+    
 
     
