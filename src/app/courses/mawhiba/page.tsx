@@ -41,8 +41,8 @@ const faqItemsMawhiba = [
 
 const IMAGE_DETAIL = {
   id: "mawhiba_header",
-  originalSrc: "https://placehold.co/1200x400.png",
-  hint: "young student problem-solving abstract shapes bright learning environment gifted children program",
+  originalSrc: "https://i.imgur.com/ll11pil.png",
+  hint: "Mawhiba banner",
   alt: "مقياس موهبة",
 };
 
@@ -55,7 +55,7 @@ export default function MawhibaPage() {
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="mb-12">
-        <div className="text-center py-8 md:py-10">
+        <div className="text-center pt-8 md:pt-10 pb-2">
           <h1 className="text-3xl md:text-4xl font-headline font-bold text-primary mb-3">
             {pageTitle}
           </h1>
@@ -63,12 +63,12 @@ export default function MawhibaPage() {
             {pageSubtitle}
           </p>
         </div>
-        <div className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden shadow-lg mt-6">
+        <div className="relative w-full aspect-[1024/281] rounded-lg overflow-hidden shadow-lg mt-2">
            <Image
               src={headerImageUrl}
               alt={IMAGE_DETAIL.alt}
               layout="fill"
-              objectFit="cover"
+              objectFit="contain"
               className="z-0"
               priority
               data-ai-hint={IMAGE_DETAIL.hint}
