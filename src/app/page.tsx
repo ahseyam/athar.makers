@@ -105,7 +105,7 @@ export default function HomePage() {
               data-ai-hint="academy logo"
             />
           </div>
-          <p className="text-xl md:text-2xl text-foreground font-medium mb-8 max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl text-foreground font-medium mb-2 max-w-3xl mx-auto">
             التعليم يبدأ من الأثر.. وينتهي إلى التميّز.
           </p>
           <div className="w-full max-w-5xl mx-auto mb-10">
