@@ -41,7 +41,7 @@ const faqItemsMawhiba = [
 
 const IMAGE_DETAIL = {
   id: "mawhiba_header",
-  originalSrc: "https://i.imgur.com/ll11pil.png",
+  originalSrc: "https://i.imgur.com/ll11pil.png", // Updated to direct image link
   hint: "Mawhiba banner",
   alt: "مقياس موهبة",
 };
