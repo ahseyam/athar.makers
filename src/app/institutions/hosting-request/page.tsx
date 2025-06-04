@@ -47,9 +47,9 @@ type HostingRequestFormValues = z.infer<typeof hostingRequestSchema>;
 
 const IMAGE_DETAIL = {
   id: "hosting_request_header",
-  originalSrc: "https://placehold.co/1200x400.png",
-  hint: "modern school building collaborative meeting space educational institution program hosting partnerships",
-  alt: "استضافة برنامج",
+  originalSrc: "https://i.imgur.com/yjiMnY9.png", // Updated image URL
+  hint: "abstract background hosting request", // Updated hint
+  alt: "خلفية صفحة طلب استضافة برنامج", // Updated alt
 };
 
 export default function HostingRequestPage() {
@@ -81,7 +81,7 @@ export default function HostingRequestPage() {
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="mb-12">
-        <div className="text-center py-8 md:py-10">
+        <div className="text-center pt-8 md:pt-10 pb-2">
           <h1 className="text-3xl md:text-4xl font-headline font-bold text-primary mb-3">
             {pageTitle}
           </h1>
@@ -89,7 +89,7 @@ export default function HostingRequestPage() {
             {pageSubtitle}
           </p>
         </div>
-        <div className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden shadow-lg mt-6">
+        <div className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden shadow-lg mt-2">
           <Image
             src={headerImageUrl}
             alt={IMAGE_DETAIL.alt}
