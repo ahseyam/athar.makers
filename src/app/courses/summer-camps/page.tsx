@@ -142,22 +142,24 @@ export default function SummerCampPage() {
 
   return (
     <div className="container mx-auto px-4 py-12">
-      <header className="relative text-center mb-12 h-72 md:h-80 rounded-lg overflow-hidden shadow-lg">
-        <Image
-            src={HEADER_BACKGROUND_IMAGE_DETAIL.originalSrc}
-            alt={HEADER_BACKGROUND_IMAGE_DETAIL.alt}
-            layout="fill"
-            style={{objectFit: 'cover'}}
-            className="z-0"
-            data-ai-hint={HEADER_BACKGROUND_IMAGE_DETAIL.hint}
-            
-        />
-        <div className="absolute inset-0 bg-primary/70 flex flex-col items-center justify-center p-4 z-10">
-            <Sparkles className="w-16 h-16 text-primary-foreground mx-auto mb-4" />
-            <h1 className="text-4xl md:text-5xl font-headline font-bold text-primary-foreground mb-4">معسكر صُنّاع الموهبة</h1>
-            <p className="text-xl text-primary-foreground/90 max-w-2xl mx-auto">
+      <header className="mb-12">
+        <div className="text-center py-8 md:py-10">
+            <Sparkles className="w-16 h-16 text-primary mx-auto mb-4" />
+            <h1 className="text-4xl md:text-5xl font-headline font-bold text-primary mb-4">معسكر صُنّاع الموهبة</h1>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             اختر مسارك التدريبي في معسكراتنا الصيفية والمسائية المليئة بالإبداع والتعلم والمرح!
             </p>
+        </div>
+        <div className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden shadow-lg mt-6">
+            <Image
+                src={HEADER_BACKGROUND_IMAGE_DETAIL.originalSrc}
+                alt={HEADER_BACKGROUND_IMAGE_DETAIL.alt}
+                layout="fill"
+                objectFit="cover"
+                className="z-0"
+                data-ai-hint={HEADER_BACKGROUND_IMAGE_DETAIL.hint}
+                priority
+            />
         </div>
       </header>
 
@@ -201,7 +203,7 @@ export default function SummerCampPage() {
                   src={selectedStage === 'المستكشفين' ? EXPLORERS_BANNER_IMAGE_DETAIL.originalSrc : PIONEERS_BANNER_IMAGE_DETAIL.originalSrc}
                   alt={selectedStage === 'المستكشفين' ? EXPLORERS_BANNER_IMAGE_DETAIL.alt : PIONEERS_BANNER_IMAGE_DETAIL.alt}
                   layout="fill"
-                  style={{objectFit: 'cover'}}
+                  objectFit="cover"
                   className="rounded-lg shadow-md"
                   data-ai-hint={selectedStage === 'المستكشفين' ? EXPLORERS_BANNER_IMAGE_DETAIL.hint : PIONEERS_BANNER_IMAGE_DETAIL.hint}
                   key={selectedStage} 
