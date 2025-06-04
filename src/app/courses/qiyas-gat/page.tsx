@@ -35,9 +35,9 @@ const faqItems = [
 
 const IMAGE_DETAIL = {
   id: "qiyas_gat_header",
-  originalSrc: "https://placehold.co/1200x400.png",
-  hint: "high school students preparing Qiyas Gat test library books notes", // Max 2 words
-  alt: "اختبار القدرات قياس",
+  originalSrc: "https://i.imgur.com/uthQcjl.png",
+  hint: "blue abstract texture", 
+  alt: "خلفية ترويسة دورات القدرات قياس",
 };
 
 export default function QiyasGatPage() {
