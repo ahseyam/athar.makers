@@ -38,7 +38,7 @@ const hostingRequestSchema = z.object({
   programs: z.array(z.string()).min(1, "اختر برنامجًا واحدًا على الأقل"),
   proposedDate: z.string().min(1, "تاريخ التنفيذ المقترح مطلوب"),
   dailyPeriod: z.enum(["صباحًا", "مسائيًا"]),
-  expectedStudents: z.string().min(1, "عدد الطلاب المتوقع مطلوب"),
+  expectedStudents: z.string().min(1, "عدد الطلاب المتوقع مطلوب"), // Kept as string as per original schema
   hasEquipment: z.boolean().optional(),
   notes: z.string().optional(),
 });
@@ -47,9 +47,9 @@ type HostingRequestFormValues = z.infer<typeof hostingRequestSchema>;
 
 const IMAGE_DETAIL = {
   id: "hosting_request_header",
-  originalSrc: "https://i.imgur.com/yjiMnY9.png", // Updated image URL
-  hint: "abstract background hosting request", // Updated hint
-  alt: "خلفية صفحة طلب استضافة برنامج", // Updated alt
+  originalSrc: "https://i.imgur.com/yjiMnY9.png",
+  hint: "abstract background hosting request",
+  alt: "خلفية صفحة طلب استضافة برنامج",
 };
 
 export default function HostingRequestPage() {
@@ -57,8 +57,18 @@ export default function HostingRequestPage() {
   const form = useForm<HostingRequestFormValues>({
     resolver: zodResolver(hostingRequestSchema),
     defaultValues: {
+      institutionName: "",
+      city: "",
+      institutionType: "مدرسة أهلية", // Default to first option or a specific valid enum
+      contactPerson: "",
+      email: "",
+      phone: "",
       programs: [],
+      proposedDate: "",
+      dailyPeriod: "صباحًا", // Default to first option or a specific valid enum
+      expectedStudents: "", // Initialize as empty string
       hasEquipment: false,
+      notes: "",
     },
   });
 
