@@ -43,8 +43,8 @@ const accreditationSteps = [
 
 const IMAGE_DETAIL = {
   id: "trainer_apply_header",
-  originalSrc: "https://i.imgur.com/00k5P5T.png", // Updated image URL
-  hint: "professional engaging trainer presentation workshop attentive audience modern training room",
+  originalSrc: "https://i.imgur.com/t0S1o8K.png", 
+  hint: "trainer apply header",
   alt: "انضم كمدرب",
 };
 
@@ -243,7 +243,5 @@ export default function TrainerApplyPage() {
     </div>
   );
 }
-
-    
 
     
