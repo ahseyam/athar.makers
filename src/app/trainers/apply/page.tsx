@@ -44,7 +44,7 @@ const accreditationSteps = [
 const IMAGE_DETAIL = {
   id: "trainer_apply_header",
   originalSrc: "https://i.imgur.com/t0S1o8K.png", 
-  hint: "trainer apply header",
+  hint: "abstract banner", // Updated hint to reflect the new image
   alt: "انضم كمدرب",
 };
 
