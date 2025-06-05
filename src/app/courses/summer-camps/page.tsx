@@ -90,8 +90,8 @@ const PIONEERS_BANNER_IMAGE_DETAIL = {
 const HEADER_BACKGROUND_IMAGE_DETAIL = {
     id: "summer_camp_header_bg",
     originalSrc: imageManifest.summerCampsPage.headerBackground_image,
-    hint: "vibrant abstract background education activities",
-    alt: "خلفية ترويسة معسكر صناع الموهبة",
+    hint: "children summer camp activities",
+    alt: "طلاب مستمتعون في أنشطة معسكر صناع الموهبة",
 };
 
 
