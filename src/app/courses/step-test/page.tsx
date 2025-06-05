@@ -9,8 +9,6 @@ import { Badge } from '@/components/ui/badge';
 import { CheckCircle, BookOpen, Users, MessageSquare, TrendingUp, Star, HelpCircle, ShoppingCart, Percent, Headphones, Edit3, MonitorPlay, FileText } from 'lucide-react';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-// import { generateImageFromHint } from '@/ai/flows/image-generator-flow'; // Removed
-// import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants'; // Removed
 
 const stepComponents = [
   { name: 'الفهم القرائي', percent: '40%', skills: 'قراءة نصوص أكاديمية – تحليل واستنتاج – الإجابة عن الأسئلة', icon: <BookOpen className="w-8 h-8 text-primary"/> },
@@ -34,13 +32,12 @@ const faqItemsStep = [
 
 const IMAGE_DETAIL = {
   id: "step_test_header",
-  originalSrc: "https://placehold.co/1200x400.png",
-  hint: "student focused English proficiency STEP test computer academic testing environment", // Max 2 words
-  alt: "STEP Test",
+  originalSrc: "https://i.imgur.com/OBd1xdW.png",
+  hint: "English language test",
+  alt: "STEP Test header image",
 };
 
 export default function StepTestPage() {
-  // Directly use originalSrc, removed dynamic loading for this image
   const headerImageUrl = IMAGE_DETAIL.originalSrc;
 
   const pageTitle = "دورة STEP – أتقن اللغة، تقدَّم بثقة";
@@ -178,3 +175,4 @@ export default function StepTestPage() {
     </div>
   );
 }
+
