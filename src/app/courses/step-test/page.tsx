@@ -49,7 +49,7 @@ export default function StepTestPage() {
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="mb-12">
-        <div className="text-center pt-8 md:pt-10 pb-2">
+        <div className="text-center pt-8 md:pt-10 pb-0">
           <h1 className="text-3xl md:text-4xl font-headline font-bold text-primary mb-3">
             {pageTitle}
           </h1>
