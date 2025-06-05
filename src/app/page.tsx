@@ -15,8 +15,8 @@ const programTracksData = [
     description: 'برامج مكثفة تجمع بين العلم والمهارة والمرح لصناعة جيل مبدع.',
     icon: <Sparkles className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/summer-camps',
-    originalImage: 'https://i.imgur.com/COFjO3A.png',
-    imageHint: 'children summer camp',
+    originalImage: 'https://i.imgur.com/fKK8wOz.jpeg', // Updated image
+    imageHint: 'children summer camp activities', // Updated hint
     alt: 'المعسكرات الصيفية والمسائية'
   },
   {
