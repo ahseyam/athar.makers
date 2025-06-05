@@ -55,7 +55,7 @@ export default function TahsiliPage() {
             {pageSubtitle}
           </p>
         </div>
-        <div className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden shadow-lg mt-6">
+        <div className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden shadow-lg mt-2">
            <Image
               src={headerImageUrl}
               alt={IMAGE_DETAIL.alt}
