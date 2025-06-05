@@ -45,8 +45,8 @@ const programTracksData = [
     description: 'مراجعة مركزة للمواد العلمية لضمان التفوق في اختبار التحصيلي.',
     icon: <BookOpen className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/tahsili',
-    originalImage: "https://i.imgur.com/8ZsHWir.png",
-    imageHint: 'student studying science',
+    originalImage: "https://i.imgur.com/o8BioiQ.png",
+    imageHint: 'student studying',
     alt: 'دورات التحصيلي'
   },
 ];
