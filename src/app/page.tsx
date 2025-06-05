@@ -68,7 +68,7 @@ const visionMissionImages = {
 
 const heroImageDetails = {
   id: 'heroImage',
-  originalSrc: imageManifest.homePage.heroImage,
+  originalSrc: "https://i.imgur.com/ClKwnJl.png",
   alt: "أكاديمية صناع الأثر - بانر تعليمي حديث",
   hint: "educational banner abstract", 
 };
