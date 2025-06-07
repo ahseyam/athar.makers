@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from '@/components/ui/button';
-import { Bus, Users, Map, ShieldCheck, Phone } from 'lucide-react';
+import { Bus, Users, MapPin as MapIcon, ShieldCheck, Phone } from 'lucide-react';
 
 const transportationFeatures = [
   {
@@ -11,7 +11,7 @@ const transportationFeatures = [
     description: "حافلاتنا مكيفة ومزودة بأحدث وسائل الراحة والأمان لضمان رحلة مريحة للطلاب.",
     icon: <Bus className="w-10 h-10 text-primary mb-3" />,
     imageSrc: "https://placehold.co/600x400.png",
-    imageHint: "modern bus interior",
+    imageHint: "modern bus",
     alt: "حافلة حديثة"
   },
   {
@@ -19,15 +19,15 @@ const transportationFeatures = [
     description: "فريق من السائقين ذوي الخبرة العالية والمدربين على التعامل مع الطلاب والالتزام بمعايير السلامة.",
     icon: <Users className="w-10 h-10 text-primary mb-3" />,
     imageSrc: "https://placehold.co/600x400.png",
-    imageHint: "professional bus driver",
+    imageHint: "professional driver",
     alt: "سائق محترف"
   },
   {
     title: "تغطية جغرافية واسعة",
     description: "نخدم مناطق متعددة لضمان وصول أكبر عدد ممكن من الطلاب إلى برامجنا بسهولة.",
-    icon: <Map className="w-10 h-10 text-primary mb-3" />,
+    icon: <MapIcon className="w-10 h-10 text-primary mb-3" />,
     imageSrc: "https://placehold.co/600x400.png",
-    imageHint: "map route navigation",
+    imageHint: "map route",
     alt: "خريطة تغطية"
   },
   {
@@ -35,14 +35,14 @@ const transportationFeatures = [
     description: "تتبع الحافلات، مشرفون متخصصون، وإجراءات سلامة صارمة لضمان رحلة آمنة من وإلى الوجهة.",
     icon: <ShieldCheck className="w-10 h-10 text-primary mb-3" />,
     imageSrc: "https://placehold.co/600x400.png",
-    imageHint: "child safety seatbelt",
+    imageHint: "child safety",
     alt: "مقعد أمان للأطفال"
   }
 ];
 
 const HEADER_IMAGE_DETAIL = {
   originalSrc: "https://placehold.co/1200x400.png",
-  hint: "school bus children",
+  hint: "school bus",
   alt: "خدمات النقل والمواصلات"
 };
 
