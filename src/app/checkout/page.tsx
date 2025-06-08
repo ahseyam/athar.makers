@@ -16,9 +16,9 @@ import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 
 const IMAGE_DETAILS = {
-  mada: { id: "checkout_mada_logo", originalSrc: "https://placehold.co/40x25.png", hint: "mada logo", alt: "مدى" },
-  visaMastercard: { id: "checkout_visa_mastercard_logo", originalSrc: "https://placehold.co/80x25.png", hint: "visa mastercard logos", alt: "Visa/Mastercard" },
-  applePay: { id: "checkout_applepay_logo", originalSrc: "https://placehold.co/50x25.png", hint: "apple pay logo", alt: "Apple Pay" },
+  mada: { id: "checkout_mada_logo", originalSrc: "https://imgur.com/a/x6yAmge", hint: "mada logo", alt: "مدى" },
+  visaMastercard: { id: "checkout_visa_mastercard_logo", originalSrc: "https://i.imgur.com/ljKkjxo.png", hint: "visa mastercard logos", alt: "Visa/Mastercard" },
+  applePay: { id: "checkout_applepay_logo", originalSrc: "https://i.imgur.com/RDLGDEg.png", hint: "apple pay logo", alt: "Apple Pay" },
 };
 
 function CheckoutPageContent() {

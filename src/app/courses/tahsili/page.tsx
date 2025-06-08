@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, BookText, Users, TrendingUp, HelpCircle, ShoppingCart, Brain, TestTube, Sigma, Atom, Dna, Percent, CalendarDays } from 'lucide-react';
+import { CheckCircle, BookText, Users, TrendingUp, HelpCircle, ShoppingCart, Brain, TestTube, Sigma, Atom, Dna, Percent, CalendarDays, Lightbulb, Star } from 'lucide-react';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
@@ -31,6 +31,25 @@ const faqItemsTahsili = [
   { question: "هل أحتاج كتابًا خارجيًا?", answer: "لا، يتم توفير جميع المواد والمذكرات إلكترونيًا داخل المنصة." },
 ];
 
+// Placeholder reviews data
+const studentReviews = [
+  {
+    name: "أحمد س.",
+    review: "الدورة كانت ممتازة وشرح المفاهيم العلمية كان مبسطاً وواضحاً جداً. استفدت كثيراً في مراجعة مواد التحصيلي.",
+    rating: 5,
+  },
+  {
+    name: "فاطمة خ.",
+    review: "التدريبات المكثفة والاختبارات المحاكية كانت الأفضل! ساعدتني أتأكد من فهمي وأتعود على جو الاختبار الحقيقي.",
+    rating: 4,
+  },
+  {
+    name: "سالم ع.",
+    review: "فريق الدعم كان متجاوب جداً وأجابوا على كل استفساراتي بسرعة. بيئة التعلم عبر المنصة مريحة وسهلة الاستخدام.",
+    rating: 5,
+  },
+];
+
 const IMAGE_DETAIL = {
   id: "tahsili_header",
   originalSrc: "https://placehold.co/1200x400.png",
@@ -42,7 +61,8 @@ export default function TahsiliPage() {
   const headerImageUrl = IMAGE_DETAIL.originalSrc;
 
   const pageTitle = "دورات التحصيلي – اجتز اختبارك بثقة";
-  const pageSubtitle = "اختبار التحصيلي هو الخطوة الحاسمة قبل دخولك الجامعة. نوفر لك برنامجًا تدريبيًا متكاملًا لمساعدتك على مراجعة المواد العلمية الأربع بأسلوب تفاعلي.";
+  // Modified subtitle for clarity
+  const pageSubtitle = "اختبار التحصيلي هو الخطوة الحاسمة لطلاب المرحلة الثانوية قبل دخول الجامعة. نوفر لك برنامجًا تدريبيًا متكاملًا لمساعدتك على مراجعة المواد العلمية الأربع بأسلوب تفاعلي لتحقيق أعلى الدرجات.";
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -59,8 +79,7 @@ export default function TahsiliPage() {
            <Image
               src={headerImageUrl}
               alt={IMAGE_DETAIL.alt}
-              layout="fill"
-              objectFit="cover"
+              fill
               className="z-0"
               priority
               data-ai-hint={IMAGE_DETAIL.hint}
@@ -81,7 +100,69 @@ export default function TahsiliPage() {
         </Card>
       </section>
 
+      {/* Added Why Choose Our Course Section */}
+      <section className="mb-12 p-6 bg-blue-50 rounded-lg">
+        <h2 className="text-3xl font-headline font-bold text-center text-blue-800 mb-8">لماذا تختار دورتنا التدريبية؟</h2>
+        <div className="max-w-3xl mx-auto text-blue-700 space-y-6">
+          <div className="flex items-start space-x-3 space-x-reverse">
+            <Lightbulb className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
+            <p>
+              <strong className="font-semibold">منهجية تفاعلية تركز على الفهم:</strong> نبتعد عن التلقين التقليدي ونركز على بناء فهم عميق للمفاهيم العلمية المعقدة من خلال شرح مبسط، أمثلة واقعية، وتطبيقات عملية تجعل التعلم ممتعاً وفعالاً.
+            </p>
+          </div>
+          <div className="flex items-start space-x-3 space-x-reverse">
+             <Users className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
+            <p>
+              <strong className="font-semibold">مدربون خبراء ومؤهلون:</strong> يقدم الدورة نخبة من أفضل المدربين المتخصصين في مواد التحصيلي، لديهم سنوات من الخبرة في مساعدة الطلاب على تحقيق أهدافهم الأكاديمية وفهم متطلبات الاختبار بشكل دقيق.
+            </p>
+          </div>
+           <div className="flex items-start space-x-3 space-x-reverse">
+             <BookText className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
+            <p>
+              <strong className="font-semibold">محتوى تعليمي شامل ومُحدّث:</strong> تغطي مواد الدورة جميع المناهج والمعايير التي يركز عليها اختبار التحصيلي من الصف الأول حتى الثالث الثانوي، ويتم تحديث المحتوى باستمرار لضمان مواكبة أي تغييرات في هيكل الاختبار أو محتواه.
+            </p>
+          </div>
+          <div className="flex items-start space-x-3 space-x-reverse">
+             <CheckCircle className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
+            <p>
+              <strong className="font-semibold">بيئة تعليمية داعمة وشاملة:</strong> نوفر منصة تعليمية سهلة الاستخدام تتيح للطالب الوصول للمحتوى في أي وقت ومن أي مكان، مع توفير أدوات للتفاعل مع المدرب والزملاء، وطرح الأسئلة، والحصول على الدعم الفني والأكاديمي المستمر.
+            </p>
+          </div>
+           <div className="flex items-start space-x-3 space-x-reverse">
+             <TestTube className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
+            <p>
+              <strong className="font-semibold">تركيز على التطبيق والممارسة المكثفة:</strong> نؤمن بأن الفهم يكتمل بالممارسة. لذلك، تتضمن الدورة مجموعة واسعة من التدريبات المتنوعة، التمارين التفاعلية، والاختبارات المحاكية لاختبار التحصيلي الفعلي لمساعدتك على تطبيق ما تعلمته وقياس مدى جاهزيتك.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Added Course Objectives Section */}
       <section className="mb-12">
+        <h2 className="text-3xl font-headline font-bold text-center text-foreground mb-8">🎯 أهداف الدورة</h2>
+        <div className="max-w-2xl mx-auto text-muted-foreground space-y-4">
+          <p className="flex items-start space-x-3 space-x-reverse"><CheckCircle className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" /> إتقان المفاهيم الأساسية في المواد العلمية الأربع (رياضيات، فيزياء، كيمياء، أحياء).</p>
+          <p className="flex items-start space-x-3 space-x-reverse"><CheckCircle className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" /> تنمية مهارات حل المسائل وتطبيق القوانين في سياقات مختلفة.</p>
+          <p className="flex items-start space-x-3 space-x-reverse"><CheckCircle className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" /> التعرف على أنماط أسئلة اختبار التحصيلي وطرق التعامل معها بفعالية.
+</p>
+          <p className="flex items-start space-x-3 space-x-reverse"><CheckCircle className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" /> بناء الثقة وتقليل القلق المرتبط بالاختبار.</p>
+          <p className="flex items-start space-x-3 space-x-reverse"><CheckCircle className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" /> تحقيق أعلى درجة ممكنة في اختبار التحصيلي لزيادة فرص القبول الجامعي.
+</p>
+        </div>
+      </section>
+
+      {/* Added Target Audience Section */}
+      <section className="mb-12">
+        <h2 className="text-3xl font-headline font-bold text-center text-foreground mb-8">👥 الجمهور المستهدف</h2>
+        <div className="max-w-2xl mx-auto text-muted-foreground space-y-4">
+          <p className="flex items-start space-x-3 space-x-reverse"><Users className="w-5 h-5 text-primary mt-1 flex-shrink-0" /> طلاب المرحلة الثانوية (الصف الثاني والثالث الثانوي) الذين يستعدون لاختبار التحصيلي.</p>
+          <p className="flex items-start space-x-3 space-x-reverse"><Users className="w-5 h-5 text-primary mt-1 flex-shrink-0" /> الطلاب الراغبون في مراجعة شاملة للمواد العلمية الأساسية.</p>
+          <p className="flex items-start space-x-3 space-x-reverse"><Users className="w-5 h-5 text-primary mt-1 flex-shrink-0" /> الطلاب الذين يهدفون إلى تحسين درجاتهم في اختبار التحصيلي.</p>
+        </div>
+      </section>
+
+      {/* Improved Subjects Covered Section Styling */}
+      <section className="mb-12 p-6 bg-gray-100 rounded-lg">
         <h2 className="text-3xl font-headline font-bold text-center text-foreground mb-8">المواد المغطاة</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {subjects.map(subject => (
@@ -154,6 +235,29 @@ export default function TahsiliPage() {
         </div>
       </section>
       
+      {/* Added Student Reviews Section */}
+      <section className="mb-12">
+        <h2 className="text-3xl font-headline font-bold text-center text-foreground mb-8">💬 آراء الطلاب</h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {studentReviews.map((review, index) => (
+            <Card key={index} className="shadow-md">
+              <CardContent className="pt-6">
+                <div className="flex items-center mb-2">
+                  {[...Array(review.rating)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                  ))}
+                  {[...Array(5 - review.rating)].map((_, i) => (
+                    <Star key={i + review.rating} className="w-5 h-5 text-gray-300" />
+                  ))}
+                </div>
+                <p className="text-muted-foreground mb-4">"{review.review}"</p>
+                <p className="font-semibold text-sm text-right">- {review.name}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
       <section className="mb-12">
         <h2 className="text-3xl font-headline font-bold text-center text-foreground mb-8">الأسئلة الشائعة</h2>
         <Accordion type="single" collapsible className="w-full max-w-2xl mx-auto">

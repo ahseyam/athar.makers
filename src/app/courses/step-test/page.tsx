@@ -58,8 +58,7 @@ export default function StepTestPage() {
            <Image
               src={headerImageUrl}
               alt={IMAGE_DETAIL.alt}
-              layout="fill"
-              objectFit="cover"
+              fill
               className="z-0"
               priority
               data-ai-hint={IMAGE_DETAIL.hint}

@@ -67,7 +67,7 @@ export default function MawhibaPage() {
            <Image
               src={headerImageUrl}
               alt={IMAGE_DETAIL.alt}
-              layout="fill"
+              fill
               objectFit="contain"
               className="z-0"
               priority

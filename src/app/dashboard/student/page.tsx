@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState, ChangeEvent, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { LayoutDashboard, Mail, User, CalendarDays, Clock, ShieldCheck, Loader2, UploadCloud, Edit3 } from "lucide-react";
+import { LayoutDashboard, Mail, User, CalendarDays, Clock, ShieldCheck, Loader2, UploadCloud, Edit3, BookOpen, PlayCircle, FileText as FileTextIcon } from "lucide-react";
 import { useAuth, type UserProfile } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -12,9 +12,10 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { storage, db } from '@/lib/firebase/config';
-import { ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { doc, updateDoc } from 'firebase/firestore';
+// Commented out firebase imports as we are using placeholders for now
+// import { storage, db } from '@/lib/firebase/config';
+// import { ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+// import { doc, updateDoc } from 'firebase/firestore';
 
 function formatDate(dateString: string | undefined | null): string {
   if (!dateString) return 'غير متاح';
@@ -31,96 +32,71 @@ function formatDate(dateString: string | undefined | null): string {
   }
 }
 
+// Placeholder data types
+interface StudentCourse {
+  id: number;
+  title: string;
+  description: string;
+  lessons: StudentLesson[];
+}
+
+interface StudentLesson {
+  id: number;
+  title: string;
+  videoUrl: string | null;
+  pdfUrl: string | null;
+}
+
+// Placeholder student enrolled courses data
+const enrolledCourses: StudentCourse[] = [
+  {
+    id: 1,
+    title: "دورة التحصيلي الشاملة",
+    description: "مراجعة مكثفة لجميع مواد التحصيلي العلمي.",
+    lessons: [
+      { id: 101, title: "مقدمة في أساسيات الرياضيات", videoUrl: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4", pdfUrl: "https://www.africau.edu/images/default/sample.pdf" },
+      { id: 102, title: "أساسيات الفيزياء وحل المسائل", videoUrl: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_2mb.mp4", pdfUrl: null },
+      { id: 103, title: "فهم الكيمياء العضوية", videoUrl: null, pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/a4.pdf" },
+      { id: 104, title: "مراجعة شاملة للأحياء", videoUrl: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_3mb.mp4", pdfUrl: "https://www.education.gov.yk.ca/kindergarten/docs/gradek-numbersense.pdf" },
+    ]
+  },
+  {
+    id: 2,
+    title: "معسكر صيف الإبداع التقني",
+    description: "مقدمة في البرمجة والتصميم للناشئين.",
+    lessons: [
+      { id: 201, title: "اليوم الأول: التفكير البرمجي", videoUrl: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_4mb.mp4", pdfUrl: null },
+      { id: 202, title: "اليوم الثاني: بناء أول موقع ويب", videoUrl: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_5mb.mp4", pdfUrl: "https://www.cmu.edu/blackboard/files/evaluate/f1criteria-9-rubric.pdf" },
+    ]
+  }
+];
+
+
 export default function StudentDashboardPage({}: {}) {
   const authContext = useAuth();
-  const { user, loading, initialLoadComplete, updateUserProfile, refreshUserProfile } = authContext;
+  const { user, loading, initialLoadComplete } = authContext; // Removed unused functions
   const router = useRouter();
   const { toast } = useToast();
 
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  // State to manage the selected course for viewing lessons
+  const [selectedCourse, setSelectedCourse] = useState<StudentCourse | null>(null);
+
+  // Removed state and handlers related to avatar upload
+  // const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  // const [isUploading, setIsUploading] = useState(false);
+  // const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  // const fileInputRef = useRef<HTMLInputElement>(null);
+  // const handleFileChange = ...
+  // const handleAvatarUpload = ...
 
 
   useEffect(() => {
     if (initialLoadComplete && !user && !loading) {
       router.push('/login?message=unauthenticated');
     }
+     // In a real application, you would fetch enrolled courses here based on user.uid
+     // For now, we use the placeholder data
   }, [user, loading, initialLoadComplete, router]);
-
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      setSelectedFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
-    } else {
-      setSelectedFile(null);
-      setPreviewUrl(null);
-    }
-  };
-
-  const handleAvatarUpload = async () => {
-    if (!selectedFile || !user) {
-      toast({
-        title: "خطأ",
-        description: "يرجى اختيار ملف أولاً أو التأكد من تسجيل الدخول.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsUploading(true);
-    try {
-      const filePath = `avatars/${user.uid}/${selectedFile.name}`;
-      const fileStorageRef = storageRef(storage, filePath);
-      const uploadTask = uploadBytesResumable(fileStorageRef, selectedFile);
-
-      uploadTask.on(
-        'state_changed',
-        (snapshot) => {
-          // Optional: handle progress
-        },
-        (error) => {
-          console.error("Upload error:", error);
-          toast({
-            title: "فشل رفع الصورة",
-            description: "حدث خطأ أثناء رفع الصورة. حاول مرة أخرى.",
-            variant: "destructive",
-          });
-          setIsUploading(false);
-        },
-        async () => {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          const userDocRef = doc(db, 'users', user.uid);
-          await updateDoc(userDocRef, { avatarUrl: downloadURL });
-          
-          // Update context and local state
-          updateUserProfile({ avatarUrl: downloadURL });
-          
-          toast({
-            title: "تم تغيير الصورة الرمزية",
-            description: "تم تحديث صورتك الرمزية بنجاح.",
-          });
-          setSelectedFile(null);
-          setPreviewUrl(null);
-          if (fileInputRef.current) {
-            fileInputRef.current.value = ""; // Reset file input
-          }
-          await refreshUserProfile(); // Explicitly refresh to ensure header updates if necessary
-          setIsUploading(false);
-        }
-      );
-    } catch (error) {
-      console.error("Upload process error:", error);
-      toast({
-        title: "فشل رفع الصورة",
-        description: "حدث خطأ غير متوقع. حاول مرة أخرى.",
-        variant: "destructive",
-      });
-      setIsUploading(false);
-    }
-  };
 
 
   if (loading || !initialLoadComplete) {
@@ -139,8 +115,9 @@ export default function StudentDashboardPage({}: {}) {
       </div>
     );
   }
-  
-  const currentAvatarUrl = previewUrl || user.avatarUrl || `https://avatar.iran.liara.run/public/boy?username=${user.uid}`;
+
+  // Removed avatar related rendering
+  // const currentAvatarUrl = previewUrl || user.avatarUrl || `https://avatar.iran.liara.run/public/boy?username=${user.uid}`;
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -149,128 +126,91 @@ export default function StudentDashboardPage({}: {}) {
         <h1 className="text-4xl md:text-5xl font-headline font-bold text-primary mb-2">
           مرحباً بك يا {user.fullName || 'بطل الأثر'}!
         </h1>
-        <p className="text-xl text-muted-foreground">هنا عالمك التدريبي وملفك الشخصي.</p>
+        <p className="text-xl text-muted-foreground">هنا عالمك التدريبي وموادك الدراسية.</p>
       </header>
 
       <div className="grid md:grid-cols-3 gap-8">
-        <Card className="md:col-span-1 shadow-xl">
-          <CardHeader className="items-center text-center">
-            <div className="relative group">
-              <Image
-                src={currentAvatarUrl}
-                alt={user.fullName || user.email || 'User Avatar'}
-                width={128}
-                height={128}
-                className="rounded-full mb-4 border-4 border-primary/50 shadow-md object-cover"
-                data-ai-hint="user avatar"
-                key={currentAvatarUrl} // Add key to force re-render on src change
-              />
-               <label 
-                htmlFor="avatar-upload" 
-                className="absolute bottom-4 -right-1 bg-primary text-primary-foreground p-2 rounded-full cursor-pointer hover:bg-primary/80 transition-colors opacity-0 group-hover:opacity-100"
-                title="تغيير الصورة الرمزية"
-                >
-                <Edit3 className="w-5 h-5" />
-              </label>
-              <Input 
-                id="avatar-upload"
-                ref={fileInputRef}
-                type="file" 
-                accept="image/*" 
-                onChange={handleFileChange} 
-                className="hidden" 
-              />
-            </div>
-            {selectedFile && (
-              <div className="my-2 w-full">
-                <Button onClick={handleAvatarUpload} disabled={isUploading} className="w-full bg-accent hover:bg-accent/80 text-accent-foreground">
-                  {isUploading ? <Loader2 className="me-2 h-4 w-4 animate-spin" /> : <UploadCloud className="me-2 h-4 w-4" />}
-                  {isUploading ? "جاري الرفع..." : "رفع الصورة الجديدة"}
-                </Button>
-                 <Button variant="link" onClick={() => {setSelectedFile(null); setPreviewUrl(null); if(fileInputRef.current) fileInputRef.current.value = "";}} className="text-xs text-muted-foreground">
-                    إلغاء
+        {/* Removed User Profile Card */}
+        {/* <Card className="md:col-span-1 shadow-xl">...</Card> */}
+
+        {/* Courses and Achievements Section - Now lists courses or shows lessons */}
+        <Card className="md:col-span-3 shadow-xl">
+          <CardHeader>
+            <CardTitle className="font-headline text-xl flex items-center">
+              <BookOpen className="me-2 h-6 w-6" />
+              {selectedCourse ? `محتوى الدورة: ${selectedCourse.title}` : 'دوراتك المسجل بها'}
+            </CardTitle>
+            {selectedCourse && (
+              <CardDescription>
+                {selectedCourse.description}
+              </CardDescription>
+            )}
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {!selectedCourse ? (
+              // List of enrolled courses
+              enrolledCourses.length === 0 ? (
+                <p className="text-muted-foreground">لم يتم تسجيلك في أي دورات بعد.</p>
+              ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  {enrolledCourses.map(course => (
+                    <Card 
+                      key={course.id} 
+                      className="cursor-pointer hover:shadow-lg transition-shadow"
+                      onClick={() => setSelectedCourse(course)}
+                    >
+                      <CardHeader className="py-4">
+                        <CardTitle className="text-lg font-semibold">{course.title}</CardTitle>
+                         <CardDescription>{course.description}</CardDescription>
+                      </CardHeader>
+                    </Card>
+                  ))}
+                </div>
+              )
+            ) : (
+              // List of lessons for the selected course
+              <div className="space-y-4">
+                {selectedCourse.lessons.map(lesson => (
+                  <Card key={lesson.id} className="shadow-sm">
+                    <CardHeader className="py-3 px-4">
+                      <CardTitle className="text-lg font-semibold flex items-center justify-between w-full">
+                         <div className="flex items-center">
+                            {lesson.title}
+                         </div>
+                         <div className="flex items-center gap-2">
+                            {lesson.videoUrl && <PlayCircle className="w-5 h-5 text-primary flex-shrink-0" title="يحتوي على فيديو" />}
+                            {lesson.pdfUrl && <FileTextIcon className="w-5 h-5 text-primary flex-shrink-0" title="يحتوي على ملف PDF" />}
+                         </div>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="px-4 py-3 space-y-3">
+                      {lesson.videoUrl && (
+                        <video controls src={lesson.videoUrl} className="w-full aspect-video rounded-md">
+                           متصفحك لا يدعم عرض الفيديو. يمكنك <a href={lesson.videoUrl} className="underline">تحميل الفيديو من هنا</a>.
+                        </video>
+                      )}
+                      {lesson.pdfUrl && (
+                        <div className="flex items-center text-muted-foreground text-sm">
+                          <FileTextIcon className="me-2 w-5 h-5"/>
+                          <a href={lesson.pdfUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">
+                            تحميل ملف الدرس ({lesson.pdfUrl.split('/').pop()})
+                          </a>
+                        </div>
+                      )}
+                       {!lesson.videoUrl && !lesson.pdfUrl && (
+                           <p className="text-muted-foreground text-sm">لا يوجد محتوى مرفق بهذا الدرس حاليًا.</p>
+                       )}
+                    </CardContent>
+                  </Card>
+                ))}
+                <Button variant="outline" onClick={() => setSelectedCourse(null)} className="mt-4">
+                   العودة إلى الدورات
                 </Button>
               </div>
             )}
-            <CardTitle className="text-2xl font-headline">{user.fullName || 'اسم المستخدم'}</CardTitle>
-            <CardDescription>{user.email}</CardDescription>
-            {user.role && <Badge variant="secondary" className="mt-2">{user.role}</Badge>}
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground text-center">
-            <p>UID: {user.uid}</p>
-          </CardContent>
-        </Card>
-
-        <Card className="md:col-span-2 shadow-xl">
-          <CardHeader>
-            <CardTitle className="font-headline text-xl">تفاصيل الحساب</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center">
-              <User className="w-5 h-5 me-3 text-primary" />
-              <div>
-                <p className="text-xs text-muted-foreground">الاسم الكامل</p>
-                <p className="font-medium text-foreground">{user.fullName || 'غير متوفر'}</p>
-              </div>
-            </div>
-            <Separator />
-            <div className="flex items-center">
-              <Mail className="w-5 h-5 me-3 text-primary" />
-              <div>
-                <p className="text-xs text-muted-foreground">البريد الإلكتروني</p>
-                <p className="font-medium text-foreground">{user.email}</p>
-              </div>
-            </div>
-            <Separator />
-             <div className="flex items-center">
-              <ShieldCheck className="w-5 h-5 me-3 text-primary" />
-              <div>
-                <p className="text-xs text-muted-foreground">الدور</p>
-                <p className="font-medium text-foreground">{user.role || 'مستخدم'}</p>
-              </div>
-            </div>
-            <Separator />
-            <div className="flex items-center">
-              <CalendarDays className="w-5 h-5 me-3 text-primary" />
-              <div>
-                <p className="text-xs text-muted-foreground">تاريخ إنشاء الحساب</p>
-                <p className="font-medium text-foreground">{formatDate(user.createdAt)}</p>
-              </div>
-            </div>
-            <Separator />
-            <div className="flex items-center">
-              <Clock className="w-5 h-5 me-3 text-primary" />
-              <div>
-                <p className="text-xs text-muted-foreground">آخر تسجيل دخول</p>
-                <p className="font-medium text-foreground">{formatDate(user.lastSignInTime)}</p>
-              </div>
-            </div>
           </CardContent>
         </Card>
       </div>
-
-       <Card className="shadow-xl mt-8">
-        <CardHeader>
-          <CardTitle className="font-headline">دوراتك الحالية وإنجازاتك</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground">
-            هذه المنطقة قيد التطوير. قريباً ستتمكن من رؤية تقدمك في الدورات، الشارات المكتسبة، والمواد الدراسية.
-          </p>
-          <div className="mt-6">
-            <h3 className="font-semibold text-lg mb-2">المميزات المتوقعة:</h3>
-            <ul className="list-disc list-inside text-muted-foreground space-y-1">
-              <li>تقويم المعسكر التفاعلي</li>
-              <li>متتبع التقدم اليومي</li>
-              <li>شارات الإنجاز التحفيزية</li>
-              <li>دفاتر العمل والتحميلات</li>
-              <li>التقييمات والاختبارات</li>
-              <li>الشهادة النهائية</li>
-              <li>الدعم والمساعدة</li>
-            </ul>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }

@@ -1,4 +1,3 @@
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -10,7 +9,8 @@ const transportationFeatures = [
     title: "أسطول حديث ومجهز",
     description: "حافلاتنا مكيفة ومزودة بأحدث وسائل الراحة والأمان لضمان رحلة مريحة للطلاب.",
     icon: <Bus className="w-10 h-10 text-primary mb-3" />,
-    imageSrc: "https://placehold.co/600x400.png",
+    // Updated image URL based on hint "modern bus"
+    imageSrc: "https://i.imgur.com/JpT2GV7.jpeg",
     imageHint: "modern bus",
     alt: "حافلة حديثة"
   },
@@ -18,7 +18,8 @@ const transportationFeatures = [
     title: "سائقون محترفون ومدربون",
     description: "فريق من السائقين ذوي الخبرة العالية والمدربين على التعامل مع الطلاب والالتزام بمعايير السلامة.",
     icon: <Users className="w-10 h-10 text-primary mb-3" />,
-    imageSrc: "https://placehold.co/600x400.png",
+    // Updated image URL based on hint "professional driver"
+    imageSrc: "https://i.imgur.com/goErEvn.jpeg",
     imageHint: "professional driver",
     alt: "سائق محترف"
   },
@@ -26,7 +27,8 @@ const transportationFeatures = [
     title: "تغطية جغرافية واسعة",
     description: "نخدم مناطق متعددة لضمان وصول أكبر عدد ممكن من الطلاب إلى برامجنا بسهولة.",
     icon: <MapIcon className="w-10 h-10 text-primary mb-3" />,
-    imageSrc: "https://placehold.co/600x400.png",
+    // Updated image URL based on hint "map route"
+    imageSrc: "https://i.imgur.com/MRaNsJ3.png",
     imageHint: "map route",
     alt: "خريطة تغطية"
   },
@@ -34,16 +36,18 @@ const transportationFeatures = [
     title: "سلامة وأمان",
     description: "تتبع الحافلات، مشرفون متخصصون، وإجراءات سلامة صارمة لضمان رحلة آمنة من وإلى الوجهة.",
     icon: <ShieldCheck className="w-10 h-10 text-primary mb-3" />,
-    imageSrc: "https://placehold.co/600x400.png",
+    // Updated image URL based on hint "child safety"
+    imageSrc: "https://i.imgur.com/NruCAfL.jpeg",
     imageHint: "child safety",
     alt: "مقعد أمان للأطفال"
   }
 ];
 
 const HEADER_IMAGE_DETAIL = {
-  originalSrc: "https://placehold.co/1200x400.png",
+  // Updated image URL based on hint "school bus"
+  originalSrc: "https://i.imgur.com/u2uzMtu.jpeg",
   hint: "school bus",
-  alt: "خدمات النقل والمواصلات"
+  alt: "صورة حافلة مدرسية" // Updated alt text
 };
 
 export default function TransportationPage() {
@@ -52,8 +56,9 @@ export default function TransportationPage() {
       <header className="mb-12">
         <div className="text-center pt-8 md:pt-10 pb-2">
           <Bus className="w-16 h-16 text-primary mx-auto mb-4" />
+          {/* Changed page title */}
           <h1 className="text-4xl md:text-5xl font-headline font-bold text-primary mb-4">
-            خدمات النقل والمواصلات
+            طلب خدمة النقل
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             نوفر حلول نقل آمنة وموثوقة لطلابنا ومنسوبينا، لضمان وصولهم إلى البرامج والفعاليات بكل يسر وسهولة.
@@ -63,9 +68,8 @@ export default function TransportationPage() {
           <Image
             src={HEADER_IMAGE_DETAIL.originalSrc}
             alt={HEADER_IMAGE_DETAIL.alt}
-            layout="fill"
-            objectFit="cover"
-            className="z-0"
+ fill
+ className="z-0 object-cover"
             priority
             data-ai-hint={HEADER_IMAGE_DETAIL.hint}
           />
@@ -81,8 +85,8 @@ export default function TransportationPage() {
                 <Image
                   src={feature.imageSrc}
                   alt={feature.alt}
-                  layout="fill"
-                  objectFit="cover"
+ fill
+                  className="object-cover"
                   data-ai-hint={feature.imageHint}
                 />
               </div>
@@ -100,8 +104,9 @@ export default function TransportationPage() {
 
       <section className="mb-16 bg-muted py-12 rounded-lg text-center">
         <CardHeader>
+          {/* Changed call-to-action title */}
           <CardTitle className="text-2xl md:text-3xl font-headline font-bold text-primary mb-3">
-            هل أنت مستعد لرحلة مريحة وآمنة؟
+            قدم طلب خدمة النقل الآن
           </CardTitle>
           <CardDescription className="text-lg text-muted-foreground max-w-xl mx-auto">
             نحن هنا لنجعل تجربة الوصول إلى برامجنا جزءًا لا يتجزأ من رحلتكم التعليمية الممتعة.

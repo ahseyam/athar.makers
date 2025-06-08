@@ -98,8 +98,7 @@ export default function StorePage() {
          <Image
             src={headerImageUrl}
             alt={HEADER_IMAGE_DETAIL.alt}
-            layout="fill"
-            objectFit="cover"
+            fill
             className="z-0"
             priority
             data-ai-hint={HEADER_IMAGE_DETAIL.hint}

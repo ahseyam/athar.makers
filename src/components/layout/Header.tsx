@@ -1,9 +1,8 @@
-
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Menu, Info, Phone, HomeIcon, LayoutGrid, BookMarked, Store, Briefcase, UserCheck, LogIn, LogOut, ChevronDownIcon, UserCircle, Loader2 } from 'lucide-react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Menu, Info, Phone, HomeIcon, LayoutGrid, BookMarked, Store, Briefcase, UserCheck, LogIn, LogOut, ChevronDownIcon, UserCircle, Loader2, Bus, BookOpen } from 'lucide-react'; // Import BookOpen icon
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescription } from '@/components/ui/sheet';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +10,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/contexts/AuthContext';
 import { auth } from '@/lib/firebase/config';
 import { signOut } from 'firebase/auth';
@@ -21,6 +20,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 const mainNavLinks = [
   { href: '/', label: 'الرئيسية', icon: <HomeIcon className="me-1 h-4 w-4" /> },
   { href: '/courses/summer-camps', label: 'معسكر صُنّاع الموهبة', icon: <LayoutGrid className="me-1 h-4 w-4" /> },
+  { href: '/exam-review', label: 'مراجعة ليلة الاختبار', icon: <BookOpen className="me-1 h-4 w-4" /> }, // Added new link
 ];
 
 const dropdownNavLinks = [
@@ -31,13 +31,14 @@ const dropdownNavLinks = [
 ];
 
 const secondaryNavLinks = [
+  { href: '/transportation', label: 'خدمات النقل والمواصلات', icon: <Bus className="me-1 h-4 w-4" /> }, // Added Transportation link
   { href: '/institutions/hosting-request', label: 'استضافة برامجنا الحضورية', icon: <Briefcase className="me-1 h-4 w-4" /> },
   { href: '/store', label: 'المتجر', icon: <Store className="me-1 h-4 w-4" /> },
   { href: '/trainers/apply', label: 'انضم كمدرب', icon: <UserCheck className="me-1 h-4 w-4" /> },
 ];
 
 const getDashboardPathForRole = (role: string | undefined): string => {
-  if (!role) return "/dashboard/student"; 
+  if (!role) return "/dashboard/student";
   switch (role) {
     case "طالب":
       return "/dashboard/student";
@@ -50,9 +51,9 @@ const getDashboardPathForRole = (role: string | undefined): string => {
     case "مدير منصة":
       return "/dashboard/admin";
     case "المشرف الأكاديمي":
-      return "/dashboard/admin"; 
+      return "/dashboard/admin";
     case "المحاسب":
-      return "/dashboard/admin"; 
+      return "/dashboard/admin";
     default:
       return "/dashboard/student";
   }
@@ -66,12 +67,11 @@ export default function Header() {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      router.push('/'); 
+      router.push('/');
     } catch (error) {
       console.error("Logout error:", error);
     }
   };
-  
   const UserAvatar = () => {
     if (!user) return <UserCircle className="h-6 w-6" />;
     const initials = user.fullName ? user.fullName.split(' ').map(n => n[0]).join('').toUpperCase() : (user.email ? user.email[0].toUpperCase() : 'U');
@@ -89,9 +89,9 @@ export default function Header() {
   return (
     <header data-testid="main-header" className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        
+
         <Link href="/" className="text-xl lg:text-2xl font-headline font-bold whitespace-nowrap">أكاديمية صٌنَّاع الأَثَر</Link>
-        
+
         <nav data-testid="desktop-nav" className="hidden md:flex flex-grow items-center justify-center gap-x-1 lg:gap-x-2">
           {mainNavLinks.map((link) => (
             <Link key={link.href} href={link.href} className="hover:bg-primary/80 hover:text-primary-foreground/90 transition-colors px-2.5 py-2 rounded-md text-sm font-medium flex items-center">
@@ -194,6 +194,10 @@ export default function Header() {
                 <SheetTitle>
                   <Link href="/" className="text-xl font-headline font-bold text-primary-foreground">أكاديمية صٌنَّاع الأَثَر</Link>
                 </SheetTitle>
+                 {/* Added SheetDescription for accessibility */}
+                <SheetDescription className="text-sm text-primary-foreground/80">
+                  قائمة التنقل للموقع.
+                </SheetDescription>
               </SheetHeader>
               <nav className="flex flex-col space-y-1 p-4">
                 {mainNavLinks.map((link) => (

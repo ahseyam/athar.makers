@@ -154,9 +154,8 @@ export default function SummerCampPage() {
             <Image
                 src={HEADER_BACKGROUND_IMAGE_DETAIL.originalSrc}
                 alt={HEADER_BACKGROUND_IMAGE_DETAIL.alt}
-                layout="fill"
-                objectFit="cover"
-                className="z-0"
+ fill
+                className="z-0 object-cover"
                 data-ai-hint={HEADER_BACKGROUND_IMAGE_DETAIL.hint}
                 priority
             />
@@ -202,9 +201,8 @@ export default function SummerCampPage() {
                 <Image
                   src={selectedStage === 'المستكشفين' ? EXPLORERS_BANNER_IMAGE_DETAIL.originalSrc : PIONEERS_BANNER_IMAGE_DETAIL.originalSrc}
                   alt={selectedStage === 'المستكشفين' ? EXPLORERS_BANNER_IMAGE_DETAIL.alt : PIONEERS_BANNER_IMAGE_DETAIL.alt}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-lg shadow-md"
+                  fill
+                  className="rounded-lg shadow-md object-cover" // Added object-cover
                   data-ai-hint={selectedStage === 'المستكشفين' ? EXPLORERS_BANNER_IMAGE_DETAIL.hint : PIONEERS_BANNER_IMAGE_DETAIL.hint}
                   key={selectedStage} 
                 />

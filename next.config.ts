@@ -1,5 +1,3 @@
-
-
 // Removed: import type { NextConfig } from 'next';
 
 const nextConfig = {
@@ -29,6 +27,11 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'source.unsplash.com', // Added this line
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'avatar.iran.liara.run', // Added for avatars
         pathname: '/**',
       },
@@ -52,4 +55,3 @@ const nextConfig = {
 };
 
 export default nextConfig;
-

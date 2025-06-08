@@ -11,6 +11,8 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import { IMAGE_GENERATION_FAILED_FALLBACK } from '@/ai/image-constants';
+import {auth} from '@/lib/firebase/config'; // Import auth for user ID
+import DOMPurify from 'dompurify'; // Import DOMPurify
 
 const GenerateImageInputSchema = z.object({
   hint: z.string().describe('A textual hint or description for the image to be generated.'),
@@ -34,10 +36,17 @@ const generateImageFlow = ai.defineFlow(
   },
   async (input) => {
     try {
-      console.log(`[generateImageFlow] Attempting to generate image for hint: "${input.hint}"`);
+      // Sanitize the hint to prevent XSS attacks
+      const sanitizedHint = DOMPurify.sanitize(input.hint);
+
+      // Get the current user's ID (if available)
+      const userId = auth.currentUser?.uid || 'anonymous';
+
+      console.log(`[generateImageFlow] Attempting to generate image for hint: "${sanitizedHint}" - User ID: ${userId}`);
+
       const { media } = await ai.generate({
         model: 'googleai/gemini-2.0-flash-exp', // IMPORTANT: Use the specified model for image generation
-        prompt: `Generate a high-quality, realistic, and natural-looking photograph for an educational platform. Depict: "${input.hint}". The style should be modern, engaging, and suitable for the content and age group. Avoid cartoonish or abstract styles. Focus on clear subjects and good lighting.`,
+        prompt: `Generate a high-quality, realistic, and natural-looking photograph for an educational platform. Depict: "${sanitizedHint}". The style should be modern, engaging, and suitable for the content and age group. Avoid cartoonish or abstract styles. Focus on clear subjects and good lighting.`,
         config: {
           responseModalities: ['TEXT', 'IMAGE'], // MUST provide both TEXT and IMAGE
           safetySettings: [ // Added safety settings
@@ -62,14 +71,15 @@ const generateImageFlow = ai.defineFlow(
       });
 
       if (!media || !media.url) {
-        console.warn(`[generateImageFlow] Failed: No media URL returned for hint: "${input.hint}". Falling back.`);
+        console.warn(`[generateImageFlow] Failed: No media URL returned for hint: "${sanitizedHint}" - User ID: ${userId}. Falling back.`);
         return { imageDataUri: IMAGE_GENERATION_FAILED_FALLBACK };
       }
-      console.log(`[generateImageFlow] Successfully generated image for hint: "${input.hint}"`);
+      console.log(`[generateImageFlow] Successfully generated image for hint: "${sanitizedHint}" - User ID: ${userId}`);
       return { imageDataUri: media.url };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
-      const fullErrorMessage = `[generateImageFlow] Error during image generation for hint "${input.hint}": ${errorMessage}`;
+      const userId = auth.currentUser?.uid || 'anonymous'; // Get the current user's ID (if available)
+      const fullErrorMessage = `[generateImageFlow] Error during image generation for hint "${input.hint}" - User ID: ${userId}: ${errorMessage}`;
       
       console.error(fullErrorMessage, error); // Log the original error object too for full details
 
@@ -95,4 +105,8 @@ const generateImageFlow = ai.defineFlow(
     }
   }
 );
+
+// TODO: Implement rate limiting to prevent abuse of the image generation service.
+// This could be done using a library like `express-rate-limit` or by implementing a custom rate limiting mechanism.
+// Consider limiting the number of image generations per user per time period.
 
