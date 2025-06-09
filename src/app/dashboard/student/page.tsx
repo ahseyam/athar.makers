@@ -124,7 +124,7 @@ export default function StudentDashboardPage({}: {}) {
       <header className="text-center mb-12">
         <LayoutDashboard className="w-16 h-16 text-primary mx-auto mb-4" />
         <h1 className="text-4xl md:text-5xl font-headline font-bold text-primary mb-2">
-          مرحباً بك يا {user.fullName || 'بطل الأثر'}!
+          مرحباً بك يا {user.fullName || 'بطل الأثر'}
         </h1>
         <p className="text-xl text-muted-foreground">هنا عالمك التدريبي وموادك الدراسية.</p>
       </header>
@@ -178,8 +178,8 @@ export default function StudentDashboardPage({}: {}) {
                             {lesson.title}
                          </div>
                          <div className="flex items-center gap-2">
-                            {lesson.videoUrl && <PlayCircle className="w-5 h-5 text-primary flex-shrink-0" title="يحتوي على فيديو" />}
-                            {lesson.pdfUrl && <FileTextIcon className="w-5 h-5 text-primary flex-shrink-0" title="يحتوي على ملف PDF" />}
+                            {lesson.videoUrl && <PlayCircle className="w-5 h-5 text-primary flex-shrink-0" aria-label="يحتوي على فيديو" />}
+                            {lesson.pdfUrl && <FileTextIcon className="w-5 h-5 text-primary flex-shrink-0" aria-label="يحتوي على ملف PDF" />}
                          </div>
                       </CardTitle>
                     </CardHeader>

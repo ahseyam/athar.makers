@@ -55,7 +55,7 @@ function CheckoutPageContent() {
   const calculatedSubtotal = orderDetails.scientificPackage.price + (orderDetails.sportsActivity?.price || 0);
   const calculatedVat = calculatedSubtotal * 0.15;
   const calculatedTotal = calculatedSubtotal + calculatedVat;
-  
+
   // For display, use the total passed from student-details page if available, otherwise calculate.
   // This handles cases where student-details might have more complex pricing logic (e.g. family discounts not yet implemented here)
   const displayTotal = parseFloat(searchParams.get('totalPrice') || calculatedTotal.toFixed(2));
@@ -80,15 +80,42 @@ function CheckoutPageContent() {
       });
       return;
     }
-    setIsProcessing(true);
-    setTimeout(() => {
-      setIsProcessing(false);
-      setIsPaid(true);
-      toast({
-        title: "تم الدفع بنجاح!",
-        description: "تم تأكيد تسجيلك في البرنامج. ستصلك رسالة تأكيد عبر البريد.",
-      });
-    }, 2000);
+
+    // Since this is a temporary manual process for bank transfer,
+    // we simulate success immediately for this method.
+    // For other methods, the simulation remains as is for now.
+    if (selectedPaymentMethod === 'bank_transfer') {
+      setIsProcessing(true);
+      // Simulate a brief processing time for UI feedback
+      setTimeout(() => {
+        setIsProcessing(false);
+        // For bank transfer, we don't mark as fully paid automatically.
+        // Instead, we should guide the user on the next steps.
+        // The `isPaid` state is currently only used for the success screen.
+        // We'll keep the toast message, but maybe modify the success screen later for bank transfer.
+         toast({
+          title: "يرجى إكمال عملية التحويل",
+          description: "تم تسجيل طلبك. يرجى إكمال التحويل البنكي وإرسال الإيصال.",
+          duration: 6000, // Keep toast visible longer
+        });
+         // For now, we don't transition to the 'isPaid' state automatically for bank transfer
+         // setIsPaid(true); // Do NOT set to true for manual bank transfer
+
+         // Optionally, redirect user or show specific instructions screen
+         // router.push('/bank-transfer-instructions');
+      }, 1500); // Shorter simulation for bank transfer
+    } else {
+       // Existing simulation for automated methods
+      setIsProcessing(true);
+      setTimeout(() => {
+        setIsProcessing(false);
+        setIsPaid(true);
+        toast({
+          title: "تم الدفع بنجاح!",
+          description: "تم تأكيد تسجيلك في البرنامج. ستصلك رسالة تأكيد عبر البريد.",
+        });
+      }, 2000);
+    }
   };
 
   if (isPaid) {
@@ -133,6 +160,9 @@ function CheckoutPageContent() {
         <h1 className="text-4xl md:text-5xl font-headline font-bold text-primary mb-4">الدفع وتأكيد الاشتراك</h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
           أكمل تسجيلك في البرنامج المختار بطريقة مرنة وآمنة.
+        </p>
+         <p className="text-sm text-muted-foreground mt-2">
+          (تتوفر حاليًا طريقة التحويل البنكي اليدوي، وسيتم إضافة طرق الدفع الإلكتروني الأخرى قريباً).
         </p>
       </header>
 
@@ -190,12 +220,21 @@ function CheckoutPageContent() {
           <Card className="shadow-xl">
             <CardHeader>
               <CardTitle className="font-headline text-2xl">بيانات الدفع</CardTitle>
-              <CardDescription>جميع الأسعار شاملة الضريبة. لا يتم تأكيد الحجز إلا بعد الدفع.</CardDescription>
+              <CardDescription>
+                جميع الأسعار شاملة الضريبة. لا يتم تأكيد الحجز إلا بعد الدفع.
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
                 <Label className="text-lg font-semibold mb-3 block">اختر وسيلة الدفع:</Label>
                 <RadioGroup value={selectedPaymentMethod} onValueChange={setSelectedPaymentMethod} className="space-y-2">
+                   {/* Bank Transfer Option - Prioritized */}
+                  <Label htmlFor="bank_transfer" className="flex items-center p-4 border rounded-lg hover:bg-muted cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
+                    <RadioGroupItem value="bank_transfer" id="bank_transfer" className="me-3" />
+                    <Landmark className="w-6 h-6 me-3 text-muted-foreground" />
+                    تحويل بنكي يدوي (يُرسل إثبات الدفع)
+                  </Label>
+                  {/* Other Options - Kept but could be conditionally rendered or styled differently */}
                   <Label htmlFor="mada" className="flex items-center p-4 border rounded-lg hover:bg-muted cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
                     <RadioGroupItem value="mada" id="mada" className="me-3" />
                     <Image src={madaLogoUrl} alt={IMAGE_DETAILS.mada.alt} width={40} height={25} className="me-3" data-ai-hint={IMAGE_DETAILS.mada.hint}/>
@@ -211,55 +250,80 @@ function CheckoutPageContent() {
                     <Image src={applePayLogoUrl} alt={IMAGE_DETAILS.applePay.alt} width={50} height={25} className="me-3" data-ai-hint={IMAGE_DETAILS.applePay.hint}/>
                     Apple Pay
                   </Label>
-                  <Label htmlFor="bank_transfer" className="flex items-center p-4 border rounded-lg hover:bg-muted cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
-                    <RadioGroupItem value="bank_transfer" id="bank_transfer" className="me-3" />
-                    <Landmark className="w-6 h-6 me-3 text-muted-foreground" />
-                    تحويل بنكي يدوي (يُرسل إثبات الدفع)
-                  </Label>
                 </RadioGroup>
               </div>
 
               {selectedPaymentMethod === "visa_mastercard" && (
                 <div className="space-y-4 p-4 border rounded-lg bg-muted/50">
                   <h4 className="font-semibold">تفاصيل البطاقة الائتمانية:</h4>
+                  {/* Card details inputs - Currently commented out or not fully implemented */}
+                   <p className="text-sm text-muted-foreground">سيتم تفعيل الدفع بالبطاقة قريباً.</p>
+                  {/* 
                   <Input placeholder="رقم البطاقة" />
                   <div className="grid grid-cols-2 gap-4">
                     <Input placeholder="تاريخ الانتهاء (MM/YY)" />
                     <Input placeholder="CVV" />
                   </div>
                   <Input placeholder="اسم صاحب البطاقة" />
+                  */}
+                </div>
+              )}
+               {selectedPaymentMethod === "mada" && (
+                <div className="space-y-4 p-4 border rounded-lg bg-muted/50">
+                  <h4 className="font-semibold">تفاصيل الدفع بمدى:</h4>
+                   <p className="text-sm text-muted-foreground">سيتم تفعيل الدفع بمدى قريباً.</p>
+                </div>
+              )}
+               {selectedPaymentMethod === "apple_pay" && (
+                <div className="space-y-4 p-4 border rounded-lg bg-muted/50">
+                  <h4 className="font-semibold">تفاصيل الدفع بأبل باي:</h4>
+                   <p className="text-sm text-muted-foreground">سيتم تفعيل الدفع بأبل باي قريباً.</p>
                 </div>
               )}
 
               {selectedPaymentMethod === "bank_transfer" && (
-                <div className="p-4 border border-yellow-300 bg-yellow-50 rounded-lg text-yellow-700">
+                <div className="p-4 border border-green-600 bg-green-50 rounded-lg text-green-800 space-y-3">
                   <div className="flex items-start">
-                    <AlertTriangle className="w-5 h-5 me-2 mt-1 flex-shrink-0"/>
+                    <Landmark className="w-6 h-6 me-3 mt-1 flex-shrink-0 text-green-700"/>
                     <div>
-                      <h4 className="font-semibold">تعليمات التحويل البنكي:</h4>
-                      <p className="text-sm">يرجى تحويل المبلغ الإجمالي ({displayTotal.toFixed(2)} ر.س) إلى الحساب التالي:</p>
-                      <p className="text-sm mt-1"><strong>اسم البنك:</strong> البنك السعودي للاستثمار</p>
-                      <p className="text-sm"><strong>رقم الحساب:</strong> SA00 0000 0000 0000 0000 0000</p>
-                      <p className="text-sm"><strong>اسم المستفيد:</strong> شركة صناع الأثر للتعليم</p>
-                      <p className="text-sm mt-2">بعد التحويل، يرجى إرسال إثبات الدفع إلى <a href="mailto:billing@sonna3.com" className="underline">billing@sonna3.com</a> مع ذكر رقم الطلب.</p>
+                      <h4 className="font-bold text-lg mb-2">تعليمات إتمام التحويل البنكي:</h4>
+                      <p className="text-sm mb-2">لإتمام تسجيلك، يرجى تحويل المبلغ الإجمالي التالي:</p>
+                      <p className="text-lg font-bold text-center mb-3">{displayTotal.toFixed(2)} ر.س</p>
+
+                      <div className="space-y-1 mb-3">
+                         <p className="text-sm"><strong>اسم البنك:</strong> البنك السعودي للاستثمار</p>
+                         <p className="text-sm"><strong>رقم الحساب:</strong> SA00 0000 0000 0000 0000 0000</p>
+                         <p className="text-sm"><strong>اسم المستفيد:</strong> شركة صناع الأثر للتعليم</p>
+                      </div>
+
+                      <Separator className="my-3" />
+
+                      <p className="text-sm font-semibold">خطوات تأكيد الاشتراك:</p>
+                      <ol className="list-decimal list-inside text-sm space-y-1">
+                         <li>قم بإجراء التحويل البنكي بالمبلغ المطلوب.</li>
+                         <li>احصل على إيصال التحويل (صورة من تطبيق البنك أو ورقة الإيداع).</li>
+                         <li>أرسل صورة الإيصال مع ذكر اسم الطالب ورقم الطلب (إن وجد) إلى البريد الإلكتروني: <a href="mailto:billing@sonna3.com" className="underline font-medium text-green-800">billing@sonna3.com</a></li>
+                         <li>سيتم مراجعة الإيصال وتأكيد تسجيل الطالب خلال ساعات العمل.</li>
+                      </ol>
+                       <p className="text-sm mt-3"><AlertTriangle className="w-4 h-4 inline-block me-1 text-yellow-700"/> لا يتم تأكيد التسجيل وتفعيل الخدمات إلا بعد التحقق من وصول مبلغ التحويل.</p>
                     </div>
                   </div>
                 </div>
               )}
-              
+
               <div className="mt-2">
                 <Input placeholder="كود الخصم (إن وجد)" />
               </div>
 
             </CardContent>
             <CardFooter>
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
                 onClick={handlePayment}
                 disabled={isProcessing || !selectedPaymentMethod}
               >
-                {isProcessing ? "جاري المعالجة..." : `ادفع الآن ${displayTotal.toFixed(2)} ر.س`}
+                {isProcessing ? "جاري تسجيل طلب التحويل..." : `اختيار طريقة الدفع`}
               </Button>
             </CardFooter>
           </Card>

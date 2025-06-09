@@ -2,10 +2,10 @@
 
 const nextConfig = {
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false, // Changed for production
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false, // Changed for production
   },
   images: {
     remotePatterns: [
