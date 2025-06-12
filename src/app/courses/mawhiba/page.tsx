@@ -1,5 +1,5 @@
-@@ -1,27 +1,27 @@
-
+// src/app/mawhiba/page.tsx
+'use client';
 import { CheckCircle } from "lucide-react";
 
 <>
