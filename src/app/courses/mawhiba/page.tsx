@@ -1,3 +1,5 @@
+@@ -1,27 +1,27 @@
+
 import { CheckCircle } from "lucide-react";
 <>
       <section className="mb-12 p-6 bg-primary/5 rounded-lg">
