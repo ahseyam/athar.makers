@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Menu, Info, Phone, HomeIcon, LayoutGrid, BookMarked, Store, Briefcase, UserCheck, LogIn, LogOut, ChevronDownIcon, UserCircle, Loader2, Bus, BookOpen } from 'lucide-react'; // Import BookOpen icon
@@ -19,22 +19,24 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const mainNavLinks = [
   { href: '/', label: 'الرئيسية', icon: <HomeIcon className="me-1 h-4 w-4" /> },
-  { href: '/courses/summer-camps', label: 'معسكر صُنّاع الموهبة', icon: <LayoutGrid className="me-1 h-4 w-4" /> },
-  { href: '/exam-review', label: 'مراجعة ليلة الاختبار', icon: <BookOpen className="me-1 h-4 w-4" /> }, // Added new link
 ];
 
 const dropdownNavLinks = [
+  { href: '/courses/summer-camps', label: 'معسكر صُنّاع الموهبة' },
+  { href: '/exam-review', label: 'مراجعة ليلة الاختبار' },
   { href: '/courses/qiyas-gat', label: 'دورات القدرات' },
   { href: '/courses/mawhiba', label: 'مقياس موهبة' },
   { href: '/courses/tahsili', label: 'دورات التحصيلي' },
   { href: '/courses/step-test', label: 'دورات STEP' },
 ];
 
-const secondaryNavLinks = [
-  { href: '/transportation', label: 'خدمات النقل والمواصلات', icon: <Bus className="me-1 h-4 w-4" /> }, // Added Transportation link
-  { href: '/institutions/hosting-request', label: 'استضافة برامجنا الحضورية', icon: <Briefcase className="me-1 h-4 w-4" /> },
-  { href: '/store', label: 'المتجر', icon: <Store className="me-1 h-4 w-4" /> },
-  { href: '/trainers/apply', label: 'انضم كمدرب', icon: <UserCheck className="me-1 h-4 w-4" /> },
+const secondaryNavLinks = [];
+
+const ourServicesLinks = [
+  { href: '/transportation', label: 'خدمات النقل والمواصلات' },
+  { href: '/institutions/hosting-request', label: 'استضافة برامجنا الحضورية' },
+  { href: '/store', label: 'المتجر' },
+  { href: '/trainers/apply', label: 'انضم كمدرب' },
 ];
 
 const getDashboardPathForRole = (role: string | undefined): string => {
@@ -117,12 +119,24 @@ export default function Header() {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-          {secondaryNavLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="hover:bg-primary/80 hover:text-primary-foreground/90 transition-colors px-2.5 py-2 rounded-md text-sm font-medium flex items-center">
-              {link.icon}
-              <span className="whitespace-nowrap">{link.label}</span>
-            </Link>
-          ))}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="text-primary-foreground hover:bg-primary/80 hover:text-primary-foreground/90 transition-colors px-2.5 py-2 rounded-md text-sm font-medium flex items-center">
+                <LayoutGrid className="me-1 h-4 w-4" />
+                <span className="whitespace-nowrap">خدماتنا</span>
+                <ChevronDownIcon className="ms-1 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="bg-card text-card-foreground">
+              {ourServicesLinks.map((item) => (
+                <DropdownMenuItem key={item.href} asChild>
+                  <Link href={item.href} className="hover:bg-accent/10 focus:bg-accent/10">
+                    {item.label}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </nav>
 
         <div className="hidden md:flex items-center gap-x-2">
@@ -229,17 +243,24 @@ export default function Header() {
                     ))}
                     </DropdownMenuContent>
                 </DropdownMenu>
-                {secondaryNavLinks.map((link) => (
-                    <Link
-                    key={'mobile-sec-' + link.href}
-                    href={link.href}
-                    className="hover:bg-primary/80 transition-colors px-3 py-2 rounded-md text-sm font-medium flex items-center"
-                    >
-                    {link.icon}
-                    <span className="whitespace-nowrap">{link.label}</span>
-                    </Link>
-                )
-                )}
+                 <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="justify-start w-full text-primary-foreground hover:bg-primary/80 hover:text-primary-foreground px-3 py-2 text-sm font-medium flex items-center">
+                        <LayoutGrid className="me-1 h-4 w-4" />
+                        <span className="whitespace-nowrap">خدماتنا</span>
+                        <ChevronDownIcon className="ms-auto h-4 w-4" />
+                    </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" side="bottom" className="bg-card text-card-foreground w-[230px]">
+                    {ourServicesLinks.map((item) => (
+                        <DropdownMenuItem key={'mobile-dd-' + item.href} asChild>
+                        <Link href={item.href} className="block px-3 py-2 text-sm hover:bg-accent/10 focus:bg-accent/10">
+                           <span className="whitespace-nowrap">{item.label}</span>
+                        </Link>
+                        </DropdownMenuItem>
+                    ))}
+                    </DropdownMenuContent>
+                </DropdownMenu>
                 <Link href="/about" className="hover:bg-primary/80 transition-colors px-3 py-2 rounded-md text-sm font-medium flex items-center">
                 <Info className="me-1 h-4 w-4" />
                 <span className="whitespace-nowrap">من نحن</span>
