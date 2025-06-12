@@ -106,7 +106,7 @@
   }
   body {
     @apply font-body text-foreground; /* Apply body font and default text color */
-    background-image: url('/images/background-pattern.png'); /* Path relative to public folder */
+    background-image: url('https://i.imgur.com/6ezFOX4.png'); /* Path relative to public folder */
     background-repeat: repeat; /* Tile the image */
     background-color: hsl(var(--background)); /* Fallback color, or color visible through transparent parts of the image */
   }

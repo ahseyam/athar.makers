@@ -15,7 +15,8 @@ const programTracksData = [
     description: 'برامج مكثفة تجمع بين العلم والمهارة والمرح لصناعة جيل مبدع.',
     icon: <Sparkles className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/summer-camps',
-    originalImage: 'https://i.imgur.com/fKK8wOz.jpeg', 
+    // Replace with '/images/summer-camps.jpeg'. Download the image from https://i.imgur.com/fKK8wOz.jpeg and save it to public/images/summer-camps.jpeg
+    originalImage: '/images/summer-camps.jpeg',
     imageHint: 'children summer camp activities', 
     alt: 'المعسكرات الصيفية والمسائية'
   },
@@ -25,7 +26,8 @@ const programTracksData = [
     description: 'تأهيل شامل لاختبار القدرات العامة، من التأسيس وحتى الاحتراف.',
     icon: <BarChart className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/qiyas-gat',
-    originalImage: "https://i.imgur.com/8ZsHWir.png",
+    // Replace with '/images/qiyas-gat.png'. Download the image from https://i.imgur.com/8ZsHWir.png and save it to public/images/qiyas-gat.png
+    originalImage: "/images/qiyas-gat.png",
     imageHint: 'student exam preparation',
     alt: 'دورات القدرات'
   },
@@ -35,7 +37,8 @@ const programTracksData = [
     description: 'اكتشف قدراتك العقلية المتعددة واستعد بثقة لاختبار موهبة.',
     icon: <Lightbulb className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/mawhiba',
-    originalImage: "https://images.unsplash.com/photo-1748941709930-3b2feeef718d?q=80&w=2589&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    // Replace with '/images/mawhiba.jpeg'. Download the image from https://images.unsplash.com/photo-1748941709930-3b2feeef718d?q=80&w=2589&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D and save it to public/images/mawhiba.jpeg
+    originalImage: "/images/mawhiba.jpeg",
     imageHint: 'طالب يحل ألغازًا تفكير نقدي',
     alt: 'مقياس موهبة'
   },
@@ -45,7 +48,8 @@ const programTracksData = [
     description: 'مراجعة مركزة للمواد العلمية لضمان التفوق في اختبار التحصيلي.',
     icon: <BookOpen className="w-12 h-12 text-primary mb-4" />,
     link: '/courses/tahsili',
-    originalImage: "https://i.imgur.com/o8BioiQ.png",
+    // Replace with '/images/tahsili.png'. Download the image from https://i.imgur.com/o8BioiQ.png and save it to public/images/tahsili.png
+    originalImage: "/images/tahsili.png",
     imageHint: 'student studying',
     alt: 'دورات التحصيلي'
   },
@@ -54,13 +58,15 @@ const programTracksData = [
 const visionMissionImages = {
   vision: {
     id: 'visionImage',
-    originalSrc: imageManifest.homePage.vision_image,
+    // Replace with '/images/vision.jpeg'. Download the image from imageManifest.homePage.vision_image and save it to public/images/vision.jpeg
+    originalSrc: '/images/vision.jpeg', // Original: imageManifest.homePage.vision_image
     alt: "رؤيتنا - تصميم معماري حديث يرمز للمستقبل",
     hint: "modern architecture",
   },
   mission: {
     id: 'missionImage',
-    originalSrc: imageManifest.homePage.mission_image,
+    // Replace with '/images/mission.jpeg'. Download the image from imageManifest.homePage.mission_image and save it to public/images/mission.jpeg
+    originalSrc: '/images/mission.jpeg', // Original: imageManifest.homePage.mission_image
     alt: "رسالتنا - منظر طبيعي مع طريق جبلي يرمز إلى رحلتنا وأهدافنا",
     hint: "mountain path",
   }
@@ -68,16 +74,16 @@ const visionMissionImages = {
 
 const heroImageDetails = {
   id: 'heroImage',
-  originalSrc: "https://i.imgur.com/HHs65Eg.png", // Updated image URL
+  // Replace with '/images/hero-banner.png'. Download the image from https://i.imgur.com/HHs65Eg.png and save it to public/images/hero-banner.png
+  originalSrc: "/images/hero-banner.png",
   alt: "أكاديمية صناع الأثر - بانر تعليمي حديث",
-  hint: "educational banner abstract", 
+  hint: "educational banner abstract",
 };
-
 
 export default function HomePage() {
   const visionImageUrl = visionMissionImages.vision.originalSrc;
   const missionImageUrl = visionMissionImages.mission.originalSrc;
-  const heroBannerImageUrl = heroImageDetails.originalSrc; 
+  const heroBannerImageUrl = heroImageDetails.originalSrc;
   const academyLogoUrl = "https://i.imgur.com/YUHa6D6.png";
 
   return (
@@ -86,7 +92,8 @@ export default function HomePage() {
         <div className="container mx-auto px-4 flex flex-col items-center">
           <div className="flex items-center justify-center mb-6">
             <Image
-              src={academyLogoUrl}
+              // Replace with '/images/academy-logo.png'. Download the image from https://i.imgur.com/YUHa6D6.png and save it to public/images/academy-logo.png
+              src="/images/academy-logo.png"
               alt="شعار أكاديمية صناع الأثر"
               width={160}
               height={160}
@@ -97,8 +104,9 @@ export default function HomePage() {
               أكاديمية صُنَّاع الأثَر
             </h1>
             <Image
-              src={academyLogoUrl}
-              alt="شعار أكاديمية صناع الأثر"
+              // Replace with '/images/academy-logo.png'. Download the image from https://i.imgur.com/YUHa6D6.png and save it to public/images/academy-logo.png
+              src="/images/academy-logo.png"
+              alt="شعار أكاديمية صناع الأثَر" // Added missing alt prop
               width={160}
               height={160}
               className="w-40 h-40 object-contain mx-8"
@@ -110,7 +118,7 @@ export default function HomePage() {
           </p>
           <div className="w-full max-w-5xl mx-auto mb-10">
             <Image
-              src={heroBannerImageUrl} 
+              src={heroBannerImageUrl}
               alt={heroImageDetails.alt}
               width={1200}
               height={400}
@@ -144,10 +152,10 @@ export default function HomePage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {programTracksData.map((track) => (
-              <Card 
-                key={track.id} 
+              <Card
+                key={track.id}
                 className="shadow-lg flex flex-col transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 bg-card"
-              >
+>
                 <CardHeader className="items-center text-center">
                   <div className="relative w-full h-48 mb-4 rounded-t-lg overflow-hidden">
                     <Image 
@@ -156,7 +164,7 @@ export default function HomePage() {
                       layout="fill" 
                       style={{objectFit:"cover"}}
                       data-ai-hint={track.imageHint} 
-                    />
+                     />
                   </div>
                   {track.icon}
                   <CardTitle className="font-headline text-xl text-card-foreground">{track.title}</CardTitle>
@@ -188,11 +196,11 @@ export default function HomePage() {
               </p>
             </div>
             <div>
-              <Image 
-                src={visionImageUrl} 
-                alt={visionMissionImages.vision.alt} 
-                width={600} 
-                height={400} 
+              <Image
+                src={visionImageUrl}
+                alt={visionMissionImages.vision.alt}
+                width={600}
+                height={400}
                 className="rounded-lg shadow-md object-cover" 
                 data-ai-hint={visionMissionImages.vision.hint}
               />
@@ -207,11 +215,11 @@ export default function HomePage() {
               </p>
             </div>
             <div className="md:order-first">
-              <Image 
-                src={missionImageUrl} 
-                alt={visionMissionImages.mission.alt} 
-                width={600} 
-                height={400} 
+              <Image
+                src={missionImageUrl}
+                alt={visionMissionImages.mission.alt}
+                width={600}
+                height={400}
                 className="rounded-lg shadow-md object-cover" 
                 data-ai-hint={visionMissionImages.mission.hint}
               />
