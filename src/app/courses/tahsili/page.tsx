@@ -2,11 +2,11 @@
 // src/app/courses/tahsili/page.tsx
 'use client';
 import React from 'react';
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Added CardHeader and CardTitle
 import { Star } from "lucide-react";
-import Image from 'next/image'; // Assuming you might want a header image like other course pages
-import Link from 'next/link'; // For CTAs
-import { Button } from '@/components/ui/button'; // For CTAs
+import Image from 'next/image'; 
+import Link from 'next/link'; 
+import { Button } from '@/components/ui/button'; 
 
 // Placeholder data for studentReviews
 const studentReviews = [
