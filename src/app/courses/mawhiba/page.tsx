@@ -1,9 +1,13 @@
-// src/app/mawhiba/page.tsx
+
+// src/app/courses/mawhiba/page.tsx
 'use client';
+import React from 'react';
 import { CheckCircle } from "lucide-react";
 
-<>
-   
+export default function MawhibaPage() {
+  return (
+    <div className="container mx-auto px-4 py-12"> {/* Added a container for consistent layout */}
+      {/* TODO: Add a header section for this page similar to other course pages */}
       <section className="mb-12 p-6 bg-primary/5 rounded-lg">
         <h2 className="text-3xl font-headline font-bold text-center text-foreground mb-8">🔍 مميزات البرنامج التدريبي</h2>
         <div className="grid md:grid-cols-2 gap-6">
@@ -28,4 +32,7 @@ import { CheckCircle } from "lucide-react";
         <h2 className="text-3xl font-headline font-bold text-center text-foreground mb-4">🤝 رحلة مشتركة: الطالب وولي الأمر</h2>
         <p  className="text-center text-muted-foreground mb-6">ندرك أن رحلة الاستعداد لمقياس موهبة هي جهد مشترك بين الطالب وأسرته. لذا، تم تصميم برامجنا لتوفر الشفافية الكاملة لولي الأمر حول تقدم ابنه أو ابنته، مع تزويده بتقارير تحليلية واضحة تساعده على فهم نقاط القوة ومجالات التطوير، وتقديم الدعم المناسب في هذه المرحلة الهامة. نحن هنا لنمكّن كلاً من الطالب وولي الأمر لتحقيق أفضل النتائج.</p>
       </section>
-</>
+      {/* TODO: Add other relevant sections like pricing, registration CTA, FAQ etc. */}
+    </div>
+  );
+}
