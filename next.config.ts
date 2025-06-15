@@ -52,6 +52,14 @@ const nextConfig = {
       },
     ],
   },
+
+  webpack: (config: { module: { rules: { test: RegExp; use: string[]; }[]; }; }, { isServer }: any) => {
+    config.module.rules.push({
+      test: /\. (hbs|handlebars)$/,
+      use: ['handlebars-loader'],
+    });
+    return config;
+  },
 };
 
 export default nextConfig;

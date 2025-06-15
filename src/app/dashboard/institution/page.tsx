@@ -1,12 +1,13 @@
-
-// Removed 'use client'
-import React, { use } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Building } from "lucide-react";
 
-export default function InstitutionDashboardPage({ params: rawParams }: { params: Record<string, string | string[] | undefined> }) {
-  const params = use(Promise.resolve(rawParams));
-  // params is now "unwrapped" but not used. This is to satisfy Next.js checks.
+interface PageProps {
+  params: Promise<Record<string, string | string[] | undefined>>;
+}
+
+export default async function InstitutionDashboardPage({ params }: PageProps) {
+  const awaitedParams = await params;
 
   return (
     <div className="container mx-auto px-4 py-12">

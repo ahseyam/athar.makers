@@ -325,7 +325,7 @@ export default function SummerCampPage() {
                       </p>
                       <div className="text-sm text-muted-foreground space-y-1 mb-3">
                         <p><Clock className="inline-block me-2 w-4 h-4 text-primary" /> <strong>المدة:</strong> {selectedScientificPackageDetails.duration} (بمعدل {selectedScientificPackageDetails.dailyTime}).</p>
-                        <p><TargetIcon className="inline-block me-2 w-4 h-4 text-primary" /> <strong>أهم المهارات المستهدفة:</strong> {selectedScientificPackageDetails.skills.join('، ')}.</p>
+                        <p><TargetIcon className="inline-block me-2 w-4 h-4 text-primary" /> <strong>أهم المهارات المستهدفة:</strong> {selectedScientificPackageDetails.skills.join(', ')}.</p>
                       </div>
                       <p className="text-muted-foreground">
                         تهدف هذه الحقيبة إلى تزويد الطلاب بأساس قوي في المجالات العلمية المختارة، وتشجيعهم على الاستكشاف والابتكار من خلال أنشطة عملية وتفاعلية.
@@ -367,11 +367,11 @@ export default function SummerCampPage() {
                             </p>
                             <Card className="mb-3 bg-background max-w-md mx-auto">
                                 <CardHeader className="pb-2"><CardTitle className="text-lg">{currentSkillPackageDetails.bag1.name}</CardTitle></CardHeader>
-                                <CardContent><p className="text-sm text-muted-foreground"><strong>أهم المهارات:</strong> {currentSkillPackageDetails.bag1.skills.join('، ')}.</p></CardContent>
+                                <CardContent><p className="text-sm text-muted-foreground"><strong>أهم المهارات:</strong> {currentSkillPackageDetails.bag1.skills.join(', ')}.</p></CardContent>
                             </Card>
                             <Card className="mb-3 bg-background max-w-md mx-auto">
                                 <CardHeader className="pb-2"><CardTitle className="text-lg">{currentSkillPackageDetails.bag2.name}</CardTitle></CardHeader>
-                                <CardContent><p className="text-sm text-muted-foreground"><strong>أهم المهارات:</strong> {currentSkillPackageDetails.bag2.skills.join('، ')}.</p></CardContent>
+                                <CardContent><p className="text-sm text-muted-foreground"><strong>أهم المهارات:</strong> {currentSkillPackageDetails.bag2.skills.join(', ')}.</p></CardContent>
                             </Card>
                             <p className="text-sm text-muted-foreground"><Clock className="inline-block me-2 w-4 h-4 text-primary" /> <strong>مدة كل حقيبة مهارية:</strong> 6 أيام (بمعدل 45 دقيقة/يوم).</p>
                             <p className="text-muted-foreground mt-2">
@@ -413,7 +413,7 @@ export default function SummerCampPage() {
                             النشاط الرياضي هو جزء أساسي من المعسكر، يهدف إلى تعزيز اللياقة البدنية وروح الفريق والمرح. يختار الطلاب رياضتهم المفضلة من بين:
                         </p>
                         <ul className="list-disc list-inside ps-5 text-muted-foreground mb-3 inline-block text-right md:text-center">
-                            {availableSportsDetails.map(sport => <li key={sport.name}>{sport.name} (المهارات المستهدفة: {sport.skills.join("، ")})</li>)}
+                            {availableSportsDetails.map(sport => <li key={sport.name}>{sport.name} (المهارات المستهدفة: {sport.skills.join(", ")})</li>)}
                         </ul>
                         <p className="text-sm text-muted-foreground mb-1 clear-both"><Clock className="inline-block me-2 w-4 h-4 text-primary" /> <strong>خيارات المدة:</strong> 6 أيام أو 12 يومًا.</p>
                         <p className="text-muted-foreground">
@@ -434,7 +434,6 @@ export default function SummerCampPage() {
       <div className="text-center">
         <Link href={getRegistrationLink()} passHref legacyBehavior>
           <Button
-            as="a"
             size="lg"
             className="bg-accent hover:bg-accent/90 text-accent-foreground"
             disabled={!selectedScientificPackageId || !selectedSport || !sportDuration}

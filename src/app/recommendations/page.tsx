@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Loader2, Wand2, Sparkles, Lightbulb } from "lucide-react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { z } from "zod"; // Add this import
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { generateCourseRecommendations, type CourseRecommendationsInput, type CourseRecommendationsOutput } from '@/ai/flows/course-recommendations';
@@ -123,9 +123,9 @@ export default function RecommendationsPage() {
                       <FormControl>
                         <Input placeholder="مثال: برمجة، رسم، رياضة، علوم" {...field} />
                       </FormControl>
-                      <FormDescription>
+                      <CardDescription>
                         اذكر بعض اهتمامات الطالب مفصولة بفاصلة.
-                      </FormDescription>
+                      </CardDescription>
                       <FormMessage />
                     </FormItem>
                   )}

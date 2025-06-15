@@ -1,10 +1,11 @@
 
 // Removed 'use client'
-import React, { use } from 'react'; // Added React.use
+import React from 'react'; 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HelpCircle } from "lucide-react";
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { PageProps } from '../../../.next/types/app/faq/page';
 
 const faqItems = [
   {
@@ -33,11 +34,8 @@ const faqItems = [
   }
 ];
 
-export default function FaqPage({ params: rawParams }: { params: Record<string, string | string[] | undefined> }) {
-  // Explicitly "use" params, even if empty or not directly used in the component logic.
-  // This can help satisfy Next.js's requirements for handling the params object in Server Components.
-  const params = use(Promise.resolve(rawParams));
-
+export default function FaqPage({ params, searchParams }: PageProps) {
+  // Use params and searchParams directly here if needed.
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="text-center mb-16">

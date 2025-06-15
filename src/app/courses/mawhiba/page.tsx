@@ -6,13 +6,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, Users, BookOpen, Brain, TrendingUp, Lightbulb, HelpCircle, ArrowRight, Target, BarChartSquare, MessageSquare } from 'lucide-react';
+import { CheckCircle, Users, BookOpen, Brain, TrendingUp, Lightbulb, HelpCircle, ArrowRight, Target, BarChart, MessageSquare } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 const mawhibaComponents = [
   { name: 'الاستدلال اللغوي وفهم المقروء', description: 'قدرة الطالب على فهم النصوص وتحليلها واستنتاج المعاني.', icon: <BookOpen className="w-8 h-8 text-primary"/> },
-  { name: 'الاستدلال الرياضي والمكاني', description: 'مهارات حل المشكلات الرياضية والتفكير المنطقي والتصور المكاني.', icon: <BarChartSquare className="w-8 h-8 text-primary"/> },
+  { name: 'الاستدلال الرياضي والمكاني', description: 'مهارات حل المشكلات الرياضية والتفكير المنطقي والتصور المكاني.', icon: <BarChart className="w-8 h-8 text-primary"/> },
   { name: 'الاستدلال العلمي والميكانيكي', description: 'فهم الظواهر العلمية وتطبيق المبادئ الفيزيائية والميكانيكية.', icon: <Lightbulb className="w-8 h-8 text-primary"/> },
   { name: 'المرونة العقلية', description: 'القدرة على التفكير بطرق متعددة وإيجاد حلول مبتكرة للمشكلات.', icon: <Brain className="w-8 h-8 text-primary"/> },
 ];
